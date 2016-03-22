@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:focusable="true"
+        android:focusableInTouchMode="false"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:contentDescription="Play against Computer Options"
+        android:background="@drawable/chesscommandercropped" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/pve_startGame_button"
+        android:layout_alignTop="@+id/freeplay_currentPlayer_textView"
+        android:layout_below="@id/imageView">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Player"
+            android:id="@+id/freeplay_currentPlayer_textView"
+            android:textSize="35sp"
+            android:paddingBottom="10dp"
+            android:contentDescription="Color of pieces to play as"
+            android:focusable="true"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/imageView"
+            android:paddingTop="10dp"
+            android:paddingLeft="20dp" />
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/freeplay_currentPlayer_radioGroup"
+            android:orientation="horizontal"
+            android:layout_below="@+id/freeplay_currentPlayer_textView"
+            android:paddingBottom="20dp">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="Player 1"
+                android:id="@+id/pve_color_white_radioButton"
+                android:contentDescription="Play as White Pieces"
+                android:clickable="true"
+                android:focusable="true"
+                android:textSize="25sp"
+                android:onClick="onpveWhiteColorClick"
+                android:textColor="#ffffff"
+                android:checked="false" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="Player 2"
+                android:id="@+id/pve_color_black_radioButton"
+                android:focusable="true"
+                android:clickable="true"
+                android:contentDescription="Play as Black Pieces"
+                android:textSize="25sp"
+                android:checked="false"
+                android:onClick="onpveBlackColorClick"
+                android:textColor="#ffffff" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Player 1 Color"
+            android:id="@+id/freeplay_p1Color_textView"
+            android:textSize="35sp"
+            android:paddingBottom="10dp"
+            android:contentDescription="Color of pieces to play as"
+            android:focusable="true"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/freeplay_currentPlayer_radioGroup"
+            android:paddingLeft="20dp" />
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/freeplay_p1Color_textView"
+            android:id="@+id/freeplay_p1Color_radioGroup"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="White"
+                android:id="@+id/radioButton"
+                android:contentDescription="Play as White Pieces"
+                android:clickable="true"
+                android:focusable="true"
+                android:textSize="25sp"
+                android:onClick="onpveWhiteColorClick"
+                android:textColor="#ffffff" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="Black"
+                android:id="@+id/radioButton2"
+                android:focusable="true"
+                android:clickable="true"
+                android:contentDescription="Play as Black Pieces"
+                android:textSize="25sp"
+                android:checked="false"
+                android:onClick="onpveBlackColorClick"
+                android:textColor="#ffffff" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Oponent Type"
+            android:id="@+id/freeplay_opponentType_textView"
+            android:textSize="35sp"
+            android:paddingBottom="10dp"
+            android:contentDescription="Color of pieces to play as"
+            android:focusable="true"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/freeplay_p1Color_radioGroup"
+            android:paddingTop="10dp"
+            android:paddingLeft="20dp" />
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/freeplay_opponentType_textView"
+            android:id="@+id/freeplay_opponentType_radioGroup"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="Computer"
+                android:id="@+id/radioButton"
+                android:contentDescription="Play as White Pieces"
+                android:clickable="true"
+                android:focusable="true"
+                android:textSize="25sp"
+                android:onClick="onpveWhiteColorClick"
+                android:textColor="#ffffff"
+                android:checked="false" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="Player"
+                android:id="@+id/radioButton2"
+                android:focusable="true"
+                android:clickable="true"
+                android:contentDescription="Play as Black Pieces"
+                android:textSize="25sp"
+                android:checked="false"
+                android:onClick="onpveBlackColorClick"
+                android:textColor="#ffffff" />
+        </RadioGroup>
+    </LinearLayout>
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:id="@+id/pve_startGame_button"
+        android:layout_marginBottom="33dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="25sp"
+        android:onClick="onpveStartGameButtonClick"
+        android:focusable="true"
+        android:clickable="true" />
+
+
+</RelativeLayout>
