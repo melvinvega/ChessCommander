@@ -23,23 +23,26 @@ public class home_screen extends AppCompatActivity {
     }
 
     public void onPvEButtonClick(View view) {
-        String message = "You selected to play against a Computer";
+        //String message = "You selected to play against a Computer";
         //  Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
         Intent pveScreenIntent = new Intent(this,pve_options.class);
-        //  final int result = 1;
-
-        pveScreenIntent.putExtra("GameType"," String Computer");
+        pveScreenIntent.putExtra("GameType","pve");
         startActivity(pveScreenIntent);
     }
 
     public void onPVPButtonClick(View view) {
-        String message = "You selected to play against a Player";
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        //String message = "You selected to play against a Player";
+        //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Intent pvpScreenIntent = new Intent(this,game_screen.class);
+        pvpScreenIntent.putExtra("GameType","pvp");
+        startActivity(pvpScreenIntent);
     }
 
     public void onFreePlayButtonClick(View view) {
-        String message = "You selected to Free Play";
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        //String message = "You selected to Free Play";
+        //Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        Intent pvpScreenIntent = new Intent(this,game_screen.class);
+        pvpScreenIntent.putExtra("GameType", "fp");
     }
 
 }

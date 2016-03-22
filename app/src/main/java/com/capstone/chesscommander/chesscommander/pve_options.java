@@ -12,6 +12,7 @@ import android.widget.Toast;
  */
 public class pve_options extends Activity {
     private Boolean difficultySelected, pieceColorSelected;
+    private String difficultyValue,colorValue,gameType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,33 +24,38 @@ public class pve_options extends Activity {
 
     public void onpveEasyDifficultyClick(View view) {
         difficultySelected = true;
+        difficultyValue = "easy";
     }
 
     public void onpveMediumDifficultyClick(View view) {
         difficultySelected = true;
+        difficultyValue = "medium";
     }
 
     public void onpveHardDifficultyClick(View view) {
         difficultySelected = true;
+        difficultyValue = "hard";
     }
 
 
     public void onpveWhiteColorClick(View view) {
         pieceColorSelected = true;
+        colorValue = "white";
     }
 
     public void onpveBlackColorClick(View view) {
         pieceColorSelected = true;
+        colorValue = "black";
     }
 
     public void onpveStartGameButtonClick(View view) {
 
-        if (difficultySelected == false | pieceColorSelected == false) {
-            if (difficultySelected == false) {
+        if (!difficultySelected | !pieceColorSelected ) {
+            if (!difficultySelected) {
                 String message = "Must Select a difficulty";
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             }
-            if (pieceColorSelected == false) {
+            if (!pieceColorSelected) {
                 String message = "Must select the piece color";
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             }
@@ -58,9 +64,13 @@ public class pve_options extends Activity {
             //String game_T = intent_start.getStringExtra("GameType");
             //String message = "Starting Game";
             Bundle extras = getIntent().getExtras();
-            String game_T = extras.getString("GameType");
-            Toast.makeText(this, game_T, Toast.LENGTH_SHORT).show();
+            gameType = extras.getString("GameType");
+            //Toast.makeText(this, game_T, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this,game_screen.class);
+            intent.putExtra("GameType",gameType);
+            intent.putExtra("Difficulty",difficultyValue);
+            intent.putExtra("Color",colorValue);
+
             startActivity(intent);
 
         }

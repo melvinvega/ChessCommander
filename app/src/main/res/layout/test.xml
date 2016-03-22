@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/a11"
+        android:layout_marginTop="142dp"
+        android:background="@drawable/image1"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/b11"
+        android:layout_alignStart="@+id/b11"
+        android:focusable="true" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/a12"
+        android:background="@drawable/image2"
+        android:layout_above="@+id/b11"
+        android:layout_toRightOf="@+id/a11"
+        android:layout_toEndOf="@+id/a11" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/b11"
+        android:background="@drawable/image2"
+        android:layout_below="@+id/a11"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="91dp"
+        android:layout_marginStart="91dp" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/b12"
+        android:background="@drawable/image1"
+        android:layout_below="@+id/a11"
+        android:layout_toRightOf="@+id/b11"
+        android:layout_toEndOf="@+id/b11" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/a11button"
+        android:background="@drawable/king_b"
+        android:onClick="onButtonClick"
+        android:layout_alignTop="@+id/a11"
+        android:layout_alignStart="@+id/a11"
+        android:visibility="visible"
+        android:contentDescription="a11"
+        />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/a12button"
+        android:layout_alignTop="@+id/a11"
+        android:layout_toRightOf="@+id/a11"
+        android:layout_toEndOf="@+id/a11"
+        android:background="@drawable/queen_w"
+        android:onClick="onButtonClick"
+        android:adjustViewBounds="false"
+        android:visibility="visible"
+        android:contentDescription="a12" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/b11button"
+        android:layout_below="@+id/a11"
+        android:layout_alignLeft="@+id/b11"
+        android:layout_alignStart="@+id/b11"
+        android:onClick="onButtonClick"
+        android:visibility="visible"
+        android:contentDescription="b11" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/b12button"
+        android:layout_alignBottom="@+id/b12"
+        android:layout_alignRight="@+id/b12"
+        android:layout_alignEnd="@+id/b12"
+        android:onClick="onButtonClick"
+        android:visibility="visible"
+        android:contentDescription="b12" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Id"
+        android:id="@+id/button5"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="23dp"
+        />
+</RelativeLayout>

@@ -15,7 +15,8 @@
         android:layout_alignBottom="@+id/imageButton2"
         android:clickable="true"
         android:contentDescription="Activate Voicce Command"
-        android:focusable="true" />
+        android:focusable="true"
+        android:tint="#ffffff" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -26,7 +27,8 @@
         android:layout_alignParentEnd="true"
         android:contentDescription="Settings"
         android:clickable="true"
-        android:focusable="true" />
+        android:focusable="true"
+        android:tint="#ffffff" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -44,93 +46,167 @@
             android:layout_height="match_parent"
             android:layout_weight=".125">
 
-            <ImageView
-                android:id="@+id/A8"
-                android:layout_width="0dp"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/image1"
-                android:src="@drawable/rook_b"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="A8"  />
+                android:layout_weight=".125"
+                android:background="@drawable/image1">
 
-            <ImageView
-                android:id="@+id/B8"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/image2"
-                android:src="@drawable/knight_b"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="B8" />
+                <ImageView
+                    android:id="@+id/A8"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rook_b"
+                    android:src="@drawable/rook_b"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="A8"  />
+            </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/C8"
-                android:layout_width="0dp"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/image1"
-                android:src="@drawable/bishop_b"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="C8" />" />
+                android:layout_weight=".125"
+                android:background="@drawable/image2">
 
-            <ImageView
-                android:id="@+id/D8"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/image2"
-                android:src="@drawable/queen_b"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="D8" />
+                <ImageView
+                    android:id="@+id/B8"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/knight_b"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="B8" />
+            </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/E8"
-                android:layout_width="0dp"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/image1"
-                android:src="@drawable/king_b"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="E8" />" />
+                android:layout_weight=".125"
+                android:background="@drawable/image1">
 
-            <ImageView
-                android:id="@+id/F8"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/image2"
-                android:src="@drawable/bishop_b"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="F8" />
+                <ImageView
+                    android:id="@+id/C8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image1"
+                    android:src="@drawable/bishop_b"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="C8" />
+            </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/G8"
-                android:layout_width="0dp"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/image1"
-                android:src="@drawable/knight_b"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="G8" />" />
+                android:layout_weight=".125"
+                android:background="@drawable/image2">
 
-            <ImageView
-                android:id="@+id/H8"
-                android:layout_width="0dp"
+                <ImageView
+                    android:id="@+id/D8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image2"
+                    android:src="@drawable/queen_b"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="D8" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/image2"
-                android:src="@drawable/rook_b"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="H8" />
+                android:layout_weight=".125"
+                android:background="@drawable/image1">
+
+                <ImageView
+                    android:id="@+id/E8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image1"
+                    android:src="@drawable/king_b"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="E8" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".125"
+                android:background="@drawable/image2">
+
+                <ImageView
+                    android:id="@+id/F8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image2"
+                    android:src="@drawable/bishop_b"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="F8" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".125"
+                android:background="@drawable/image1">
+
+                <ImageView
+                    android:id="@+id/G8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image1"
+                    android:src="@drawable/knight_b"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="G8" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".125"
+                android:background="@drawable/image2">
+
+                <ImageView
+                    android:id="@+id/H8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image2"
+                    android:src="@drawable/rook_b"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="H8" />
+            </RelativeLayout>
+            <![CDATA[
+
+            " />
+
+
+
+
+
+            " />
+
+
+
+
+
+            " />
+
+
+
+            ]]>
         </TableRow>
 
         <TableRow
@@ -217,8 +293,11 @@
                 android:background="@drawable/image1"
                 android:src="@drawable/pawn_b"
                 android:clickable="true"
-                android:focusable="true" />" />
+                android:focusable="true" /><![CDATA[
 
+            " />
+
+        ]]>
         </TableRow>
 
         <TableRow
