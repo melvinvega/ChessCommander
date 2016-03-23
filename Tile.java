@@ -63,6 +63,15 @@ public class Tile {
 		return containsPiece;
 	}
 	
+	Piece getPiece(){
+		return pieceInTile;
+	}
+	
+	char getPieceChar(){
+		return pieceInTile.getType();
+	}
+	
+	
 	/**
 	 * Toggles whether or not the tile is a promotion tile. Returns what the function
 	 * switched the variable to.

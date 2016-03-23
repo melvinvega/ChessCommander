@@ -16,7 +16,7 @@ public class main {
 		for (short move : moves){
 			System.out.println(Move.getString(move));
 		}
-		*/
+		
 		
 		Position pos = Position.createInitialPosition();
 		short mov = Move.getRegularMove(Chess.D2, Chess.D4, false);
@@ -25,7 +25,10 @@ public class main {
 		} catch (IllegalMoveException e) {
 			System.out.println("Illegal Move!");
 		}
+		*/
 		
+		Board b = new Board();
+		b.printBoard();
 	}
 
 }
