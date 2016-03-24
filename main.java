@@ -28,7 +28,22 @@ public class main {
 		*/
 		
 		Board b = new Board();
-		b.printBoard();
+		// b.printBoard();
+		b.setInitialPosition();
+		//b.printBoard();
+		//b.printVisualBoard();
+		b.move(48,40,'W');
+		//b.printVisualBoard();
+		b.move(11, 19, 'B');
+		//b.printVisualBoard();
+		b.move(58, 3, 'W');
+		b.printVisualBoard();
+		b.move(19, 27, 'B');
+		b.printVisualBoard();
+		b.move(3, 58, 'W');
+		b.printVisualBoard();
+		
+		
 	}
 
 }

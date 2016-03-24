@@ -1,3 +1,4 @@
+import java.lang.*;
 
 /**
  * Representation of the pieces in a chess board.
@@ -9,13 +10,15 @@ public class Piece {
 	
 	/**
 	 *  The type can be any of 6: pawn, rook, knight, bishop, queen and king.
-	 *  Each is represented by one of 6 capital letters:
+	 *  White is represented by one of 6 capital letters, black by the lowercase letter:
 	 *  K = King
 	 *  Q = Queen
 	 *  P = Pawn
 	 *  R = Rook
 	 *  N = Knight
 	 *  B = Bishop
+	 *  
+	 *  If the character 'x' is returned, it is treated as a null piece;
 	 */
 	char type;
 	
@@ -26,7 +29,12 @@ public class Piece {
 
 	public void setType(char t) {
 		if(t == 'P' || t == 'K' || t == 'Q' || t == 'B' || t == 'N' || t == 'R'){
+			if(color == 'W'){
 			type = t;
+			}
+			else{
+				type = Character.toLowerCase(t);
+			}
 		}
 		else{
 			type = 'P';
@@ -50,6 +58,8 @@ public class Piece {
 	 *  The color is either white or black. Each is represented by one of 2 capital letters:
 	 *  W = White
 	 *  B = Black;
+	 *  
+	 *  The character 'x' means it's a null piece.
 	 */
 	char color;
 	
@@ -63,13 +73,18 @@ public class Piece {
 	int id;
 	
 	public Piece(){
-		type = 'P';
-		color = 'W';
+		type = 'x';
+		color = 'x';
 	}
 	
 	public Piece(char t, char c){
 		if(t == 'P' || t == 'K' || t == 'Q' || t == 'B' || t == 'N' || t == 'R'){
-			type = t;
+			if(c == 'W'){
+				type = t;
+			}
+			else{
+				type = Character.toLowerCase(t);
+			}
 		}
 		else{
 			type = 'P';
@@ -94,15 +109,27 @@ public class Piece {
 		switch (type){
 		case 'P': s1 = 0;
 			break;
+		case 'p': s1 = 0;
+			break;
 		case 'K': s1 = 1;
+			break;
+		case 'k': s1 = 1;
 			break;
 		case 'Q': s1 = 2;
 			break;
+		case 'q': s1 = 2;
+			break;
 		case 'B': s1 = 3;
+			break;
+		case 'b': s1 = 3;
 			break;
 		case 'N': s1 = 4;
 			break;
+		case 'n': s1 = 4;
+			break;
 		case 'R': s1 = 5;
+			break;
+		case 'r': s1 = 5;
 			break;
 		default: s1 = -1;
 			break;
@@ -119,7 +146,6 @@ public class Piece {
 		id = s1 + (s2 * 6);
 		return id;
 	}
-	
 	
 	
 	

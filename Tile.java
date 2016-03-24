@@ -22,8 +22,8 @@ public class Tile {
 	 */
 	public Tile() {
 		containsPiece = false;
-		pieceInTile = null;
-		notation = null;
+		pieceInTile = new Piece();
+		notation = "x0";
 		isPromotionSquare = false;
 		id = -1;
 	}
@@ -37,7 +37,7 @@ public class Tile {
 	 */
 	public Tile(Piece p, String n, boolean ips, int i){
 		pieceInTile = p;
-		if(!pieceInTile.equals(null)){
+		if(pieceInTile.getType() != 'x'){
 			containsPiece = true;
 		}
 		else{
@@ -48,6 +48,14 @@ public class Tile {
 		id = i;
 	}
 	
+	public Tile( String n, boolean ips, int i){
+		containsPiece = false;
+		notation = n;
+		isPromotionSquare = ips;
+		id = i;
+	}
+	
+	
 	/**
 	 * Method used to set the piece contained by the tile
 	 * 
@@ -57,7 +65,7 @@ public class Tile {
 	
 	boolean setPiece(Piece in){
 		pieceInTile = in;
-		if(!pieceInTile.equals(null)){
+		if(pieceInTile.getType() != 'x'){
 			containsPiece = true;
 		}
 		return containsPiece;
@@ -68,7 +76,11 @@ public class Tile {
 	}
 	
 	char getPieceChar(){
+		if(containsPiece){
 		return pieceInTile.getType();
+		}
+		else
+			return 'x';
 	}
 	
 	
@@ -134,4 +146,14 @@ public class Tile {
 		return containsPiece;
 	}
 	
+	boolean removePiece(){
+		if(containsPiece){
+			pieceInTile = null;
+			containsPiece = false;
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }
