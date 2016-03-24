@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        android:id="@+id/imageView"
+        android:id="@+id/freeplay_logo_imageView"
         android:layout_alignParentTop="true"
         android:focusable="true"
         android:focusableInTouchMode="false"

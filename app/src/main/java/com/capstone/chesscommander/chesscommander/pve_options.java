@@ -2,7 +2,6 @@ package com.capstone.chesscommander.chesscommander;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -17,7 +16,7 @@ public class pve_options extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pve_options);
+        setContentView(R.layout.pve_options);
         difficultySelected = false;
         pieceColorSelected = false;
     }

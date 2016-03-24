@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <ImageView
+        android:id="@+id/freeplay_logo_imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/chesscommandercropped"
+        android:contentDescription="Free Play Options"
+        android:focusable="true"
+        android:focusableInTouchMode="false" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/freeplay_next_button"
+        android:layout_below="@id/freeplay_logo_imageView"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/freeplay_currentPlayer_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/freeplay_logo_imageView"
+            android:contentDescription="Whose turn is it?"
+            android:focusable="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:text="Current Move"
+            android:textColor="#ffffff"
+            android:textSize="35sp" />
+
+        <RadioGroup
+            android:id="@+id/freeplay_currentPlayer_radioGroup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/freeplay_currentPlayer_textView"
+            android:orientation="horizontal"
+            android:paddingBottom="20dp">
+
+            <RadioButton
+                android:id="@+id/freeplay_currentPlayer_p1_radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:checked="false"
+                android:clickable="true"
+                android:contentDescription="White"
+                android:focusable="true"
+                android:onClick="onRadioButtonClick"
+                android:tag="whiteMove"
+                android:text="White"
+                android:textColor="#ffffff"
+                android:textSize="25sp"/>
+
+            <RadioButton
+                android:id="@+id/freeplay_currentPlayer_p2_radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:checked="false"
+                android:clickable="true"
+                android:contentDescription="Black"
+                android:focusable="true"
+                android:onClick="onRadioButtonClick"
+                android:tag="blackMove"
+                android:text="Black"
+                android:textColor="#ffffff"
+                android:textSize="25sp"/>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/freeplay_p1Color_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/freeplay_currentPlayer_radioGroup"
+            android:contentDescription="Color to play as"
+            android:focusable="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:text="Play as"
+            android:textColor="#ffffff"
+            android:textSize="35sp" />
+
+        <RadioGroup
+            android:id="@+id/freeplay_p1Color_radioGroup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/freeplay_p1Color_textView"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp">
+
+            <RadioButton
+                android:id="@+id/freeplay_p1Color_white_radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:clickable="true"
+                android:contentDescription="White"
+                android:focusable="true"
+                android:onClick="onRadioButtonClick"
+                android:tag="whitePlay"
+                android:text="White"
+                android:textColor="#ffffff"
+                android:textSize="25sp"/>
+
+            <RadioButton
+                android:id="@+id/freeplay_p1Color_black_radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:checked="false"
+                android:clickable="true"
+                android:contentDescription="Black"
+                android:focusable="true"
+                android:onClick="onRadioButtonClick"
+                android:tag="blackPlay"
+                android:text="Black"
+                android:textColor="#ffffff"
+                android:textSize="25sp"/>
+        </RadioGroup>
+
+
+        <TextView
+            android:id="@+id/freeplay_pvedifficulty_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/freeplay_logo_imageView"
+            android:contentDescription="Computer Difficulty"
+            android:focusable="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:text="Difficulty"
+            android:textColor="#ffffff"
+            android:textSize="35sp"
+            />
+
+        <RadioGroup
+            android:id="@+id/freeplay_pvedifficulty_radioGroup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/freeplay_pvedifficulty_textview"
+            android:orientation="horizontal">>
+            <RadioButton
+                android:id="@+id/freeplay_difficulty_easy_radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/pve_difficulty_textview"
+                android:layout_below="@+id/pve_difficulty_textview"
+                android:layout_gravity="bottom|top"
+                android:layout_marginTop="25dp"
+                android:layout_weight=".33"
+                android:checked="false"
+                android:clickable="true"
+                android:contentDescription="Easy Difficulty"
+                android:focusable="true"
+                android:onClick="onRadioButtonClick"
+                android:tag="easy"
+                android:text="Easy"
+                android:textColor="#ffffff"
+                android:textSize="25sp"/>
+
+            <RadioButton
+                android:id="@+id/freeplay_difficulty_medium_radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/freeplay_difficulty_easy_radioButton"
+                android:layout_gravity="top"
+                android:layout_marginStart="25dp"
+                android:layout_toEndOf="@+id/freeplay_difficulty_easy_radioButton"
+                android:layout_weight=".33"
+                android:checked="false"
+                android:clickable="true"
+                android:contentDescription="Medium Difficulty"
+                android:focusable="true"
+                android:onClick="onRadioButtonClick"
+                android:tag="medium"
+                android:text="Medium"
+                android:textColor="#ffffff"
+                android:textSize="25sp"/>
+
+            <RadioButton
+                android:id="@+id/freeplay_difficulty_hard_radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/cclogo_textView"
+                android:layout_alignTop="@+id/freeplay_difficulty_medium_radioButton"
+                android:layout_weight=".33"
+                android:checked="false"
+                android:clickable="true"
+                android:contentDescription="Hard Difficulty"
+                android:focusable="true"
+                android:onClick="onRadioButtonClick"
+                android:tag="hard"
+                android:text="Hard"
+                android:textColor="#ffffff"
+                android:textSize="25sp"/>
+        </RadioGroup>
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/freeplay_next_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="33dp"
+        android:clickable="true"
+        android:contentDescription="Go to next page"
+        android:focusable="true"
+        android:onClick="onNextButtonClick"
+        android:text="Next"
+        android:textSize="25sp"
+        />
+
+
+</RelativeLayout>

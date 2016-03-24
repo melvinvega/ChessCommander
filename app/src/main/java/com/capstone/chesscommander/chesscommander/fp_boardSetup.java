@@ -6,33 +6,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-
 /**
- * Created by Melvin on 3/20/16.
+ * Created by Melvin on 3/23/16.
  */
-//
-public class game_screen extends Activity {
-
-
-    /*
-    * prevId = hold the ID of the previous button pressed, this is used to know from where to take
-    *          the background from and then set it to 0. -1 means no previous ID
-    *
-    * bgdraw = holds the background image while it is moved to the new button.
-    *
-    * empty  = determines if the button's background is empty or not, used to differentiated empty
-    *          tiles from ones with a piece
-    *
-    * board  = a 2D array that represents the board, it holds all of the buttons.
-    *          Used board[row][col]
-    *             row[0-7] = 1-8
-    *             col[0-7] = A-H
-    * */
+public class fp_boardSetup extends Activity {
+/**
+ * Tag Map
+ * [Key,Tag]
+ * [0,piece type(rook,king,pawn)]
+ * [1,piece color]
+ * [2,bench]
+* */
     private int prevId;
     private Drawable bgdraw;
-    private boolean empty;
-    private String gameType,difficulty,playerColor;
+    private boolean empty,pieceSelected;
+    private String gameType,opponentType,currentMove,playAs,difficulty;
     private ImageButton[][] board = new ImageButton[8][8];
+    private ImageButton currentPiece;
+    private ImageButton rook_w,knight_w,bishop_w,queen_w,king_w,pawn_w;
+    private ImageButton rook_b,knight_b,bishop_b,queen_b,king_b,pawn_b;
     private ImageButton A8_button,B8_button,C8_button,D8_button,E8_button,F8_button,G8_button,H8_button;
     private ImageButton A7_button,B7_button,C7_button,D7_button,E7_button,F7_button,G7_button,H7_button;
     private ImageButton A6_button,B6_button,C6_button,D6_button,E6_button,F6_button,G6_button,H6_button;
@@ -42,57 +34,58 @@ public class game_screen extends Activity {
     private ImageButton A2_button,B2_button,C2_button,D2_button,E2_button,F2_button,G2_button,H2_button;
     private ImageButton A1_button,B1_button,C1_button,D1_button,E1_button,F1_button,G1_button,H1_button;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_screen);
         Bundle extras = getIntent().getExtras();
-        gameType = extras.getString("GameType");
-        difficulty = extras.getString("Difficulty");
-        playerColor = extras.getString("Color");
-        boardSetup(gameType);
-        prevId = -1;
-/*
-        String details = " " + gameType  +" " + difficulty + " " + playerColor ;
-        Toast.makeText(this, details, Toast.LENGTH_SHORT).show();
-        ImageView A8 = (ImageView) findViewById(R.id.A8);
-        String resName = A8.getDrawable().toString();
-        String contentDescription = "A8 " + resName;
-        A8.setContentDescription(contentDescription);
-        */
+        setContentView(R.layout.fp_boardsetup);
 
+        boardSetup();
 
+        rook_w   =(ImageButton)findViewById(R.id.rook_w_button);
+        knight_w =(ImageButton)findViewById(R.id.knight_w_button);
+        bishop_w =(ImageButton)findViewById(R.id.bishop_w_button);
+        queen_w  =(ImageButton)findViewById(R.id.queen_w_button);
+        king_w   =(ImageButton)findViewById(R.id.king_w_button);
+        pawn_w   =(ImageButton)findViewById(R.id.pawn_w_button);
 
-    }
+        rook_b   =(ImageButton)findViewById(R.id.rook_b_button);
+        knight_b =(ImageButton)findViewById(R.id.knight_b_button);
+        bishop_b =(ImageButton)findViewById(R.id.bishop_b_button);
+        queen_b  =(ImageButton)findViewById(R.id.queen_b_button);
+        king_b   =(ImageButton)findViewById(R.id.king_b_button);
+        pawn_b   =(ImageButton)findViewById(R.id.pawn_b_button);
+
+        setPieceTags();
+        pieceSelected = false;
+
+       }
 
     public void onButtonClick(View view){
         empty = (view.getBackground()==null);
 
-        if(empty && prevId==-1){
-            //Do nothing
-        }
-        else if(!empty && prevId==-1){
-            prevId = view.getId();
-
-        }
-        else if(empty && prevId>0){
-            //Verify if legal move
-            bgdraw = findViewById(prevId).getBackground();
+        if(empty && pieceSelected){
+            bgdraw = currentPiece.getBackground();
             view.setBackground(bgdraw);
-            findViewById(prevId).setBackgroundResource(0);
-            prevId = -1;
         }
-        else if(!empty && prevId>0){
-            //Verify if legal move
-            //Verify if capturable
+        else if(!empty && pieceSelected){
+            if(view.equals(currentPiece)){
+                view.setBackgroundResource(0);
+            }
+            else{
+                bgdraw = currentPiece.getBackground();
+                view.setBackground(bgdraw);
+            }
         }
     }
 
-    /*
-    * Initial board setup,includes assigning the buttons,setting up the board array, and setting the
-    * background of empty buttons to 0.
-    * */
-    private void boardSetup(String gameType){
+    public void onBenchButtonClick(View view){
+        pieceSelected = view.getTag(R.id.tag2).equals("bench");
+        currentPiece = (ImageButton) findViewById(view.getId());
+    }
+
+    private void boardSetup(){
 
         A8_button = (ImageButton)findViewById(R.id.A8_button);
         B8_button = (ImageButton)findViewById(R.id.B8_button);
@@ -238,19 +231,68 @@ public class game_screen extends Activity {
         board[0][6] = G1_button;
         board[0][7] = H1_button;
 
-        if(gameType.equals("pve") || gameType.equals("pvp")){
-            /*
-            This loop goes through all empty tiles and sets the background to 0, if this is not done a grey
-            square will appear on top of empty tiles since it is a imageButton and the default background is grey
-            board[r][c] represents the button on the board.
-             */
-            for (int r = 2; r < 6; r++) {
-                for (int c = 0; c < 8; c++) {
-                    board[r][c].setBackgroundResource(0);
-                }
+        /*
+        This loop goes through all empty tiles and sets the background to 0, if this is not done a grey
+        square will appear on top of empty tiles since it is a imageButton and the default background is grey
+        board[r][c] represents the button on the board.
+         */
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                board[r][c].setBackgroundResource(0);
             }
         }
-
     }//End of method
 
-}
+    private void setPieceTags(){
+
+        rook_w.setTag(R.id.tag0,"rook");
+        rook_w.setTag(R.id.tag1,"white");
+        rook_w.setTag(R.id.tag2,"bench");
+
+        knight_w.setTag(R.id.tag0,"knight");
+        knight_w.setTag(R.id.tag1,"white");
+        knight_w.setTag(R.id.tag2,"bench");
+
+        bishop_w.setTag(R.id.tag0,"bishop");
+        bishop_w.setTag(R.id.tag1,"white");
+        bishop_w.setTag(R.id.tag2,"bench");
+
+        queen_w.setTag(R.id.tag0,"queen");
+        queen_w.setTag(R.id.tag1,"white");
+        queen_w.setTag(R.id.tag2,"bench");
+
+        king_w.setTag(R.id.tag0,"king");
+        king_w.setTag(R.id.tag1,"white");
+        king_w.setTag(R.id.tag2,"bench");
+
+        pawn_w.setTag(R.id.tag0,"pawn");
+        pawn_w.setTag(R.id.tag1,"white");
+        pawn_w.setTag(R.id.tag2,"bench");
+
+        rook_b.setTag(R.id.tag0,"rook");
+        rook_b.setTag(R.id.tag1,"black");
+        rook_b.setTag(R.id.tag2,"bench");
+
+        knight_b.setTag(R.id.tag0,"knight");
+        knight_b.setTag(R.id.tag1,"black");
+        knight_b.setTag(R.id.tag2,"bench");
+
+        bishop_b.setTag(R.id.tag0,"bishop");
+        bishop_b.setTag(R.id.tag1,"black");
+        bishop_b.setTag(R.id.tag2,"bench");
+
+        queen_b.setTag(R.id.tag0,"queen");
+        queen_b.setTag(R.id.tag1,"black");
+        queen_b.setTag(R.id.tag2,"bench");
+
+        king_b.setTag(R.id.tag0,"king");
+        king_b.setTag(R.id.tag1,"black");
+        king_b.setTag(R.id.tag2,"bench");
+
+        pawn_b.setTag(R.id.tag0,"pawn");
+        pawn_b.setTag(R.id.tag1,"black");
+        pawn_b.setTag(R.id.tag2,"bench");
+
+    }
+    }
+

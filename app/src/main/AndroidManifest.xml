@@ -10,16 +10,20 @@
         <activity android:name=".home_screen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".pve_options"
             android:label="Player versus Computer Options"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-
         <activity android:name=".game_screen"
             android:label="Game Screen"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity android:name=".fp_boardSetup"
+            android:label="Free Play Board Setup"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity android:name=".fp_options"
+            android:label="Free Play Computer Options"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 

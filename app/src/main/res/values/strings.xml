@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">ChessCommander</string>
+    <item type="id" name="tag0"></item>
+    <item type="id" name="tag1"></item>
+    <item type="id" name="tag2"></item>
 </resources>

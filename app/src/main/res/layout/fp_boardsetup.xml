@@ -5,59 +5,12 @@
     android:background="#000000"
     android:gravity="center_horizontal" >
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageButton2"
-        android:layout_alignParentStart="true"
-        android:clickable="true"
-        android:contentDescription="Activate Voicce Command"
-        android:cropToPadding="true"
-        android:focusable="true"
-        android:src="@drawable/ic_keyboard_voice_24dp"
-        android:tint="#ffffff" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="75dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:clickable="true"
-        android:contentDescription="Settings"
-        android:focusable="true"
-        android:src="@drawable/ic_settings_24dp"
-        android:tint="#ffffff" />
-
-    <Button
-        android:id="@+id/game_undo_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="36dp"
-        android:layout_marginEnd="31dp"
-        android:layout_toStartOf="@+id/game_redo_button"
-        android:contentDescription="Undo"
-        android:text="&lt;"
-        android:textSize="25sp"/>
-
-    <Button
-        android:id="@+id/game_redo_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/game_undo_button"
-        android:layout_alignBottom="@+id/game_undo_button"
-        android:layout_alignEnd="@+id/imageButton2"
-        android:contentDescription="Redo"
-        android:text=">"
-        android:textSize="25sp" />
 
     <LinearLayout
         android:id="@+id/row8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageButton"
+        android:layout_above="@+id/row7"
         android:layout_weight=".125"
         android:orientation="horizontal"
         >
@@ -80,7 +33,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/A8_tile"
                 android:layout_alignEnd="@+id/A8_tile"
-                android:background="@drawable/rook_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -102,7 +57,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/B8_tile"
                 android:layout_alignEnd="@+id/B8_tile"
-                android:background="@drawable/knight_b"/>
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -124,7 +81,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/C8_tile"
                 android:layout_alignEnd="@+id/C8_tile"
-                android:background="@drawable/bishop_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -146,7 +105,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/D8_tile"
                 android:layout_alignEnd="@+id/D8_tile"
-                android:background="@drawable/queen_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -168,7 +129,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/E8_tile"
                 android:layout_alignEnd="@+id/E8_tile"
-                android:background="@drawable/king_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -190,7 +153,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/F8_tile"
                 android:layout_alignEnd="@+id/F8_tile"
-                android:background="@drawable/bishop_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -211,7 +176,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/G8_tile"
                 android:layout_alignEnd="@+id/G8_tile"
-                android:background="@drawable/knight_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -233,7 +200,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/H8_tile"
                 android:layout_alignEnd="@+id/H8_tile"
-                android:background="@drawable/rook_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -242,7 +211,7 @@
         android:id="@+id/row7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/row8"
+        android:layout_above="@+id/row6"
         android:layout_weight=".125"
         android:orientation="horizontal"
         >
@@ -265,7 +234,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/A7_tile"
                 android:layout_alignEnd="@+id/A7_tile"
-                android:background="@drawable/pawn_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -287,7 +258,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/B7_tile"
                 android:layout_alignEnd="@+id/B7_tile"
-                android:background="@drawable/pawn_b"/>
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -309,7 +282,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/C7_tile"
                 android:layout_alignEnd="@+id/C7_tile"
-                android:background="@drawable/pawn_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -331,7 +306,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/D7_tile"
                 android:layout_alignEnd="@+id/D7_tile"
-                android:background="@drawable/pawn_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -353,7 +330,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/E7_tile"
                 android:layout_alignEnd="@+id/E7_tile"
-                android:background="@drawable/pawn_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -375,7 +354,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/F7_tile"
                 android:layout_alignEnd="@+id/F7_tile"
-                android:background="@drawable/pawn_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -396,7 +377,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/G7_tile"
                 android:layout_alignEnd="@+id/G7_tile"
-                android:background="@drawable/pawn_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -419,7 +402,9 @@
 
                 android:layout_alignBottom="@+id/H7_tile"
                 android:layout_alignEnd="@+id/H7_tile"
-                android:background="@drawable/pawn_b" />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -428,7 +413,7 @@
         android:id="@+id/row6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/row7"
+        android:layout_above="@+id/row5"
         android:layout_weight=".125"
         android:orientation="horizontal"
         >
@@ -450,7 +435,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/A6_tile"
-                android:layout_alignEnd="@+id/A6_tile" />
+                android:layout_alignEnd="@+id/A6_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -472,7 +460,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/B6_tile"
                 android:layout_alignEnd="@+id/B6_tile"
-                />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -494,7 +484,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/C6_tile"
-                android:layout_alignEnd="@+id/C6_tile" />
+                android:layout_alignEnd="@+id/C6_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -516,7 +509,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/D6_tile"
-                android:layout_alignEnd="@+id/D6_tile" />
+                android:layout_alignEnd="@+id/D6_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -538,7 +534,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/E6_tile"
-                android:layout_alignEnd="@+id/E6_tile" />
+                android:layout_alignEnd="@+id/E6_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -560,7 +559,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/F6_tile"
-                android:layout_alignEnd="@+id/F6_tile" />
+                android:layout_alignEnd="@+id/F6_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -581,7 +583,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/G6_tile"
-                android:layout_alignEnd="@+id/G6_tile" />
+                android:layout_alignEnd="@+id/G6_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -603,7 +608,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/H6_tile"
-                android:layout_alignEnd="@+id/H6_tile" />
+                android:layout_alignEnd="@+id/H6_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -612,7 +620,7 @@
         android:id="@+id/row5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/row6"
+        android:layout_above="@+id/row4"
         android:layout_weight=".125"
         android:orientation="horizontal"
         >
@@ -635,7 +643,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/A5_tile"
-                android:layout_alignEnd="@+id/A5_tile" />
+                android:layout_alignEnd="@+id/A5_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -657,7 +668,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/B5_tile"
                 android:layout_alignEnd="@+id/B5_tile"
-                />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -679,7 +692,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/C5_tile"
-                android:layout_alignEnd="@+id/C5_tile" />
+                android:layout_alignEnd="@+id/C5_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -701,7 +717,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/D5_tile"
-                android:layout_alignEnd="@+id/D5_tile" />
+                android:layout_alignEnd="@+id/D5_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -723,7 +742,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/E5_tile"
-                android:layout_alignEnd="@+id/E5_tile" />
+                android:layout_alignEnd="@+id/E5_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -745,7 +767,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/F5_tile"
-                android:layout_alignEnd="@+id/F5_tile" />
+                android:layout_alignEnd="@+id/F5_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -766,7 +791,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/G5_tile"
-                android:layout_alignEnd="@+id/G5_tile" />
+                android:layout_alignEnd="@+id/G5_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -788,7 +816,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/H5_tile"
-                android:layout_alignEnd="@+id/H5_tile" />
+                android:layout_alignEnd="@+id/H5_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -797,7 +828,7 @@
         android:id="@+id/row4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/row5"
+        android:layout_above="@+id/row3"
         android:layout_weight=".125"
         android:orientation="horizontal"
         >
@@ -820,7 +851,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/A4_tile"
-                android:layout_alignEnd="@+id/A4_tile" />
+                android:layout_alignEnd="@+id/A4_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -842,7 +876,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/B4_tile"
                 android:layout_alignEnd="@+id/B4_tile"
-                />
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -864,7 +900,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/C4_tile"
-                android:layout_alignEnd="@+id/C4_tile" />
+                android:layout_alignEnd="@+id/C4_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -886,7 +925,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/D4_tile"
-                android:layout_alignEnd="@+id/D4_tile" />
+                android:layout_alignEnd="@+id/D4_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -908,7 +950,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/E4_tile"
-                android:layout_alignEnd="@+id/E4_tile" />
+                android:layout_alignEnd="@+id/E4_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -930,7 +975,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/F4_tile"
-                android:layout_alignEnd="@+id/F4_tile" />
+                android:layout_alignEnd="@+id/F4_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -951,7 +999,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/G4_tile"
-                android:layout_alignEnd="@+id/G4_tile" />
+                android:layout_alignEnd="@+id/G4_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -973,7 +1024,10 @@
                 android:layout_height="match_parent"
 
                 android:layout_alignBottom="@+id/H4_tile"
-                android:layout_alignEnd="@+id/H4_tile" />
+                android:layout_alignEnd="@+id/H4_tile"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -982,7 +1036,7 @@
         android:id="@+id/row3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/row4"
+        android:layout_above="@+id/row2"
         android:layout_weight=".125"
         android:orientation="horizontal"
         >
@@ -1007,7 +1061,8 @@
                 android:layout_alignBottom="@+id/A3_tile"
                 android:layout_alignEnd="@+id/A3_tile"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -1030,7 +1085,8 @@
                 android:layout_alignBottom="@+id/B3_tile"
                 android:layout_alignEnd="@+id/B3_tile"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -1054,7 +1110,8 @@
                 android:layout_alignBottom="@+id/C3_tile"
                 android:layout_alignEnd="@+id/C3_tile"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -1078,7 +1135,8 @@
                 android:layout_alignBottom="@+id/D3_tile"
                 android:layout_alignEnd="@+id/D3_tile"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -1102,7 +1160,8 @@
                 android:layout_alignBottom="@+id/E3_tile"
                 android:layout_alignEnd="@+id/E3_tile"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -1126,7 +1185,8 @@
                 android:layout_alignBottom="@+id/F3_tile"
                 android:layout_alignEnd="@+id/F3_tile"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -1150,7 +1210,8 @@
                 android:layout_alignBottom="@+id/G3_tile"
                 android:layout_alignEnd="@+id/G3_tile"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -1174,7 +1235,8 @@
                 android:layout_alignBottom="@+id/H3_tile"
                 android:layout_alignEnd="@+id/H3_tile"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:onClick="onButtonClick" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -1183,7 +1245,7 @@
         android:id="@+id/row2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/row3"
+        android:layout_above="@+id/row1"
         android:layout_weight=".125"
         android:orientation="horizontal"
         >
@@ -1206,7 +1268,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/A2_tile"
                 android:layout_alignEnd="@+id/A2_tile"
-                android:background="@drawable/pawn_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1231,7 +1292,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/B2_tile"
                 android:layout_alignEnd="@+id/B2_tile"
-                android:background="@drawable/pawn_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1256,7 +1316,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/C2_tile"
                 android:layout_alignEnd="@+id/C2_tile"
-                android:background="@drawable/pawn_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1282,7 +1341,6 @@
 
                 android:layout_alignBottom="@+id/D2_tile"
                 android:layout_alignEnd="@+id/D2_tile"
-                android:background="@drawable/pawn_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1307,7 +1365,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/E2_tile"
                 android:layout_alignEnd="@+id/E2_tile"
-                android:background="@drawable/pawn_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1333,7 +1390,6 @@
 
                 android:layout_alignBottom="@+id/F2_tile"
                 android:layout_alignEnd="@+id/F2_tile"
-                android:background="@drawable/pawn_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1358,7 +1414,6 @@
 
                 android:layout_alignBottom="@+id/G2_tile"
                 android:layout_alignEnd="@+id/G2_tile"
-                android:background="@drawable/pawn_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1383,7 +1438,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/H2_tile"
                 android:layout_alignEnd="@+id/H2_tile"
-                android:background="@drawable/pawn_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1395,7 +1449,7 @@
         android:id="@+id/row1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/row2"
+        android:layout_above="@+id/chesspieces_relative"
         android:layout_weight=".125"
         android:orientation="horizontal"
         >
@@ -1418,7 +1472,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/A1_tile"
                 android:layout_alignEnd="@+id/A1_tile"
-                android:background="@drawable/rook_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1443,7 +1496,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/B1_tile"
                 android:layout_alignEnd="@+id/B1_tile"
-                android:background="@drawable/knight_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1468,7 +1520,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/C1_tile"
                 android:layout_alignEnd="@+id/C1_tile"
-                android:background="@drawable/bishop_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1493,7 +1544,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/D1_tile"
                 android:layout_alignEnd="@+id/D1_tile"
-                android:background="@drawable/king_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1518,7 +1568,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/E1_tile"
                 android:layout_alignEnd="@+id/E1_tile"
-                android:background="@drawable/queen_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1543,7 +1592,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/F1_tile"
                 android:layout_alignEnd="@+id/F1_tile"
-                android:background="@drawable/bishop_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1568,7 +1616,6 @@
 
                 android:layout_alignBottom="@+id/G1_tile"
                 android:layout_alignEnd="@+id/G1_tile"
-                android:background="@drawable/knight_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
@@ -1594,13 +1641,173 @@
 
                 android:layout_alignBottom="@+id/H1_tile"
                 android:layout_alignEnd="@+id/H1_tile"
-                android:background="@drawable/rook_w"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="onButtonClick" />
         </RelativeLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/start_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/chesspieces_relative"
+        android:layout_marginTop="23dp"
+        android:layout_toEndOf="@+id/chesspieces_relative"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Start"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:id="@+id/chesspieces_relative"
+        android:layout_width="wrap_content"
+        android:layout_height="95dp"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="5dp">
+
+        <ImageView
+            android:id="@+id/fp_boardsetup_piecesbackground_imageview"
+            android:layout_width="270dp"
+            android:layout_height="90dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="#b2b2b2" />
+
+        <ImageButton
+            android:id="@+id/rook_w_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/rook_w"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/knight_w_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/rook_w_button"
+            android:background="@drawable/knight_w"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/bishop_w_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/knight_w_button"
+            android:background="@drawable/bishop_w"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/queen_w_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/bishop_w_button"
+            android:background="@drawable/queen_w"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/king_w_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/queen_w_button"
+            android:background="@drawable/king_w"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/pawn_w_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/king_w_button"
+            android:background="@drawable/pawn_w"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/rook_b_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_above="@+id/rook_w_button"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/rook_b"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/knight_b_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_above="@+id/knight_w_button"
+            android:layout_toEndOf="@+id/rook_w_button"
+            android:background="@drawable/knight_b"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/bishop_b_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignStart="@+id/bishop_w_button"
+            android:layout_alignTop="@+id/knight_b_button"
+            android:background="@drawable/bishop_b"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/queen_b_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignTop="@+id/bishop_b_button"
+            android:layout_toEndOf="@+id/bishop_b_button"
+            android:background="@drawable/queen_b"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/king_b_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignBottom="@+id/queen_b_button"
+            android:layout_alignStart="@+id/king_w_button"
+            android:background="@drawable/king_b"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+
+        <ImageButton
+            android:id="@+id/pawn_b_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignStart="@+id/pawn_w_button"
+            android:layout_alignTop="@+id/king_b_button"
+            android:background="@drawable/pawn_b"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onBenchButtonClick" />
+    </RelativeLayout>
 
 
 </RelativeLayout>
