@@ -1,0 +1,1606 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#000000"
+    android:gravity="center_horizontal" >
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageButton2"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        android:contentDescription="Activate Voicce Command"
+        android:cropToPadding="true"
+        android:focusable="true"
+        android:src="@drawable/ic_keyboard_voice_24dp"
+        android:tint="#ffffff" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:contentDescription="Settings"
+        android:focusable="true"
+        android:src="@drawable/ic_settings_24dp"
+        android:tint="#ffffff" />
+
+    <Button
+        android:id="@+id/game_undo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="36dp"
+        android:layout_marginEnd="31dp"
+        android:layout_toStartOf="@+id/game_redo_button"
+        android:contentDescription="Undo"
+        android:text="&lt;"
+        android:textSize="25sp"/>
+
+    <Button
+        android:id="@+id/game_redo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/game_undo_button"
+        android:layout_alignBottom="@+id/game_undo_button"
+        android:layout_alignEnd="@+id/imageButton2"
+        android:contentDescription="Redo"
+        android:text=">"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:id="@+id/row8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageButton"
+        android:layout_weight=".125"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/A8_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2" />
+
+            <ImageButton
+                android:id="@+id/A8_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/A8_tile"
+                android:layout_alignEnd="@+id/A8_tile"
+                android:background="@drawable/rook_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/B8_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/B8_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/B8_tile"
+                android:layout_alignEnd="@+id/B8_tile"
+                android:background="@drawable/knight_b"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/C8_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/C8_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/C8_tile"
+                android:layout_alignEnd="@+id/C8_tile"
+                android:background="@drawable/bishop_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/D8_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/D8_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/D8_tile"
+                android:layout_alignEnd="@+id/D8_tile"
+                android:background="@drawable/queen_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/E8_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/E8_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/E8_tile"
+                android:layout_alignEnd="@+id/E8_tile"
+                android:background="@drawable/king_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/F8_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/F8_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/F8_tile"
+                android:layout_alignEnd="@+id/F8_tile"
+                android:background="@drawable/bishop_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/G8_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2" />
+
+            <ImageButton
+                android:id="@+id/G8_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/G8_tile"
+                android:layout_alignEnd="@+id/G8_tile"
+                android:background="@drawable/knight_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/H8_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/H8_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/H8_tile"
+                android:layout_alignEnd="@+id/H8_tile"
+                android:background="@drawable/rook_b" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row8"
+        android:layout_weight=".125"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/A7_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1" />
+
+            <ImageButton
+                android:id="@+id/A7_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/A7_tile"
+                android:layout_alignEnd="@+id/A7_tile"
+                android:background="@drawable/pawn_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/B7_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/B7_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/B7_tile"
+                android:layout_alignEnd="@+id/B7_tile"
+                android:background="@drawable/pawn_b"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/C7_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/C7_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/C7_tile"
+                android:layout_alignEnd="@+id/C7_tile"
+                android:background="@drawable/pawn_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/D7_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/D7_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/D7_tile"
+                android:layout_alignEnd="@+id/D7_tile"
+                android:background="@drawable/pawn_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/E7_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/E7_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/E7_tile"
+                android:layout_alignEnd="@+id/E7_tile"
+                android:background="@drawable/pawn_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/F7_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/F7_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/F7_tile"
+                android:layout_alignEnd="@+id/F7_tile"
+                android:background="@drawable/pawn_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/G7_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1" />
+
+            <ImageButton
+                android:id="@+id/G7_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/G7_tile"
+                android:layout_alignEnd="@+id/G7_tile"
+                android:background="@drawable/pawn_b" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/H7_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/H7_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/H7_tile"
+                android:layout_alignEnd="@+id/H7_tile"
+                android:background="@drawable/pawn_b" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row7"
+        android:layout_weight=".125"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/A6_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2" />
+
+            <ImageButton
+                android:id="@+id/A6_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/A6_tile"
+                android:layout_alignEnd="@+id/A6_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/B6_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/B6_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/B6_tile"
+                android:layout_alignEnd="@+id/B6_tile"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/C6_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/C6_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/C6_tile"
+                android:layout_alignEnd="@+id/C6_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/D6_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/D6_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/D6_tile"
+                android:layout_alignEnd="@+id/D6_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/E6_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/E6_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/E6_tile"
+                android:layout_alignEnd="@+id/E6_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/F6_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/F6_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/F6_tile"
+                android:layout_alignEnd="@+id/F6_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/G6_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2" />
+
+            <ImageButton
+                android:id="@+id/G6_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/G6_tile"
+                android:layout_alignEnd="@+id/G6_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/H6_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/H6_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/H6_tile"
+                android:layout_alignEnd="@+id/H6_tile" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row6"
+        android:layout_weight=".125"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/A5_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1" />
+
+            <ImageButton
+                android:id="@+id/A5_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/A5_tile"
+                android:layout_alignEnd="@+id/A5_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/B5_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/B5_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/B5_tile"
+                android:layout_alignEnd="@+id/B5_tile"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/C5_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/C5_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/C5_tile"
+                android:layout_alignEnd="@+id/C5_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/D5_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/D5_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/D5_tile"
+                android:layout_alignEnd="@+id/D5_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/E5_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/E5_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/E5_tile"
+                android:layout_alignEnd="@+id/E5_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/F5_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/F5_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/F5_tile"
+                android:layout_alignEnd="@+id/F5_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/G5_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1" />
+
+            <ImageButton
+                android:id="@+id/G5_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/G5_tile"
+                android:layout_alignEnd="@+id/G5_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/H5_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/H5_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/H5_tile"
+                android:layout_alignEnd="@+id/H5_tile" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row5"
+        android:layout_weight=".125"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/A4_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2" />
+
+            <ImageButton
+                android:id="@+id/A4_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/A4_tile"
+                android:layout_alignEnd="@+id/A4_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/B4_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/B4_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/B4_tile"
+                android:layout_alignEnd="@+id/B4_tile"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/C4_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/C4_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/C4_tile"
+                android:layout_alignEnd="@+id/C4_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/D4_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/D4_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/D4_tile"
+                android:layout_alignEnd="@+id/D4_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/E4_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/E4_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/E4_tile"
+                android:layout_alignEnd="@+id/E4_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/F4_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/F4_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/F4_tile"
+                android:layout_alignEnd="@+id/F4_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/G4_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2" />
+
+            <ImageButton
+                android:id="@+id/G4_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/G4_tile"
+                android:layout_alignEnd="@+id/G4_tile" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/H4_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/H4_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/H4_tile"
+                android:layout_alignEnd="@+id/H4_tile" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row4"
+        android:layout_weight=".125"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/A3_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1" />
+
+            <ImageButton
+                android:id="@+id/A3_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/A3_tile"
+                android:layout_alignEnd="@+id/A3_tile"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/B3_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/B3_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/B3_tile"
+                android:layout_alignEnd="@+id/B3_tile"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/C3_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/C3_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/C3_tile"
+                android:layout_alignEnd="@+id/C3_tile"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/D3_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/D3_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/D3_tile"
+                android:layout_alignEnd="@+id/D3_tile"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/E3_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/E3_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/E3_tile"
+                android:layout_alignEnd="@+id/E3_tile"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/F3_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/F3_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/F3_tile"
+                android:layout_alignEnd="@+id/F3_tile"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/G3_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1" />
+
+            <ImageButton
+                android:id="@+id/G3_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+
+                android:layout_alignBottom="@+id/G3_tile"
+                android:layout_alignEnd="@+id/G3_tile"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/H3_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/H3_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/H3_tile"
+                android:layout_alignEnd="@+id/H3_tile"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row3"
+        android:layout_weight=".125"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/A2_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2" />
+
+            <ImageButton
+                android:id="@+id/A2_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/A2_tile"
+                android:layout_alignEnd="@+id/A2_tile"
+                android:background="@drawable/pawn_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/B2_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/B2_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/B2_tile"
+                android:layout_alignEnd="@+id/B2_tile"
+                android:background="@drawable/pawn_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/C2_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/C2_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/C2_tile"
+                android:layout_alignEnd="@+id/C2_tile"
+                android:background="@drawable/pawn_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/D2_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/D2_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/D2_tile"
+                android:layout_alignEnd="@+id/D2_tile"
+                android:background="@drawable/pawn_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/E2_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/E2_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/E2_tile"
+                android:layout_alignEnd="@+id/E2_tile"
+                android:background="@drawable/pawn_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/F2_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/F2_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/F2_tile"
+                android:layout_alignEnd="@+id/F2_tile"
+                android:background="@drawable/pawn_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/G2_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2" />
+
+            <ImageButton
+                android:id="@+id/G2_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/G2_tile"
+                android:layout_alignEnd="@+id/G2_tile"
+                android:background="@drawable/pawn_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/H2_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/H2_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/H2_tile"
+                android:layout_alignEnd="@+id/H2_tile"
+                android:background="@drawable/pawn_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row2"
+        android:layout_weight=".125"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/A1_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1" />
+
+            <ImageButton
+                android:id="@+id/A1_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/A1_tile"
+                android:layout_alignEnd="@+id/A1_tile"
+                android:background="@drawable/rook_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/B1_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/B1_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/B1_tile"
+                android:layout_alignEnd="@+id/B1_tile"
+                android:background="@drawable/knight_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/C1_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/C1_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/C1_tile"
+                android:layout_alignEnd="@+id/C1_tile"
+                android:background="@drawable/bishop_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/D1_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/D1_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/D1_tile"
+                android:layout_alignEnd="@+id/D1_tile"
+                android:background="@drawable/king_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/E1_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1"
+                />
+
+            <ImageButton
+                android:id="@+id/E1_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/E1_tile"
+                android:layout_alignEnd="@+id/E1_tile"
+                android:background="@drawable/queen_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/F1_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/F1_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/F1_tile"
+                android:layout_alignEnd="@+id/F1_tile"
+                android:background="@drawable/bishop_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/G1_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image1" />
+
+            <ImageButton
+                android:id="@+id/G1_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/G1_tile"
+                android:layout_alignEnd="@+id/G1_tile"
+                android:background="@drawable/knight_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight=".125">
+
+            <ImageView
+                android:id="@+id/H1_tile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/image2"
+                />
+
+            <ImageButton
+                android:id="@+id/H1_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@+id/H1_tile"
+                android:layout_alignEnd="@+id/H1_tile"
+                android:background="@drawable/rook_w"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onButtonClick" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
