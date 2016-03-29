@@ -12,11 +12,12 @@
         android:layout_alignBottom="@+id/imageButton2"
         android:layout_alignParentStart="true"
         android:clickable="true"
-        android:contentDescription="Activate Voicce Command"
+        android:contentDescription="Activate Voice Command"
         android:cropToPadding="true"
         android:focusable="true"
         android:src="@drawable/ic_keyboard_voice_24dp"
-        android:tint="#ffffff" />
+        android:tint="#ffffff"
+        android:onClick="onVoiceButtonClick" />
 
     <ImageButton
         android:id="@+id/imageButton2"
@@ -25,10 +26,12 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:clickable="true"
-        android:contentDescription="Settings"
+        android:contentDescription="Options"
         android:focusable="true"
         android:src="@drawable/ic_settings_24dp"
-        android:tint="#ffffff" />
+        android:tint="#ffffff"
+        android:onClick="onOptionsButtonClick"
+        android:nestedScrollingEnabled="false" />
 
     <Button
         android:id="@+id/game_undo_button"
@@ -758,7 +761,6 @@
                 android:layout_alignEnd="@+id/B5_tile"
                 android:clickable="true"
                 android:focusable="true"
-                android:nestedScrollingEnabled="false"
                 android:onClick="onButtonClick" />
         </RelativeLayout>
 
@@ -779,11 +781,11 @@
                 android:id="@+id/C5_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:layout_alignBottom="@+id/C5_tile"
                 android:layout_alignEnd="@+id/C5_tile"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:onClick="onButtonClick"/>
         </RelativeLayout>
 
         <RelativeLayout

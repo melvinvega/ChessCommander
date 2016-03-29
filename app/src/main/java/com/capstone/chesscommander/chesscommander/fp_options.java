@@ -10,7 +10,7 @@ import android.widget.Button;
  * Created by Melvin on 3/23/16.
  */
 public class fp_options extends Activity {
-
+    private String  gameType;
     private Button nextButton;
     private String currentMove,playAs,difficutly,opponentType;
     private boolean currentMoveSelected,playAsSelected,difficultySelected;
@@ -23,6 +23,7 @@ public class fp_options extends Activity {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         opponentType = extras.getString("OpponentType");
+        gameType = extras.getString("GameType");
         /*
            If the user selected to go against a player show the board setupscreen instead of the
            additional options.Since the options in this screen are basically irrelevant for the user.
@@ -31,7 +32,7 @@ public class fp_options extends Activity {
         if(extras.getString("OpponentType").equals("Player")){
             Intent boardScreenIntent = new Intent(this,fp_boardSetup.class);
             boardScreenIntent.putExtra("GameType", "fp");
-            boardScreenIntent.putExtra("OponentType", "Player");
+            boardScreenIntent.putExtra("OpponentType", "Player");
             startActivity(boardScreenIntent);
             /*
             * This finish is here so that when the user presses back on the device it shows the home
@@ -83,6 +84,7 @@ public class fp_options extends Activity {
     public void onNextButtonClick(View view){
         if(currentMoveSelected && playAsSelected && difficultySelected){
             Intent fpOptionsScreenIntent = new Intent(this,fp_boardSetup.class);
+            fpOptionsScreenIntent.putExtra("GameType",gameType);
             fpOptionsScreenIntent.putExtra("CurrentMove",currentMove);
             fpOptionsScreenIntent.putExtra("PlayAs",playAs);
             fpOptionsScreenIntent.putExtra("Difficulty",difficutly);

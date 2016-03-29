@@ -48,11 +48,12 @@ public class home_screen extends AppCompatActivity {
         fpScreenIntent.putExtra("GameType", "fp");
         CharSequence oponentType[] = new CharSequence[] {"Computer", "Player"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose oponent type");
+        builder.setTitle("Choose opponent type");
         builder.setItems(oponentType, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 vsAi = true;
+                fpScreenIntent.putExtra("GameType","fp");
                 switch (which) {
                     case 0:
                         fpScreenIntent.putExtra("OpponentType", "Computer");

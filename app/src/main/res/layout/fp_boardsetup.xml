@@ -1686,7 +1686,8 @@
             android:background="@drawable/rook_w"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="White Rook"/>
 
         <ImageButton
             android:id="@+id/knight_w_button"
@@ -1697,7 +1698,8 @@
             android:background="@drawable/knight_w"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="White Knight"/>
 
         <ImageButton
             android:id="@+id/bishop_w_button"
@@ -1708,7 +1710,8 @@
             android:background="@drawable/bishop_w"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="White Bishop"/>
 
         <ImageButton
             android:id="@+id/queen_w_button"
@@ -1719,7 +1722,8 @@
             android:background="@drawable/queen_w"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="White Queen"/>
 
         <ImageButton
             android:id="@+id/king_w_button"
@@ -1730,7 +1734,8 @@
             android:background="@drawable/king_w"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="White King"/>
 
         <ImageButton
             android:id="@+id/pawn_w_button"
@@ -1741,7 +1746,8 @@
             android:background="@drawable/pawn_w"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="White Pawn"/>
 
         <ImageButton
             android:id="@+id/rook_b_button"
@@ -1752,7 +1758,8 @@
             android:background="@drawable/rook_b"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="Black Rook"/>
 
         <ImageButton
             android:id="@+id/knight_b_button"
@@ -1763,7 +1770,8 @@
             android:background="@drawable/knight_b"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="Black Knight"/>
 
         <ImageButton
             android:id="@+id/bishop_b_button"
@@ -1774,7 +1782,8 @@
             android:background="@drawable/bishop_b"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="Black Bishop"/>
 
         <ImageButton
             android:id="@+id/queen_b_button"
@@ -1785,7 +1794,8 @@
             android:background="@drawable/queen_b"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="Black Queen"/>
 
         <ImageButton
             android:id="@+id/king_b_button"
@@ -1796,7 +1806,8 @@
             android:background="@drawable/king_b"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="Black King"/>
 
         <ImageButton
             android:id="@+id/pawn_b_button"
@@ -1807,7 +1818,8 @@
             android:background="@drawable/pawn_b"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onBenchButtonClick" />
+            android:onClick="onBenchButtonClick"
+            android:contentDescription="Black Pawn"/>
     </RelativeLayout>
 
 
