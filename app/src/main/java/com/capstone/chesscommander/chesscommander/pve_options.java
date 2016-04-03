@@ -51,7 +51,7 @@ public class pve_options extends Activity {
 
         if (!difficultySelected | !pieceColorSelected ) {
             if (!difficultySelected) {
-                String message = "Must Select a difficulty";
+                String message = "Must select a difficulty";
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             }
             if (!pieceColorSelected) {

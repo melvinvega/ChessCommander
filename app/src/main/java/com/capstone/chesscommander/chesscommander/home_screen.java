@@ -19,9 +19,9 @@ public class home_screen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
-        pve = (Button) findViewById(R.id.pve);
-        pvp = (Button) findViewById(R.id.pvp);
-        freePlay = (Button) findViewById(R.id.freeplay);
+        pve = (Button) findViewById(R.id.home_screen_pve_button);
+        pvp = (Button) findViewById(R.id.home_screen_pvp_button);
+        freePlay = (Button) findViewById(R.id.home_screen_freeplay_button);
     }
 
     public void onPvEButtonClick(View view) {

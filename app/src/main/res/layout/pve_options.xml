@@ -5,154 +5,156 @@
     android:background="#000000">
 
     <ImageView
+        android:id="@+id/pve_logo_imageView"
         android:layout_width="fill_parent"
         android:layout_height="150dp"
-        android:id="@+id/freeplay_logo_imageView"
-        android:layout_alignParentTop="true"
-        android:focusable="true"
-        android:focusableInTouchMode="false"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
+        android:background="@drawable/chesscommandercropped"
         android:contentDescription="Play against Computer Options"
-        android:background="@drawable/chesscommandercropped" />
+        android:focusable="true"
+        android:focusableInTouchMode="false"
+        android:tag="pve"/>
 
     <TextView
+        android:id="@+id/pve_difficulty_textview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Difficulty"
-        android:id="@+id/pve_difficulty_textview"
-        android:layout_below="@+id/freeplay_logo_imageView"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/pve_logo_imageView"
         android:layout_marginStart="22dp"
         android:layout_marginTop="33dp"
-        android:textSize="35sp"
-        android:paddingBottom="10dp"
+        android:contentDescription="Select Computer Difficulty"
         android:focusable="true"
-        android:contentDescription="Computer Difficulty"
-        android:textColor="#ffffff" />
+        android:paddingBottom="10dp"
+        android:text="Difficulty"
+        android:textColor="#ffffff"
+        android:textSize="35sp" />
 
     <RadioGroup
+        android:id="@+id/pve_difficulty_radioGroup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/pve_difficulty_textview"
-        android:id="@+id/pve_difficulty_radioGroup"
         android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/pve_difficulty_easy_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Easy"
-                android:id="@+id/freeplay_difficulty_easy_radioButton"
-                android:layout_below="@+id/pve_difficulty_textview"
                 android:layout_alignStart="@+id/pve_difficulty_textview"
+                android:layout_below="@+id/pve_difficulty_textview"
+                android:layout_gravity="bottom|top"
                 android:layout_marginTop="25dp"
                 android:layout_weight=".33"
                 android:checked="false"
-                android:layout_gravity="bottom|top"
                 android:clickable="true"
                 android:contentDescription="Easy Difficulty"
                 android:focusable="true"
-                android:textSize="25sp"
                 android:onClick="onpveEasyDifficultyClick"
-                android:textColor="#ffffff" />
+                android:text="Easy"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
             <RadioButton
+                android:id="@+id/pve_difficulty_medium_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Medium"
-                android:id="@+id/freeplay_difficulty_medium_radioButton"
-                android:checked="false"
                 android:layout_alignTop="@+id/freeplay_difficulty_easy_radioButton"
-                android:layout_toEndOf="@+id/freeplay_difficulty_easy_radioButton"
-                android:layout_marginStart="25dp"
                 android:layout_gravity="top"
+                android:layout_marginStart="25dp"
+                android:layout_toEndOf="@+id/freeplay_difficulty_easy_radioButton"
                 android:layout_weight=".33"
-                android:focusable="true"
-                android:textSize="25sp"
-                android:contentDescription="Medium Difficulty"
+                android:checked="false"
                 android:clickable="true"
+                android:contentDescription="Medium Difficulty"
+                android:focusable="true"
                 android:onClick="onpveMediumDifficultyClick"
-                android:textColor="#ffffff" />
+                android:text="Medium"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
             <RadioButton
+                android:id="@+id/pve_difficulty_hard_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hard"
-                android:id="@+id/pve_difficulty_hard_radioButton"
-                android:layout_alignTop="@+id/freeplay_difficulty_medium_radioButton"
-                android:checked="false"
                 android:layout_alignEnd="@+id/cclogo_textView"
+                android:layout_alignTop="@+id/freeplay_difficulty_medium_radioButton"
                 android:layout_weight=".33"
-                android:focusable="true"
-                android:textSize="25sp"
+                android:checked="false"
                 android:clickable="true"
                 android:contentDescription="Hard Difficulty"
+                android:focusable="true"
                 android:onClick="onpveHardDifficultyClick"
-                android:textColor="#ffffff" />
+                android:text="Hard"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
     </RadioGroup>
 
     <TextView
+        android:id="@+id/pve_color_textView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Color"
-        android:id="@+id/pve_color_textView"
-        android:textSize="35sp"
-        android:paddingBottom="10dp"
-        android:contentDescription="Color of pieces to play as"
-        android:focusable="true"
-        android:layout_below="@+id/pve_difficulty_radioGroup"
         android:layout_alignStart="@+id/pve_difficulty_textview"
-        android:textColor="#ffffff" />
+        android:layout_below="@+id/pve_difficulty_radioGroup"
+        android:contentDescription="Select player color"
+        android:focusable="true"
+        android:paddingBottom="10dp"
+        android:text="Player Color"
+        android:textColor="#ffffff"
+        android:textSize="35sp" />
     <RadioGroup
+        android:id="@+id/pve_color_radioGroup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/pve_color_textView"
-        android:id="@+id/pve_color_radioGroup"
         android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/pve_color_white_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
-                android:text="White"
-                android:id="@+id/pve_color_white_radioButton"
-                android:contentDescription="Play as White Pieces"
                 android:clickable="true"
+                android:contentDescription="Play as white Pieces"
                 android:focusable="true"
-                android:textSize="25sp"
                 android:onClick="onpveWhiteColorClick"
-                android:textColor="#ffffff" />
+                android:text="White"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
 
             <RadioButton
+                android:id="@+id/pve_color_black_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
-                android:text="Black"
-                android:id="@+id/pve_color_black_radioButton"
-                android:focusable="true"
-                android:clickable="true"
-                android:contentDescription="Play as Black Pieces"
-                android:textSize="25sp"
                 android:checked="false"
+                android:clickable="true"
+                android:contentDescription="Play as black Pieces"
+                android:focusable="true"
                 android:onClick="onpveBlackColorClick"
-                android:textColor="#ffffff" />
+                android:text="Black"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
     </RadioGroup>
 
     <Button
+        android:id="@+id/pve_start_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start Game"
-        android:id="@+id/freeplay_next_button"
-        android:layout_marginBottom="33dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textSize="25sp"
-        android:onClick="onpveStartGameButtonClick"
+        android:layout_marginBottom="33dp"
+        android:clickable="true"
+        android:contentDescription="Start game"
         android:focusable="true"
-        android:clickable="true" />
+        android:onClick="onpveStartGameButtonClick"
+        android:text="Start Game"
+        android:textSize="25sp" />
 
 
 </RelativeLayout>

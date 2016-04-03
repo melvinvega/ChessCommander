@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 /**
  * Created by Melvin on 3/23/16.
@@ -18,6 +19,7 @@ public class fp_boardSetup extends Activity {
  * [1,piece color]
  * [2,bench]
 * */
+    private String message;
     private int wKing,wQueen,wPawn,wKnight,wBishop,wRook;
     private int bKing,bQueen,bPawn,bKnight,bBishop,bRook;
     private int wPieces,bPieces;
@@ -630,21 +632,73 @@ public class fp_boardSetup extends Activity {
         }
         if(wQueen>9 | bQueen>9){
             startable = false;
+            if(wQueen>9){
+                message = "You must have less than 9 White Queens";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bQueen>9){
+                message = "You must have less than 9 Black Queens";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
         }
         if(wPawn>8 | bPawn>8){
             startable = false;
+            if(wPawn>8){
+                message = "You must have less than 8 White Pawns";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bPawn>8){
+                message = "You must have less than 8 Black Pawns";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
         }
         if(wKnight>10 | bKnight>10){
             startable = false;
+            if(wKnight>8){
+                message = "You must have less than 10 White Knights";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bKnight>8){
+                message = "You must have less than 10 Black Knights";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
         }
         if(wBishop>10 | bBishop>10){
             startable = false;
+            if(wBishop>8){
+                message = "You must have less than 10 White Bishops";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bBishop>8){
+                message = "You must have less than 10 Black Bishops";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
         }
         if(wRook>10 | bRook>10){
             startable = false;
+            if(wRook>8){
+                message = "You must have less than 8 White Rooks";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bRook>8){
+                message = "You must have less than 8 Black Rooks";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
         }
         if(wPieces>17 && bPieces>17){
             startable = false;
+            if(wPieces>8){
+                message = "You must have less than 17 White Pieces";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bPieces>8){
+                message = "You must have less than 17 Black Pieces";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(!startable && (!(wKing==1) | !(bKing==1)) ){
+            message = "You must have only 1 white king and 1 black king";
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
         if(startable){
             Intent startGameIntent = new Intent(this,game_screen.class);
