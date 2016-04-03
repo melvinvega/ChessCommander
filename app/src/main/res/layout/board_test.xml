@@ -8,11 +8,11 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="75dp"
-        android:id="@+id/imageButton"
+        android:id="@+id/game_screen_voice_button"
         android:src="@drawable/ic_keyboard_voice_24dp"
         android:layout_alignParentStart="true"
         android:cropToPadding="true"
-        android:layout_alignBottom="@+id/imageButton2"
+        android:layout_alignBottom="@+id/game_screen_options_button"
         android:clickable="true"
         android:contentDescription="Activate Voicce Command"
         android:focusable="true"
@@ -21,7 +21,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="75dp"
-        android:id="@+id/imageButton2"
+        android:id="@+id/game_screen_options_button"
         android:src="@drawable/ic_settings_24dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -35,10 +35,10 @@
         android:layout_height="150dp"
         android:layout_marginLeft="0dp"
         android:id="@+id/tableLayout"
-        android:layout_above="@+id/game_undo_button"
+        android:layout_above="@+id/game_screen_undo_button"
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageButton">
+        android:layout_below="@+id/game_screen_voice_button">
 
         <TableRow
             android:id="@+id/tableRow1"
@@ -807,7 +807,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="&lt;"
-        android:id="@+id/game_undo_button"
+        android:id="@+id/game_screen_undo_button"
         android:textSize="25sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
@@ -818,7 +818,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=">"
-        android:id="@+id/game_redo_button"
+        android:id="@+id/game_screen_redo_button"
         android:textSize="25sp"
         android:layout_below="@+id/tableLayout"
         android:layout_alignParentEnd="true"

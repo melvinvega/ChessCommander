@@ -6,10 +6,10 @@
     android:gravity="center_horizontal" >
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/game_screen_voice_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageButton2"
+        android:layout_alignBottom="@+id/game_screen_options_button"
         android:layout_alignParentStart="true"
         android:clickable="true"
         android:contentDescription="Activate Voicce Command"
@@ -19,7 +19,7 @@
         android:tint="#ffffff" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/game_screen_options_button"
         android:layout_width="wrap_content"
         android:layout_height="75dp"
         android:layout_alignParentEnd="true"
@@ -31,24 +31,24 @@
         android:tint="#ffffff" />
 
     <Button
-        android:id="@+id/game_undo_button"
+        android:id="@+id/game_screen_undo_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="36dp"
         android:layout_marginEnd="31dp"
-        android:layout_toStartOf="@+id/game_redo_button"
+        android:layout_toStartOf="@+id/game_screen_redo_button"
         android:contentDescription="Undo"
         android:text="&lt;"
         android:textSize="25sp"/>
 
     <Button
-        android:id="@+id/game_redo_button"
+        android:id="@+id/game_screen_redo_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/game_undo_button"
-        android:layout_alignBottom="@+id/game_undo_button"
-        android:layout_alignEnd="@+id/imageButton2"
+        android:layout_alignBaseline="@+id/game_screen_undo_button"
+        android:layout_alignBottom="@+id/game_screen_undo_button"
+        android:layout_alignEnd="@+id/game_screen_options_button"
         android:contentDescription="Redo"
         android:text=">"
         android:textSize="25sp" />
@@ -57,7 +57,7 @@
         android:id="@+id/row8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageButton"
+        android:layout_below="@+id/game_screen_voice_button"
         android:layout_weight=".125"
         android:orientation="horizontal"
         >

@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">ChessCommander</string>
-    <item type="id" name="tag0"></item>
-    <item type="id" name="tag1"></item>
-    <item type="id" name="tag2"></item>
+    <string name="app_name">Chess Commander</string>
+    <string name="pve_select_color_toast">Must select piece color</string>
+    <item type="id" name="tagpiece"></item>
+    <item type="id" name="tagcolor"></item>
+    <item type="id" name="tagbench"></item>
 </resources>

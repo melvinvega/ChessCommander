@@ -19,9 +19,9 @@ public class home_screen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
-        pve = (Button) findViewById(R.id.pve);
-        pvp = (Button) findViewById(R.id.pvp);
-        freePlay = (Button) findViewById(R.id.freeplay);
+        pve = (Button) findViewById(R.id.home_screen_pve_button);
+        pvp = (Button) findViewById(R.id.home_screen_pvp_button);
+        freePlay = (Button) findViewById(R.id.home_screen_freeplay_button);
     }
 
     public void onPvEButtonClick(View view) {
@@ -48,11 +48,12 @@ public class home_screen extends AppCompatActivity {
         fpScreenIntent.putExtra("GameType", "fp");
         CharSequence oponentType[] = new CharSequence[] {"Computer", "Player"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose oponent type");
+        builder.setTitle("Choose opponent type");
         builder.setItems(oponentType, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 vsAi = true;
+                fpScreenIntent.putExtra("GameType","fp");
                 switch (which) {
                     case 0:
                         fpScreenIntent.putExtra("OpponentType", "Computer");

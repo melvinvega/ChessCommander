@@ -1,10 +1,12 @@
 package com.capstone.chesscommander.chesscommander;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 /**
  * Created by Melvin on 3/23/16.
@@ -17,7 +19,10 @@ public class fp_boardSetup extends Activity {
  * [1,piece color]
  * [2,bench]
 * */
-    private int prevId;
+    private String message;
+    private int wKing,wQueen,wPawn,wKnight,wBishop,wRook;
+    private int bKing,bQueen,bPawn,bKnight,bBishop,bRook;
+    private int wPieces,bPieces;
     private Drawable bgdraw;
     private boolean empty,pieceSelected;
     private String gameType,opponentType,currentMove,playAs,difficulty;
@@ -39,6 +44,13 @@ public class fp_boardSetup extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
+        gameType = extras.getString("GameType");
+        opponentType = extras.getString("OpponentType");
+        if(opponentType.equals("Computer")){
+            currentMove = extras.getString("CurrentMove");
+            playAs = extras.getString("PlayAs");
+            difficulty = extras.getString("Difficulty");
+        }
         setContentView(R.layout.fp_boardsetup);
 
         boardSetup();
@@ -60,33 +72,316 @@ public class fp_boardSetup extends Activity {
         setPieceTags();
         pieceSelected = false;
 
+        wPieces = 0;
+        wKing = 0;
+        wQueen = 0;
+        wPawn = 0;
+        wKnight = 0;
+        wBishop = 0;
+        wRook = 0;
+
+        bPieces = 0;
+        bKing = 0;
+        bQueen = 0;
+        bPawn = 0;
+        bKnight = 0;
+        bBishop = 0;
+        bRook = 0;
+
        }
 
     public void onButtonClick(View view){
         empty = (view.getBackground()==null);
 
-        if(empty && pieceSelected){
+        if(empty && pieceSelected){//Place piece
             bgdraw = currentPiece.getBackground();
             view.setBackground(bgdraw);
-        }
-        else if(!empty && pieceSelected){
-            if(view.equals(currentPiece)){
-                view.setBackgroundResource(0);
+            view.setTag(R.id.tagpiece, currentPiece.getTag(R.id.tagpiece));
+            view.setTag(R.id.tagcolor, currentPiece.getTag(R.id.tagcolor));
+            CharSequence description = view.getContentDescription().subSequence(0,2);
+            description = description + " " + view.getTag(R.id.tagcolor) + " " + view.getTag(R.id.tagpiece);
+            view.setContentDescription(description);
+            String taginfo =currentPiece.getTag(R.id.tagpiece).toString();
+            switch (taginfo){
+                case "king":
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                        wPieces++;
+                        wKing++;
+                    }
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                        bPieces++;
+                        bKing++;
+                    }
+                    break;
+                case "queen":
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                        wPieces++;
+                        wQueen++;
+                    }
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                        bPieces++;
+                        bQueen++;
+                    }
+                    break;
+                case "rook":
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                        wPieces++;
+                        wRook++;
+                    }
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                        bPieces++;
+                        bRook++;
+                    }
+                    break;
+                case "bishop":
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                        wPieces++;
+                        wBishop++;
+                    }
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                        bPieces++;
+                        bBishop++;
+                    }
+                    break;
+                case "knight":
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                        wPieces++;
+                        wKnight++;
+                    }
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                        bPieces++;
+                        bKnight++;
+                    }
+                    break;
+                case "pawn":
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                        wPieces++;
+                        wPawn++;
+                    }
+                    if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                        bPieces++;
+                        bPawn++;
+                    }
+                    break;
             }
-            else{
+        }
+        else if(!empty && pieceSelected){//Remove Piece
+            if(view.getBackground().equals(currentPiece.getBackground())){
+                view.setBackgroundResource(0);
+                view.setTag(R.id.tagpiece, "");
+                view.setTag(R.id.tagcolor, "");
+                CharSequence description = view.getContentDescription().subSequence(0,2);
+                description = description + " " + view.getTag(R.id.tagcolor) + " " + view.getTag(R.id.tagpiece);
+                view.setContentDescription(description);
+                String taginfo =currentPiece.getTag(R.id.tagpiece).toString();
+                switch (taginfo){
+                    case "king":
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wKing--;
+                        }
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bKing--;
+                        }
+                        break;
+                    case "queen":
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wQueen--;
+                        }
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bQueen--;
+                        }
+                        break;
+                    case "rook":
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wRook--;
+                        }
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bRook--;
+                        }
+                        break;
+                    case "bishop":
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wBishop--;
+                        }
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bBishop--;
+                        }
+                        break;
+                    case "knight":
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wKnight--;
+                        }
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bKnight--;
+                        }
+                        break;
+                    case "pawn":
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wPawn--;
+                        }
+                        if(currentPiece.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bPawn--;
+                        }
+                        break;
+                }
+            }
+            else{//Replace Piece
+                String taginfo =view.getTag(R.id.tagpiece).toString();
+                switch (taginfo){
+                    case "king":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wKing--;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bKing--;
+                        }
+                        break;
+                    case "queen":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wQueen--;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bQueen--;
+                        }
+                        break;
+                    case "rook":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wRook--;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bRook--;
+                        }
+                        break;
+                    case "bishop":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wBishop--;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bBishop--;
+                        }
+                        break;
+                    case "knight":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wKnight--;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bKnight--;
+                        }
+                        break;
+                    case "pawn":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces--;
+                            wPawn--;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces--;
+                            bPawn--;
+                        }
+                        break;
+                }
                 bgdraw = currentPiece.getBackground();
                 view.setBackground(bgdraw);
+                view.setTag(R.id.tagpiece, currentPiece.getTag(R.id.tagpiece));
+                view.setTag(R.id.tagcolor, currentPiece.getTag(R.id.tagcolor));
+                CharSequence description = view.getContentDescription().subSequence(0,2);
+                description = description + " " + view.getTag(R.id.tagcolor) + " " + view.getTag(R.id.tagpiece);
+                view.setContentDescription(description);
+                taginfo =view.getTag(R.id.tagpiece).toString();
+                switch (taginfo){
+                    case "king":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces++;
+                            wKing++;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces++;
+                            bKing++;
+                        }
+                        break;
+                    case "queen":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces++;
+                            wQueen++;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces++;
+                            bQueen++;
+                        }
+                        break;
+                    case "rook":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces++;
+                            wRook++;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces++;
+                            bRook++;
+                        }
+                        break;
+                    case "bishop":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces++;
+                            wBishop++;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces++;
+                            bBishop++;
+                        }
+                        break;
+                    case "knight":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces++;
+                            wKnight++;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces++;
+                            bKnight++;
+                        }
+                        break;
+                    case "pawn":
+                        if(view.getTag(R.id.tagcolor).toString().equals("white")){
+                            wPieces++;
+                            wPawn++;
+                        }
+                        if(view.getTag(R.id.tagcolor).toString().equals("black")){
+                            bPieces++;
+                            bPawn++;
+                        }
+                        break;
+                }
             }
         }
     }
 
     public void onBenchButtonClick(View view){
-        pieceSelected = view.getTag(R.id.tag2).equals("bench");
+        pieceSelected = view.getTag(R.id.tagbench).equals("bench");
         currentPiece = (ImageButton) findViewById(view.getId());
     }
 
     private void boardSetup(){
-
+        //ImageButton setup
         A8_button = (ImageButton)findViewById(R.id.A8_button);
         B8_button = (ImageButton)findViewById(R.id.B8_button);
         C8_button = (ImageButton)findViewById(R.id.C8_button);
@@ -158,7 +453,7 @@ public class fp_boardSetup extends Activity {
         F1_button = (ImageButton)findViewById(R.id.F1_button);
         G1_button = (ImageButton)findViewById(R.id.G1_button);
         H1_button = (ImageButton)findViewById(R.id.H1_button);
-
+        //Board array setup
         board[7][0] = A8_button;
         board[7][1] = B8_button;
         board[7][2] = C8_button;
@@ -230,69 +525,257 @@ public class fp_boardSetup extends Activity {
         board[0][5] = F1_button;
         board[0][6] = G1_button;
         board[0][7] = H1_button;
-
-        /*
-        This loop goes through all empty tiles and sets the background to 0, if this is not done a grey
-        square will appear on top of empty tiles since it is a imageButton and the default background is grey
-        board[r][c] represents the button on the board.
+        //Background Loop
+                /**
+         * This loop goes through all empty tiles and sets the background to 0, if this is not done a grey
+         * square will appear on top of empty tiles since it is a imageButton and the default background is grey
+         * board[r][c] represents the button on the board.
          */
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
                 board[r][c].setBackgroundResource(0);
             }
         }
+        String content = "";
+        for(int r=0;r<8;r++){
+            for(int c=0;c<8;c++){
+                switch (c) {
+                    case 0:
+                        content = "A";
+                        break;
+                    case 1:
+                        content = "B";
+                        break;
+                    case 2:
+                        content = "C";
+                        break;
+                    case 3:
+                        content = "D";
+                        break;
+                    case 4:
+                        content = "E";
+                        break;
+                    case 5:
+                        content = "F";
+                        break;
+                    case 6:
+                        content = "G";
+                        break;
+                    case 7:
+                        content = "H";
+                        break;
+                    default:
+                        break;
+                }
+                board[r][c].setContentDescription(content + (r+1));
+                board[r][c].setBackgroundResource(0);
+                board[r][c].setTag(R.id.tagpiece,"");
+                board[r][c].setTag(R.id.tagcolor,"");
+            }
+        }
     }//End of method
 
     private void setPieceTags(){
+        rook_w.setTag(R.id.tagpiece,"rook");
+        rook_w.setTag(R.id.tagcolor,"white");
+        rook_w.setTag(R.id.tagbench,"bench");
 
-        rook_w.setTag(R.id.tag0,"rook");
-        rook_w.setTag(R.id.tag1,"white");
-        rook_w.setTag(R.id.tag2,"bench");
+        knight_w.setTag(R.id.tagpiece,"knight");
+        knight_w.setTag(R.id.tagcolor,"white");
+        knight_w.setTag(R.id.tagbench,"bench");
 
-        knight_w.setTag(R.id.tag0,"knight");
-        knight_w.setTag(R.id.tag1,"white");
-        knight_w.setTag(R.id.tag2,"bench");
+        bishop_w.setTag(R.id.tagpiece,"bishop");
+        bishop_w.setTag(R.id.tagcolor,"white");
+        bishop_w.setTag(R.id.tagbench,"bench");
 
-        bishop_w.setTag(R.id.tag0,"bishop");
-        bishop_w.setTag(R.id.tag1,"white");
-        bishop_w.setTag(R.id.tag2,"bench");
+        queen_w.setTag(R.id.tagpiece,"queen");
+        queen_w.setTag(R.id.tagcolor,"white");
+        queen_w.setTag(R.id.tagbench,"bench");
 
-        queen_w.setTag(R.id.tag0,"queen");
-        queen_w.setTag(R.id.tag1,"white");
-        queen_w.setTag(R.id.tag2,"bench");
+        king_w.setTag(R.id.tagpiece,"king");
+        king_w.setTag(R.id.tagcolor,"white");
+        king_w.setTag(R.id.tagbench,"bench");
 
-        king_w.setTag(R.id.tag0,"king");
-        king_w.setTag(R.id.tag1,"white");
-        king_w.setTag(R.id.tag2,"bench");
+        pawn_w.setTag(R.id.tagpiece,"pawn");
+        pawn_w.setTag(R.id.tagcolor,"white");
+        pawn_w.setTag(R.id.tagbench,"bench");
 
-        pawn_w.setTag(R.id.tag0,"pawn");
-        pawn_w.setTag(R.id.tag1,"white");
-        pawn_w.setTag(R.id.tag2,"bench");
+        rook_b.setTag(R.id.tagpiece,"rook");
+        rook_b.setTag(R.id.tagcolor,"black");
+        rook_b.setTag(R.id.tagbench,"bench");
 
-        rook_b.setTag(R.id.tag0,"rook");
-        rook_b.setTag(R.id.tag1,"black");
-        rook_b.setTag(R.id.tag2,"bench");
+        knight_b.setTag(R.id.tagpiece,"knight");
+        knight_b.setTag(R.id.tagcolor,"black");
+        knight_b.setTag(R.id.tagbench,"bench");
 
-        knight_b.setTag(R.id.tag0,"knight");
-        knight_b.setTag(R.id.tag1,"black");
-        knight_b.setTag(R.id.tag2,"bench");
+        bishop_b.setTag(R.id.tagpiece,"bishop");
+        bishop_b.setTag(R.id.tagcolor,"black");
+        bishop_b.setTag(R.id.tagbench,"bench");
 
-        bishop_b.setTag(R.id.tag0,"bishop");
-        bishop_b.setTag(R.id.tag1,"black");
-        bishop_b.setTag(R.id.tag2,"bench");
+        queen_b.setTag(R.id.tagpiece,"queen");
+        queen_b.setTag(R.id.tagcolor,"black");
+        queen_b.setTag(R.id.tagbench,"bench");
 
-        queen_b.setTag(R.id.tag0,"queen");
-        queen_b.setTag(R.id.tag1,"black");
-        queen_b.setTag(R.id.tag2,"bench");
+        king_b.setTag(R.id.tagpiece,"king");
+        king_b.setTag(R.id.tagcolor,"black");
+        king_b.setTag(R.id.tagbench,"bench");
 
-        king_b.setTag(R.id.tag0,"king");
-        king_b.setTag(R.id.tag1,"black");
-        king_b.setTag(R.id.tag2,"bench");
-
-        pawn_b.setTag(R.id.tag0,"pawn");
-        pawn_b.setTag(R.id.tag1,"black");
-        pawn_b.setTag(R.id.tag2,"bench");
-
+        pawn_b.setTag(R.id.tagpiece,"pawn");
+        pawn_b.setTag(R.id.tagcolor,"black");
+        pawn_b.setTag(R.id.tagbench,"bench");
     }
-    }
+
+    public void onStartButtonClick(View view) {
+        boolean startable = false;
+        if(wKing==1 && bKing==1){
+            startable = true;
+        }
+        if(wQueen>9 | bQueen>9){
+            startable = false;
+            if(wQueen>9){
+                message = "You must have less than 9 White Queens";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bQueen>9){
+                message = "You must have less than 9 Black Queens";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(wPawn>8 | bPawn>8){
+            startable = false;
+            if(wPawn>8){
+                message = "You must have less than 8 White Pawns";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bPawn>8){
+                message = "You must have less than 8 Black Pawns";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(wKnight>10 | bKnight>10){
+            startable = false;
+            if(wKnight>8){
+                message = "You must have less than 10 White Knights";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bKnight>8){
+                message = "You must have less than 10 Black Knights";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(wBishop>10 | bBishop>10){
+            startable = false;
+            if(wBishop>8){
+                message = "You must have less than 10 White Bishops";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bBishop>8){
+                message = "You must have less than 10 Black Bishops";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(wRook>10 | bRook>10){
+            startable = false;
+            if(wRook>8){
+                message = "You must have less than 8 White Rooks";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bRook>8){
+                message = "You must have less than 8 Black Rooks";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(wPieces>17 && bPieces>17){
+            startable = false;
+            if(wPieces>8){
+                message = "You must have less than 17 White Pieces";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(bPieces>8){
+                message = "You must have less than 17 Black Pieces";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(!startable && (!(wKing==1) | !(bKing==1)) ){
+            message = "You must have only 1 white king and 1 black king";
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        }
+        if(startable){
+            Intent startGameIntent = new Intent(this,game_screen.class);
+            startGameIntent.putExtra("GameType",gameType);
+            startGameIntent.putExtra("OpponentType",opponentType);
+            if(opponentType.equals("Computer")){
+                startGameIntent.putExtra("CurrentMove",currentMove);
+                startGameIntent.putExtra("PlayAs",playAs);
+                startGameIntent.putExtra("Difficulty",difficulty);
+            }
+            int transfer[] = new int[64];
+            int pos=0;
+                for(int r=0;r<8;r++){
+                    for(int c=0;c<8;c++){
+                        String taginfo =board[r][c].getTag(R.id.tagpiece).toString();
+                        switch (taginfo){
+                            case "king":
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("white")){
+                                    transfer[pos] = 1;
+                                }
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("black")){
+                                    transfer[pos] = 7;
+                                }
+                                break;
+                            case "queen":
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("white")){
+                                    transfer[pos] = 2;
+                                }
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("black")){
+                                    transfer[pos] = 8;
+                                }
+                                break;
+                            case "rook":
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("white")){
+                                    transfer[pos] = 3;
+                                }
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("black")){
+                                    transfer[pos] = 9;
+                                }
+                                break;
+                            case "bishop":
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("white")){
+                                    transfer[pos] = 4;
+                                }
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("black")){
+                                    transfer[pos] = 10;
+                                }
+                                break;
+                            case "knight":
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("white")){
+                                    transfer[pos] = 5;
+                                }
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("black")){
+                                    transfer[pos] = 11;
+                                }
+                                break;
+                            case "pawn":
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("white")){
+                                    transfer[pos] = 6;
+                                }
+                                if(board[r][c].getTag(R.id.tagcolor).toString().equals("black")){
+                                    transfer[pos] = 12;
+                                }
+                                break;
+                            default:
+                                transfer[pos] = 0;
+                                break;
+                        }
+                      pos++;
+                    }
+                }
+            startGameIntent.putExtra("Board",transfer);
+            startActivity(startGameIntent);
+            }
+
+        }
+
+}
+
 
