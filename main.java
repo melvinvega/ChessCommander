@@ -28,11 +28,35 @@ public class main {
 		*/
 		
 		Board b = new Board();
-		// b.printBoard();
 		b.setInitialPosition();
 		b.printVisualBoard();
-		b.move(55, 0, 'W');
+		b.printFEN();
+	/*
+		b.move(53, 37, 'W');
 		b.printVisualBoard();
+		b.printMove(1);
+		b.printFEN();
+		b.move(13, 29, 'B');
+		b.printVisualBoard();
+		b.printMove(2);
+		b.printFEN();
+		b.move(62, 45, 'W');
+		b.printVisualBoard();
+		b.printMove(3);
+		b.printFEN();		
+		b.move(1, 18, 'B');
+		b.printVisualBoard();
+		b.printMove(4);
+		b.printFEN();
+		b.move(49, 41, 'W');
+		b.printVisualBoard();
+		b.printMove(5);
+		b.printFEN();
+		*/
+		b.getMoveList('W');
+		b.list.printWhiteMoves();
+		b.list.printBlackMoves();
+			
 		
 	}
 

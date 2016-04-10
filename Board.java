@@ -20,6 +20,16 @@ public class Board {
 	Game myGame;
 	Position myPosition;
 	Move myMove;
+	boolean whiteKingCastle = true;
+	boolean blackKingCastle = true;
+	boolean whiteQueenCastle = true;
+	boolean blackQueenCastle = true;
+	int halfmove = 0;
+	int fullmove = 1;
+	int playerMove = 0;
+	int doubleMoveTile = -1;
+	String FEN;
+	MoveList list;
 	
 	Tile[] tiles = new Tile [64];
 	Moves[] moves = new Moves [1000];
@@ -37,6 +47,11 @@ public class Board {
 	/*
 	 *  Generates and returns an empty board of 64 tiles. They'll all have null Pieces;
 	 */
+	
+	public MoveList getMoveList(char c){
+		list = new MoveList(tiles, c);
+		return list;
+	}
 	
 	private Tile[] genBoard(){
 		int curr = -1;
@@ -116,6 +131,7 @@ public class Board {
 			j++;
 		}
 		
+		returnFEN();
 		return tiles;
 	}
 	
@@ -129,9 +145,14 @@ public class Board {
 			}
 			else{
 				if(tiles[start].getPiece().getColor() == 'W'){
+					halfmove ++;
+					if(tiles[start].getPieceChar() == 'P'){
+						halfmove = 0;
+					}
 					if(tiles[end].getIfOccupied()){
 						if(tiles[end].getPiece().getColor() == 'B'){
 							capture = true;
+							halfmove = 0;
 							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
 							moves[ply] = new Moves(tiles[start].getPiece(), start, end, capture, 
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
@@ -151,6 +172,8 @@ public class Board {
 							}
 							tiles[start].removePiece();
 							ply++;
+							playerMove = 1;
+							returnFEN();
 							return true;
 						}
 						else{
@@ -175,6 +198,8 @@ public class Board {
 					}
 					tiles[start].removePiece();
 					ply++;
+					playerMove = 1;
+					returnFEN();
 					return true;
 				}
 				else{
@@ -187,10 +212,15 @@ public class Board {
 				return false;
 			}
 			else{
+				halfmove ++;
 				if(tiles[start].getPiece().getColor() == 'B'){
+					if(tiles[start].getPieceChar() == 'P'){
+						halfmove = 0;
+					}
 					if(tiles[end].getIfOccupied()){
 						if(tiles[end].getPiece().getColor() == 'W'){
 							capture = true;
+							halfmove = 0;
 							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
 							moves[ply] = new Moves(tiles[start].getPiece(), start, end, capture, 
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
@@ -211,6 +241,9 @@ public class Board {
 							tiles[start].removePiece();
 							ply++;
 							moveNum++;
+							fullmove++;
+							playerMove = 0;
+							returnFEN();
 							return true;
 						}
 						else{
@@ -236,6 +269,9 @@ public class Board {
 					tiles[start].removePiece();
 					ply++;
 					moveNum++;
+					fullmove++;
+					playerMove = 0;
+					returnFEN();
 					return true;
 				}
 				else{
@@ -285,79 +321,107 @@ public class Board {
 		}
 	}
 	
-	private static int getChesspressoSquare(int id){
-		switch (id){
-		case 0: return Chess.H1;
-		case 1: return Chess.H2;
-		case 2: return Chess.H3;
-		case 3: return Chess.H4;
-		case 4: return Chess.H5;
-		case 5: return Chess.H6;
-		case 6: return Chess.H7;
-		case 7: return Chess.H8;
-		case 8: return Chess.G1;
-		case 9: return Chess.G2;
-		case 10: return Chess.G3;
-		case 11: return Chess.G4;
-		case 12: return Chess.G5;
-		case 13: return Chess.G6;
-		case 14: return Chess.G7;
-		case 15: return Chess.G8;
-		case 16: return Chess.F1;
-		case 17: return Chess.F2;
-		case 18: return Chess.F3;
-		case 19: return Chess.F4;
-		case 20: return Chess.F5;
-		case 21: return Chess.F6;
-		case 22: return Chess.F7;
-		case 23: return Chess.F8;
-		case 24: return Chess.E1;
-		case 25: return Chess.E2;
-		case 26: return Chess.E3;
-		case 27: return Chess.E4;
-		case 28: return Chess.E5;
-		case 29: return Chess.E6;
-		case 30: return Chess.E7;
-		case 31: return Chess.E8;
-		case 32: return Chess.D1;
-		case 33: return Chess.D2;
-		case 34: return Chess.D3;
-		case 35: return Chess.D4;
-		case 36: return Chess.D5;
-		case 37: return Chess.D6;
-		case 38: return Chess.D7;
-		case 39: return Chess.D8;
-		case 40: return Chess.C1;
-		case 41: return Chess.C2;
-		case 42: return Chess.C3;
-		case 43: return Chess.C4;
-		case 44: return Chess.C5;
-		case 45: return Chess.C6;
-		case 46: return Chess.C7;
-		case 47: return Chess.C8;
-		case 48: return Chess.B1;
-		case 49: return Chess.B2;
-		case 50: return Chess.B3;
-		case 51: return Chess.B4;
-		case 52: return Chess.B5;
-		case 53: return Chess.B6;
-		case 54: return Chess.B7;
-		case 55: return Chess.B8;
-		case 56: return Chess.A1;
-		case 57: return Chess.A2;
-		case 58: return Chess.A3;
-		case 59: return Chess.A4;
-		case 60: return Chess.A5;
-		case 61: return Chess.A6;
-		case 62: return Chess.A7;
-		case 63: return Chess.A8;
-		default: return Chess.NO_SQUARE;
+	public String returnFEN(){
+		String fen = "";
+		for(int i = 0; i<8; i++){
+			int consecutiveEmpty = 0;
+			for(int j = 0; j < 8; j++){
+				if(tiles[8*i + j].containsPiece){
+					if(consecutiveEmpty > 0){
+						fen = fen + Integer.toString(consecutiveEmpty);
+						consecutiveEmpty = 0;
+					}
+					fen = fen + Character.toString(tiles[8*i + j].getPieceChar());
+				}
+				else{
+					consecutiveEmpty++;
+				}
+			}
+			if(consecutiveEmpty > 0){
+				fen = fen + Integer.toString(consecutiveEmpty);
+				consecutiveEmpty = 0;
+			}
+			if(i < 7){
+			fen = fen + "/";
+			}
 		}
 		
-	} 
+		fen = fen + " ";
+		
+		if(playerMove == 0){
+			fen = fen + "w";
+		}
+		else if(playerMove == 1){
+			fen = fen + "b";
+		}
+		
+		fen = fen + " ";
+		
+		if(whiteKingCastle){
+			fen = fen + "K";
+		}
+		if(whiteQueenCastle){
+			fen = fen + "Q";
+		}
+		if(blackKingCastle){
+			fen = fen + "k";
+		}
+		if(blackQueenCastle){
+			fen = fen + "q";
+		}
+		if(!whiteKingCastle && !whiteQueenCastle && !blackKingCastle && !blackQueenCastle){
+			fen = fen + "-";
+		}
+		
+		fen = fen + " ";
+		
+		if(doubleMoveTile == -1){
+			fen = fen + "-";
+		}
+		else{
+			fen = fen + tileToNotation(doubleMoveTile);
+		}
+		
+		fen = fen + " ";
+		fen = fen + Integer.toString(halfmove);
+		fen = fen + " ";
+		fen = fen + Integer.toString(fullmove);
+		
+		FEN = fen;
+		return fen;
+	}
 	
 	
 	
+	private String tileToNotation(int t) {
+		String tileNotation = "";
+		int column = t % 8;
+		int rank = (t - column) / 8; 
+		switch(column){
+		case 0: tileNotation = tileNotation + ("a");
+			break;
+		case 1: tileNotation = tileNotation + ("b");
+			break;
+		case 2: tileNotation = tileNotation + ("c");
+			break;
+		case 3: tileNotation = tileNotation + ("d");
+			break;
+		case 4: tileNotation = tileNotation + ("e");
+			break;
+		case 5: tileNotation = tileNotation + ("f");
+			break;
+		case 6: tileNotation = tileNotation + ("g");
+			break;
+		case 7: tileNotation = tileNotation + ("h");
+			break;
+		default: break;
+		}
+		
+		tileNotation = tileNotation + (Integer.toString(rank + 1));
+		
+		return tileNotation;
+	}
+
 	/*
 	 * For debugging purposes. Prints the contents of the board.
 	 */
@@ -381,6 +445,12 @@ public class Board {
 		System.out.println(moves[m].getEndSquareID());
 		System.out.println(moves[m].getMovedPiece().getType());
 		System.out.println(moves[m].getMoveDoneBy());
+		System.out.println();
+	}
+	
+	public void printFEN(){
+		System.out.println(FEN);
+		System.out.println();
 	}
 	
 	public void printVisualBoard(){
