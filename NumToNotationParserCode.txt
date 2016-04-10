@@ -1,0 +1,28 @@
+	private String tileToNotation(int t) {
+		String tileNotation = "";
+		int column = t % 8;
+		int rank = (t - column) / 8; 
+		switch(column){
+		case 0: tileNotation = tileNotation + ("a");
+			break;
+		case 1: tileNotation = tileNotation + ("b");
+			break;
+		case 2: tileNotation = tileNotation + ("c");
+			break;
+		case 3: tileNotation = tileNotation + ("d");
+			break;
+		case 4: tileNotation = tileNotation + ("e");
+			break;
+		case 5: tileNotation = tileNotation + ("f");
+			break;
+		case 6: tileNotation = tileNotation + ("g");
+			break;
+		case 7: tileNotation = tileNotation + ("h");
+			break;
+		default: break;
+		}
+		
+		tileNotation = tileNotation + (Integer.toString(rank + 1));
+		
+		return tileNotation;
+	}
