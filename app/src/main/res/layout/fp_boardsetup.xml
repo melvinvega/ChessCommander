@@ -1660,7 +1660,8 @@
         android:focusable="true"
         android:text="Start"
         android:textSize="20sp"
-        android:onClick="onStartButtonClick" />
+        android:onClick="onStartButtonClick"
+        android:contentDescription="Start Game"/>
 
     <RelativeLayout
         android:id="@+id/chesspieces_relative"

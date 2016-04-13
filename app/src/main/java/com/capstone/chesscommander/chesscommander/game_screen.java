@@ -6,9 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import java.util.List;
 
 
 /**
@@ -49,6 +52,10 @@ public class game_screen extends Activity {
     private ImageButton A2_button,B2_button,C2_button,D2_button,E2_button,F2_button,G2_button,H2_button;
     private ImageButton A1_button,B1_button,C1_button,D1_button,E1_button,F1_button,G1_button,H1_button;
     private Bundle extras;
+    private static final int SPEECH_REQUEST_CODE = 0;
+    //public static final String EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS = "300";
+    //public static final String EXTRA_PROMPT = "Say Piece Colum Row";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +63,7 @@ public class game_screen extends Activity {
         extras = getIntent().getExtras();
         gameType = extras.getString("GameType");
         difficulty = extras.getString("Difficulty");
-        playerColor = extras.getString("Color");
+        playerColor = extras.getString("PlayerColor");
         tempBoard = extras.getIntArray("Board");
         boardSetup(gameType);
         setPieceTags();
@@ -103,7 +110,7 @@ public class game_screen extends Activity {
     public void onOptionsButtonClick(View view){
         final Intent homeScreenIntent = new Intent(this,home_screen.class);
         homeScreenIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        CharSequence oponentType[] = new CharSequence[] {"Change Color", "Move List", "New game","Home Screen"};
+        CharSequence oponentType[] = new CharSequence[] {"Change Color", "Move List", "New Game","Home Screen"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Game Options");
         builder.setItems(oponentType, new DialogInterface.OnClickListener() {
@@ -135,8 +142,8 @@ public class game_screen extends Activity {
     }
 
     public void onVoiceButtonClick(View view){
-        String message = "Listening";
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        displaySpeechRecognizer();
+
     }
 
     public void onUndoButtonClick(View view){
@@ -339,6 +346,7 @@ public class game_screen extends Activity {
                         board[r][c].setBackgroundResource(0);
                         board[r][c].setTag(R.id.tagpiece,"");
                         board[r][c].setTag(R.id.tagcolor,"");
+                        board[r][c].setContentDescription(content + (r+1));
                     }
                 }//for c
             }//for r
@@ -549,8 +557,10 @@ public class game_screen extends Activity {
     private void setDescriptions(){
         for(int r=0;r<8;r++){
             for(int c=0;c<8;c++){
-                CharSequence description = board[r][c].getContentDescription();
-                description = description + " " + board[r][c].getTag(R.id.tagcolor) + " " + board[r][c].getTag(R.id.tagpiece);
+                CharSequence description = board[r][c].getContentDescription().subSequence(0,2);
+                if(!(board[r][c].getTag(R.id.tagcolor).equals(""))){
+                    description = description + " " + board[r][c].getTag(R.id.tagcolor) + " " + board[r][c].getTag(R.id.tagpiece);
+                }
                 board[r][c].setContentDescription(description);
             }
         }
@@ -769,4 +779,28 @@ public class game_screen extends Activity {
             }//for r
         }
     }
+
+    // Create an intent that can start the Speech Recognizer activity
+    private void displaySpeechRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        //intent.putExtra("SilenceTimeOut",RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS);
+        //intent.putExtra("Message",RecognizerIntent.EXTRA_PROMPT);
+        // Start the activity, the intent will be populated with the speech text
+        startActivityForResult(intent, SPEECH_REQUEST_CODE);
+    }
+
+    // This callback is invoked when the Speech Recognizer returns.
+    // This is where you process the intent and extract the speech text from the intent.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
+            List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            String spokenText = results.get(0);
+            // Do something with spokenText
+            Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

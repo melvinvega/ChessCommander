@@ -5,7 +5,7 @@
     android:background="#000000">
 
     <ImageView
-        android:id="@+id/logo_imageView"
+        android:id="@+id/fp_options_logo_imageView"
         android:layout_width="fill_parent"
         android:layout_height="150dp"
         android:layout_alignParentLeft="true"
@@ -20,15 +20,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/freeplay_next_button"
-        android:layout_below="@id/logo_imageView"
+        android:layout_above="@+id/fp_next_button"
+        android:layout_below="@id/fp_options_logo_imageView"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/freeplay_currentPlayer_textView"
+            android:id="@+id/fp_current_move_textView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/logo_imageView"
+            android:layout_below="@+id/fp_options_logo_imageView"
             android:contentDescription="Whose turn is it?"
             android:focusable="true"
             android:paddingBottom="10dp"
@@ -39,15 +39,15 @@
             android:textSize="35sp" />
 
         <RadioGroup
-            android:id="@+id/freeplay_currentPlayer_radioGroup"
+            android:id="@+id/fp_currentPlayer_radioGroup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/freeplay_currentPlayer_textView"
+            android:layout_below="@+id/fp_current_move_textView"
             android:orientation="horizontal"
             android:paddingBottom="20dp">
 
             <RadioButton
-                android:id="@+id/freeplay_currentPlayer_p1_radioButton"
+                android:id="@+id/fp_current_move_white_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -62,7 +62,7 @@
                 android:textSize="25sp"/>
 
             <RadioButton
-                android:id="@+id/freeplay_currentPlayer_p2_radioButton"
+                android:id="@+id/fp_current_move_black_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -78,10 +78,10 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/freeplay_p1Color_textView"
+            android:id="@+id/fp_play_as_textView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/freeplay_currentPlayer_radioGroup"
+            android:layout_below="@+id/fp_currentPlayer_radioGroup"
             android:contentDescription="Color to play as"
             android:focusable="true"
             android:paddingBottom="10dp"
@@ -91,15 +91,15 @@
             android:textSize="35sp" />
 
         <RadioGroup
-            android:id="@+id/freeplay_p1Color_radioGroup"
+            android:id="@+id/fp_play_as_radioGroup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/freeplay_p1Color_textView"
+            android:layout_below="@id/fp_play_as_textView"
             android:orientation="horizontal"
             android:paddingBottom="10dp">
 
             <RadioButton
-                android:id="@+id/freeplay_p1Color_white_radioButton"
+                android:id="@+id/fp_play_as_white_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -113,7 +113,7 @@
                 android:textSize="25sp"/>
 
             <RadioButton
-                android:id="@+id/freeplay_p1Color_black_radioButton"
+                android:id="@+id/fp_play_as_black_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -130,11 +130,11 @@
 
 
         <TextView
-            android:id="@+id/freeplay_pvedifficulty_textview"
+            android:id="@+id/fp_pvedifficulty_textview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/logo_imageView"
+            android:layout_below="@+id/fp_options_logo_imageView"
             android:contentDescription="Select Computer Difficulty"
             android:focusable="true"
             android:paddingBottom="10dp"
@@ -145,13 +145,13 @@
             />
 
         <RadioGroup
-            android:id="@+id/freeplay_pvedifficulty_radioGroup"
+            android:id="@+id/fp_pvedifficulty_radioGroup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/freeplay_pvedifficulty_textview"
+            android:layout_below="@id/fp_pvedifficulty_textview"
             android:orientation="horizontal">>
             <RadioButton
-                android:id="@+id/freeplay_difficulty_easy_radioButton"
+                android:id="@+id/fp_difficulty_easy_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/pve_difficulty_textview"
@@ -170,13 +170,13 @@
                 android:textSize="25sp"/>
 
             <RadioButton
-                android:id="@+id/freeplay_difficulty_medium_radioButton"
+                android:id="@+id/fp_difficulty_medium_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/freeplay_difficulty_easy_radioButton"
+                android:layout_alignTop="@+id/fp_difficulty_easy_radioButton"
                 android:layout_gravity="top"
                 android:layout_marginStart="25dp"
-                android:layout_toEndOf="@+id/freeplay_difficulty_easy_radioButton"
+                android:layout_toEndOf="@+id/fp_difficulty_easy_radioButton"
                 android:layout_weight=".33"
                 android:checked="false"
                 android:clickable="true"
@@ -189,11 +189,11 @@
                 android:textSize="25sp"/>
 
             <RadioButton
-                android:id="@+id/freeplay_difficulty_hard_radioButton"
+                android:id="@+id/fp_difficulty_hard_radioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/cclogo_textView"
-                android:layout_alignTop="@+id/freeplay_difficulty_medium_radioButton"
+                android:layout_alignTop="@+id/fp_difficulty_medium_radioButton"
                 android:layout_weight=".33"
                 android:checked="false"
                 android:clickable="true"
@@ -211,7 +211,7 @@
 
 
     <Button
-        android:id="@+id/freeplay_next_button"
+        android:id="@+id/fp_next_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

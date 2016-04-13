@@ -2,6 +2,7 @@ package com.capstone.chesscommander.chesscommander;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.assertion.ViewAssertions;
+import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -13,12 +14,11 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withTagValue;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
@@ -29,6 +29,9 @@ public class HomeScreenTest {
     @Rule
     public final ActivityTestRule<home_screen> main = new ActivityTestRule<>(home_screen.class);
 
+   // @Before
+   // public void setUp(){AccessibilityChecks.enable();}
+
     @Test
     public void ItemsAreDisplayed(){
         onView(withId(R.id.home_screen_logo_imageView)).check(ViewAssertions.matches(isDisplayed()));
@@ -36,6 +39,7 @@ public class HomeScreenTest {
         onView(withId(R.id.home_screen_pvp_button)).check(ViewAssertions.matches(isDisplayed()));
         onView(withId(R.id.home_screen_freeplay_button)).check(ViewAssertions.matches(isDisplayed()));
     }
+
     @Test
     public void ItemsAreClickable(){
         onView(withId(R.id.home_screen_pve_button)).check(ViewAssertions.matches(isClickable()));
@@ -63,13 +67,35 @@ public class HomeScreenTest {
         onView(withId(R.id.home_screen_freeplay_button)).perform(click());
         onView(withText("Choose opponent type")).check(ViewAssertions.matches(isDisplayed()));
         onView(withText("Computer")).perform(click());
-        onView(withId(R.id.freeplay_p1Color_textView)).check(ViewAssertions.matches(isDisplayed()));
+        onView(withId(R.id.fp_options_logo_imageView)).check(ViewAssertions.matches(isDisplayed()));
         Espresso.pressBack();
         onView(withId(R.id.home_screen_freeplay_button)).perform(click());
         onView(withText("Choose opponent type")).check(ViewAssertions.matches(isDisplayed()));
         onView(withText("Player")).perform(click());
         onView(withId(R.id.fp_boardsetup_piecesbackground_imageview)).check(ViewAssertions.matches(isDisplayed()));
+
+    }
+
+    @Test
+    public void ExtrasCorrectlySent(){
+        Intents.init();
+        onView(withId(R.id.home_screen_pve_button)).perform(click());
+        intended(hasExtra("GameType", "pve"));
+        Intents.release();
         Espresso.pressBack();
+
+        Intents.init();
+        onView(withId(R.id.home_screen_pvp_button)).perform(click());
+        intended(hasExtra("GameType", "pvp"));
+        Intents.release();
+        Espresso.pressBack();
+
+        Intents.init();
+        onView(withId(R.id.home_screen_freeplay_button)).perform(click());
+        onView(withText("Computer")).perform(click());
+        intended(hasExtra("GameType", "fp"));
+        intended(hasExtra("OpponentType", "Computer"));
+        Intents.release();
     }
 
 }
