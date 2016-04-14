@@ -1,29 +1,28 @@
 
 import java.util.Scanner;
-import chesspresso.*;
-import chesspresso.position.Position;
-import chesspresso.move.Move;
+
 
 
 /**
  * Board abstraction class. Contains the 64 tiles in the board, as well as its contents.
  * Note it is a WIP.
- * 1. Starting position gen - complete
- * 2. Piece Movement
- * 3. FEN generator
- * 4. Custom Board creator
+ * 1. Custom Board creator
  * 
  * @author Eduardo
  *
  */
 public class Board {
 	Game myGame;
-	Position myPosition;
-	Move myMove;
 	boolean whiteKingCastle = true;
 	boolean blackKingCastle = true;
 	boolean whiteQueenCastle = true;
 	boolean blackQueenCastle = true;
+	boolean whiteKingMoved = false;
+	boolean whiteKingRookMoved = false;
+	boolean whiteQueenRookMoved = false;
+	boolean blackKingMoved = false;
+	boolean blackKingRookMoved = false;
+	boolean blackQueenRookMoved = false;
 	int halfmove = 0;
 	int fullmove = 1;
 	int playerMove = 0;
@@ -41,17 +40,19 @@ public class Board {
 	public Board(){
 		genBoard();
 		myGame = new Game();
-		myPosition = new Position();
+	}
+	
+	
+	public MoveList getMoveList(char c){
+		list = new MoveList(tiles, c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
+				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved);
+		return list;
 	}
 	
 	/*
 	 *  Generates and returns an empty board of 64 tiles. They'll all have null Pieces;
 	 */
 	
-	public MoveList getMoveList(char c){
-		list = new MoveList(tiles, c);
-		return list;
-	}
 	
 	private Tile[] genBoard(){
 		int curr = -1;
@@ -95,7 +96,6 @@ public class Board {
 	 */
 	
 	public Tile[] setInitialPosition(){
-		myPosition = Position.createInitialPosition();
 		Piece[] pieces = new Piece [32];
 		pieces[0] = new Piece('R','B');
 		pieces[1] = new Piece('N','B');
@@ -164,6 +164,15 @@ public class Board {
 									tiles[start].getPiece().getType() == 'P', 
 									promotion, 
 									ply, moveNum, c, tiles);
+							if(tiles[start].getID() == 60){
+								whiteKingMoved = true;
+							}
+							if(tiles[start].getID() == 63){
+								whiteKingRookMoved = true;
+							}
+							if(tiles[start].getID() == 56){
+								whiteQueenRookMoved = true;
+							}
 							tiles[end].removePiece();
 							tiles[end].setPiece(tiles[start].getPiece());
 							if(promotion){
@@ -174,6 +183,7 @@ public class Board {
 							ply++;
 							playerMove = 1;
 							returnFEN();
+							list = getMoveList('B');
 							return true;
 						}
 						else{
@@ -191,6 +201,15 @@ public class Board {
 							tiles[start].getPiece().getType() == 'P', 
 							promotion, 
 							ply, moveNum, c, tiles);
+					if(tiles[start].getID() == 60){
+						whiteKingMoved = true;
+					}
+					if(tiles[start].getID() == 63){
+						whiteKingRookMoved = true;
+					}
+					if(tiles[start].getID() == 56){
+						whiteQueenRookMoved = true;
+					}
 					tiles[end].setPiece(tiles[start].getPiece());
 					if(promotion){
 						char n = askForPromotion();
@@ -200,6 +219,7 @@ public class Board {
 					ply++;
 					playerMove = 1;
 					returnFEN();
+					list = getMoveList('B');
 					return true;
 				}
 				else{
@@ -232,6 +252,15 @@ public class Board {
 									tiles[start].getPiece().getType() == 'P', 
 									tiles[end].getID() <= 7 && tiles[end].getID() >=0, 
 									ply, moveNum, c, tiles);
+							if(tiles[start].getID() == 4){
+								blackKingMoved = true;
+							}
+							if(tiles[start].getID() == 7){
+								blackKingRookMoved = true;
+							}
+							if(tiles[start].getID() == 0){
+								blackQueenRookMoved = true;
+							}
 							tiles[end].removePiece();
 							tiles[end].setPiece(tiles[start].getPiece());
 							if(promotion){
@@ -244,6 +273,7 @@ public class Board {
 							fullmove++;
 							playerMove = 0;
 							returnFEN();
+							list = getMoveList('W');
 							return true;
 						}
 						else{
@@ -261,6 +291,15 @@ public class Board {
 							tiles[start].getPiece().getType() == 'P', 
 							tiles[end].getID() <= 7 && tiles[end].getID() >=0, 
 							ply, moveNum, c, tiles);
+					if(tiles[start].getID() == 4){
+						blackKingMoved = true;
+					}
+					if(tiles[start].getID() == 7){
+						blackKingRookMoved = true;
+					}
+					if(tiles[start].getID() == 0){
+						blackQueenRookMoved = true;
+					}
 					tiles[end].setPiece(tiles[start].getPiece());
 					if(promotion){
 						char n = askForPromotion();
@@ -272,6 +311,7 @@ public class Board {
 					fullmove++;
 					playerMove = 0;
 					returnFEN();
+					list = getMoveList('W');
 					return true;
 				}
 				else{
@@ -305,7 +345,8 @@ public class Board {
 	}
 	
 	public MoveList checkAllLegal(char c){
-		MoveList ml = new MoveList(tiles, c);
+		MoveList ml = new MoveList(tiles, c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
+				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved);
 		return ml;
 	}
 	
@@ -417,7 +458,7 @@ public class Board {
 		default: break;
 		}
 		
-		tileNotation = tileNotation + (Integer.toString(rank + 1));
+		tileNotation = tileNotation + (Integer.toString(8 - rank));
 		
 		return tileNotation;
 	}
@@ -427,7 +468,6 @@ public class Board {
 	 */
 	
 	public void printBoard(){
-		String rep = null;
 		System.out.println("Notation / Piece / ID / Promotion / Occupied ");
 		for(int i = 0; i < 64; i++){
 		System.out.println(tiles[i].getNotation() + " " +tiles[i].getPieceChar() + " " + 
@@ -454,12 +494,72 @@ public class Board {
 	}
 	
 	public void printVisualBoard(){
+		System.out.println("X | a | b | c | d | e | f | g | h |");
+		System.out.println("-----------------------------------");
 		for(int i = 0; i < 8; i++){
-		System.out.println("| " + tiles[0 + (i*8)].getPieceChar() + " | " + tiles[1 + (i*8)].getPieceChar() + 
+		System.out.println((8 - i) + " | " + tiles[0 + (i*8)].getPieceChar() + " | " + tiles[1 + (i*8)].getPieceChar() + 
 				" | " + tiles[2 + (i*8)].getPieceChar() + " | " + tiles[3 + (i*8)].getPieceChar() + 
 				" | " + tiles[4 + (i*8)].getPieceChar() + " | " + tiles[5 + (i*8)].getPieceChar() + 
 				" | " + tiles[6 + (i*8)].getPieceChar() + " | " + tiles[7 + (i*8)].getPieceChar() + " |"); 
 		}
 		System.out.println();
+	}
+	
+	public Tile[] setKnightTestBoard(){
+		tiles[0].setPiece(new Piece('N','W'));
+		tiles[63].setPiece(new Piece('N','W'));
+		tiles[7].setPiece(new Piece('N','B'));
+		tiles[56].setPiece(new Piece('N','B'));
+		return tiles;
+	}
+	
+	public Tile[] setBishopTestBoard(){
+		tiles[0].setPiece(new Piece('B','W'));
+		tiles[1].setPiece(new Piece('B','W'));
+		tiles[2].setPiece(new Piece('B','B'));
+		tiles[3].setPiece(new Piece('B','B'));
+		tiles[30].setPiece(new Piece('P','B'));
+		tiles[38].setPiece(new Piece('P','W'));
+		tiles[54].setPiece(new Piece('P','W'));
+		tiles[46].setPiece(new Piece('P','B'));
+		return tiles;
+	}
+	
+	public Tile[] setRookTestBoard(){
+	
+		tiles[35].setPiece(new Piece('R','W'));
+		tiles[36].setPiece(new Piece('R','B'));
+		tiles[19].setPiece(new Piece('P','W'));
+		tiles[20].setPiece(new Piece('P','B'));
+		tiles[51].setPiece(new Piece('P','B'));
+		tiles[52].setPiece(new Piece('P','W'));
+		return tiles;
+	}
+	
+	public Tile[] setQueenTestBoard(){
+		tiles[35].setPiece(new Piece('Q','W'));
+		tiles[36].setPiece(new Piece('Q','B'));
+		tiles[19].setPiece(new Piece('P','W'));
+		tiles[20].setPiece(new Piece('P','B'));
+		tiles[51].setPiece(new Piece('P','B'));
+		tiles[52].setPiece(new Piece('P','W'));
+		tiles[33].setPiece(new Piece('P','W'));
+		tiles[38].setPiece(new Piece('P','B'));
+		return tiles;
+	}
+	
+	public Tile[] setCastlingTestBoard(){
+		tiles[60].setPiece(new Piece('K','W'));
+		tiles[63].setPiece(new Piece('R','W'));
+		tiles[4].setPiece(new Piece('K','B'));
+		tiles[0].setPiece(new Piece('R', 'B'));
+		return tiles;
+	}
+	
+	public Tile[] setKingTestBoard(){
+		tiles[35].setPiece(new Piece('K','W'));
+		tiles[37].setPiece(new Piece('K','B'));
+		tiles[4].setPiece(new Piece('K','B'));
+		return tiles;
 	}
 }
