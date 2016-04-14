@@ -1,4 +1,4 @@
-
+import java.lang.Cloneable;
 /**
  * The class Tile contains information pertaining to the contents of 1 tile in the chess
  * board.
@@ -14,7 +14,6 @@ public class Tile {
 	String notation;
 	boolean isPromotionSquare;
 	int id;
-	
 	
 	/**
 	 *  Blank constructor for the class. Tiles it generates will have id

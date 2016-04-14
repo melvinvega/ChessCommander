@@ -130,7 +130,7 @@ public class Board {
 			tiles[i].setPiece(pieces[j]);
 			j++;
 		}
-		
+		getMoveList('W');
 		returnFEN();
 		return tiles;
 	}
@@ -144,7 +144,12 @@ public class Board {
 				return false;
 			}
 			else{
+				if(!list.checkIfLegal(start, end, c)){
+						System.out.println("Illegal Move!");
+						return false;
+					}
 				if(tiles[start].getPiece().getColor() == 'W'){
+					
 					halfmove ++;
 					if(tiles[start].getPieceChar() == 'P'){
 						halfmove = 0;
@@ -323,17 +328,19 @@ public class Board {
 	
 
 	private char askForPromotion() {
-		@SuppressWarnings("resource")
-		Scanner s = new Scanner(System.in);
-		char in = 'x';
-		while(true){
-			System.out.println("Insert Promotion Piece");
-			in = s.nextLine().charAt(0);
-			if(in == 'Q' || in == 'R' || in == 'B' ||in != 'N'){
-					break;
-					}
-		}
-		return in;
+		
+		System.out.println("Promotion!");
+//		Scanner s = new Scanner(System.in);
+//		char in = 'x';
+//		while(true){
+//			System.out.println("Insert Promotion Piece");
+//			in = s.nextLine().charAt(0);
+//			if(in == 'Q' || in == 'R' || in == 'B' ||in != 'N'){
+//					break;
+//					}
+//		}
+//		return in;
+		return 'q';
 	}
 
 	public Tile[] getBoard(){
@@ -510,6 +517,7 @@ public class Board {
 		tiles[63].setPiece(new Piece('N','W'));
 		tiles[7].setPiece(new Piece('N','B'));
 		tiles[56].setPiece(new Piece('N','B'));
+		getMoveList('W');
 		return tiles;
 	}
 	
@@ -522,6 +530,7 @@ public class Board {
 		tiles[38].setPiece(new Piece('P','W'));
 		tiles[54].setPiece(new Piece('P','W'));
 		tiles[46].setPiece(new Piece('P','B'));
+		getMoveList('W');
 		return tiles;
 	}
 	
@@ -533,6 +542,7 @@ public class Board {
 		tiles[20].setPiece(new Piece('P','B'));
 		tiles[51].setPiece(new Piece('P','B'));
 		tiles[52].setPiece(new Piece('P','W'));
+		getMoveList('W');
 		return tiles;
 	}
 	
@@ -545,6 +555,7 @@ public class Board {
 		tiles[52].setPiece(new Piece('P','W'));
 		tiles[33].setPiece(new Piece('P','W'));
 		tiles[38].setPiece(new Piece('P','B'));
+		getMoveList('W');
 		return tiles;
 	}
 	
@@ -553,6 +564,7 @@ public class Board {
 		tiles[63].setPiece(new Piece('R','W'));
 		tiles[4].setPiece(new Piece('K','B'));
 		tiles[0].setPiece(new Piece('R', 'B'));
+		getMoveList('W');
 		return tiles;
 	}
 	
@@ -560,6 +572,15 @@ public class Board {
 		tiles[35].setPiece(new Piece('K','W'));
 		tiles[37].setPiece(new Piece('K','B'));
 		tiles[4].setPiece(new Piece('K','B'));
+		getMoveList('W');
+		return tiles;
+	}
+	
+	public Tile[] setPawnTestBoard(){
+		tiles[52].setPiece(new Piece('P','W'));
+		tiles[8].setPiece(new Piece('P','W'));
+		tiles[29].setPiece(new Piece('P','B'));
+		getMoveList('W');
 		return tiles;
 	}
 }

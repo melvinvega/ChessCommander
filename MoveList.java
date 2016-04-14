@@ -129,7 +129,7 @@ public class MoveList {
 					if(checkForWhitePiece(tile.getID() + i)){
 						break;
 					}
-					if(checkForBlackPiece(tile.getID() - i)){
+					if(checkForBlackPiece(tile.getID() + i)){
 						whiteMoves.add(new ShortMove('W','Q',tile.getID(), tile.getID() + i));
 						break;
 					}
@@ -234,7 +234,7 @@ public class MoveList {
 					if(checkForWhitePiece(tile.getID() + i)){
 						break;
 					}
-					if(checkForBlackPiece(tile.getID() - i)){
+					if(checkForBlackPiece(tile.getID() + i)){
 						whiteMoves.add(new ShortMove('W','R',tile.getID(), tile.getID() + i));
 						break;
 					}
@@ -797,7 +797,7 @@ public class MoveList {
 					if(checkForBlackPiece(tile.getID() + i)){
 						break;
 					}
-					if(checkForWhitePiece(tile.getID() - i)){
+					if(checkForWhitePiece(tile.getID() + i)){
 						blackMoves.add(new ShortMove('W','q',tile.getID(), tile.getID() + i));
 						break;
 					}
@@ -902,7 +902,7 @@ public class MoveList {
 					if(checkForBlackPiece(tile.getID() + i)){
 						break;
 					}
-					if(checkForWhitePiece(tile.getID() - i)){
+					if(checkForWhitePiece(tile.getID() + i)){
 						blackMoves.add(new ShortMove('B','r',tile.getID(), tile.getID() + i));
 						break;
 					}
@@ -1488,6 +1488,58 @@ public class MoveList {
 				}
 				else if (king % 8 != 7 && s.getType() == 'p' && s.getStartSquare() == (king + 9)){
 					return true;
+				}
+			}
+			return false;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean checkIfLegal(int s, int e, char c){
+		if(c == 'W'){
+			List<ShortMove> pieceMoves = new ArrayList<ShortMove>();
+			for(ShortMove sm : whiteMoves){
+				if(sm.getStartSquare() == s){
+					pieceMoves.add(sm);
+				}
+			}
+			for(ShortMove sm: pieceMoves){
+				if(sm.getEndSquare() == e){
+					if(sm.getType() == 'K'){
+						//Tile[] copy = board.clone();
+						//if(copy[e].containsPiece){
+							return false; // temporary
+						//}
+					}
+					else
+						if(!checkIfCheck('W')){
+							return true;
+						}	
+				}
+			}
+			return false;
+		}
+		else if(c == 'B'){
+			List<ShortMove> pieceMoves = new ArrayList<ShortMove>();
+			for(ShortMove sm : blackMoves){
+				if(sm.getStartSquare() == s){
+					pieceMoves.add(sm);
+				}
+			}
+			for(ShortMove sm: pieceMoves){
+				if(sm.getEndSquare() == e){
+					if(sm.getType() == 'K'){
+						//Tile[] copy = board.clone();
+						//if(copy[e].containsPiece){
+							return false; // temporary
+						//}
+					}
+					else
+						if(!checkIfCheck('B')){
+							return true;
+						}	
 				}
 			}
 			return false;

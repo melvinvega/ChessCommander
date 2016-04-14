@@ -12,9 +12,14 @@ public class main {
 		//b.setInitialPosition();
 		//b.printVisualBoard();
 		
-		PieceTest tester = new PieceTest();
-		tester.testKnights();
 		
+		
+		PieceTest tester = new PieceTest();
+		//tester.testKnights();
+		//tester.testRook();
+		//tester.testBishop();
+		//tester.testQueen();
+		tester.testPawn();
 	}
 
 }
