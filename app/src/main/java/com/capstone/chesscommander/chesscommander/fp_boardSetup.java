@@ -171,7 +171,6 @@ public class fp_boardSetup extends Activity {
                 view.setTag(R.id.tagpiece, "");
                 view.setTag(R.id.tagcolor, "");
                 CharSequence description = view.getContentDescription().subSequence(0,2);
-                description = description + " " + view.getTag(R.id.tagcolor) + " " + view.getTag(R.id.tagpiece);
                 view.setContentDescription(description);
                 String taginfo =currentPiece.getTag(R.id.tagpiece).toString();
                 switch (taginfo){
@@ -687,18 +686,24 @@ public class fp_boardSetup extends Activity {
         }
         if(wPieces>17 && bPieces>17){
             startable = false;
-            if(wPieces>8){
+            if(wPieces>17){
                 message = "You must have less than 17 White Pieces";
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             }
-            if(bPieces>8){
+            if(bPieces>17){
                 message = "You must have less than 17 Black Pieces";
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             }
         }
         if(!startable && (!(wKing==1) | !(bKing==1)) ){
-            message = "You must have only 1 white king and 1 black king";
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            if(!(wKing==1)){
+                message = "You must have 1 white king";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(!(bKing==1)){
+                message = "You must have 1 black king";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
         }
         if(startable){
             Intent startGameIntent = new Intent(this,game_screen.class);

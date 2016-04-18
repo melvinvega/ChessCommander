@@ -35,4 +35,6 @@ dependencies {
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     // Set this dependency to use intents
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    // Set this dependency to use Accesibility Checks
+    androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2'){ exclude module: 'support-annotations' exclude module: 'support-v4' exclude module: 'support-v13' exclude module: 'recyclerview-v7' }
 }

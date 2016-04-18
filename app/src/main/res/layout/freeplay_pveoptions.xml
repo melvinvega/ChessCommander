@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="150dp"
-        android:id="@+id/logo_imageView"
+        android:id="@+id/fp_options_logo_imageView"
         android:layout_alignParentTop="true"
         android:focusable="true"
         android:focusableInTouchMode="false"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="Difficulty"
         android:id="@+id/freeplay_pvedifficulty_textview"
-        android:layout_below="@+id/logo_imageView"
+        android:layout_below="@+id/fp_options_logo_imageView"
         android:layout_alignParentStart="true"
         android:layout_marginStart="22dp"
         android:layout_marginTop="33dp"
