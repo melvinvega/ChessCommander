@@ -696,8 +696,14 @@ public class fp_boardSetup extends Activity {
             }
         }
         if(!startable && (!(wKing==1) | !(bKing==1)) ){
-            message = "You must have only 1 white king and 1 black king";
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            if(!(wKing==1)){
+                message = "You must have 1 white king";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
+            if(!(bKing==1)){
+                message = "You must have 1 black king";
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
         }
         if(startable){
             Intent startGameIntent = new Intent(this,game_screen.class);
