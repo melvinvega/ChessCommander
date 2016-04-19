@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -41,6 +43,9 @@ public class game_screen extends Activity {
 
     private String gameType,difficulty,playerColor;
     private int[] tempBoard = new int[64];
+    private String[] rank = new String[6];
+    private String[] column = new String[8];
+    private String[] row = new String[8];
     private ImageButton[][] board = new ImageButton[8][8];
     private ImageButton[][] initialBoard = new ImageButton[8][8];
     private ImageButton A8_button,B8_button,C8_button,D8_button,E8_button,F8_button,G8_button,H8_button;
@@ -53,8 +58,8 @@ public class game_screen extends Activity {
     private ImageButton A1_button,B1_button,C1_button,D1_button,E1_button,F1_button,G1_button,H1_button;
     private Bundle extras;
     private static final int SPEECH_REQUEST_CODE = 0;
-    //public static final String EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS = "300";
-    //public static final String EXTRA_PROMPT = "Say Piece Colum Row";
+
+    private String[][] pawnMoves = new String[8][3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +75,8 @@ public class game_screen extends Activity {
         setDescriptions();
         prevId = -1;
         initialBoard = board.clone();
-
+        voiceKeyWordsArray();
+        resetBoard();
     }
 
     public void onButtonClick(View view){
@@ -143,7 +149,6 @@ public class game_screen extends Activity {
 
     public void onVoiceButtonClick(View view){
         displaySpeechRecognizer();
-
     }
 
     public void onUndoButtonClick(View view){
@@ -461,96 +466,96 @@ public class game_screen extends Activity {
 
     private void setPieceTags(){
 
-      if(gameType.equals("pve") | gameType.equals("pvp")){
-          for(int c=0;c<8;c++){
-              switch (c){
-                  case 0:
-                      A1_button.setTag(R.id.tagpiece,"rook");
-                      A1_button.setTag(R.id.tagcolor,"white");
-                      A2_button.setTag(R.id.tagpiece,"pawn");
-                      A2_button.setTag(R.id.tagcolor,"white");
-                      A7_button.setTag(R.id.tagpiece,"pawn");
-                      A7_button.setTag(R.id.tagcolor,"black");
-                      A8_button.setTag(R.id.tagpiece,"rook");
-                      A8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 1:
-                      B1_button.setTag(R.id.tagpiece,"knight");
-                      B1_button.setTag(R.id.tagcolor,"white");
-                      B2_button.setTag(R.id.tagpiece,"pawn");
-                      B2_button.setTag(R.id.tagcolor,"white");
-                      B7_button.setTag(R.id.tagpiece,"pawn");
-                      B7_button.setTag(R.id.tagcolor,"black");
-                      B8_button.setTag(R.id.tagpiece,"knight");
-                      B8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 2:
-                      C1_button.setTag(R.id.tagpiece,"bishop");
-                      C1_button.setTag(R.id.tagcolor,"white");
-                      C2_button.setTag(R.id.tagpiece,"pawn");
-                      C2_button.setTag(R.id.tagcolor,"white");
-                      C7_button.setTag(R.id.tagpiece,"pawn");
-                      C7_button.setTag(R.id.tagcolor,"black");
-                      C8_button.setTag(R.id.tagpiece,"bishop");
-                      C8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 3:
-                      D1_button.setTag(R.id.tagpiece,"queen");
-                      D1_button.setTag(R.id.tagcolor,"white");
-                      D2_button.setTag(R.id.tagpiece,"pawn");
-                      D2_button.setTag(R.id.tagcolor,"white");
-                      D7_button.setTag(R.id.tagpiece,"pawn");
-                      D7_button.setTag(R.id.tagcolor,"black");
-                      D8_button.setTag(R.id.tagpiece,"queen");
-                      D8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 4:
-                      E1_button.setTag(R.id.tagpiece,"king");
-                      E1_button.setTag(R.id.tagcolor,"white");
-                      E2_button.setTag(R.id.tagpiece,"pawn");
-                      E2_button.setTag(R.id.tagcolor,"white");
-                      E7_button.setTag(R.id.tagpiece,"pawn");
-                      E7_button.setTag(R.id.tagcolor,"black");
-                      E8_button.setTag(R.id.tagpiece,"king");
-                      E8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 5:
-                      F1_button.setTag(R.id.tagpiece,"bishop");
-                      F1_button.setTag(R.id.tagcolor,"white");
-                      F2_button.setTag(R.id.tagpiece,"pawn");
-                      F2_button.setTag(R.id.tagcolor,"white");
-                      F7_button.setTag(R.id.tagpiece,"pawn");
-                      F7_button.setTag(R.id.tagcolor,"black");
-                      F8_button.setTag(R.id.tagpiece,"bishop");
-                      F8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 6:
-                      G1_button.setTag(R.id.tagpiece,"knight");
-                      G1_button.setTag(R.id.tagcolor,"white");
-                      G2_button.setTag(R.id.tagpiece,"pawn");
-                      G2_button.setTag(R.id.tagcolor,"white");
-                      G7_button.setTag(R.id.tagpiece,"pawn");
-                      G7_button.setTag(R.id.tagcolor,"black");
-                      G8_button.setTag(R.id.tagpiece,"knight");
-                      G8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 7:
-                      H1_button.setTag(R.id.tagpiece,"rook");
-                      H1_button.setTag(R.id.tagcolor,"white");
-                      H2_button.setTag(R.id.tagpiece,"pawn");
-                      H2_button.setTag(R.id.tagcolor,"white");
-                      H7_button.setTag(R.id.tagpiece,"pawn");
-                      H7_button.setTag(R.id.tagcolor,"black");
-                      H8_button.setTag(R.id.tagpiece,"rook");
-                      H8_button.setTag(R.id.tagcolor,"black");
-                      break;
-              }//Switch
-          }//for loop
-      }// if pve or pvp
+        if(gameType.equals("pve") | gameType.equals("pvp")){
+            for(int c=0;c<8;c++){
+                switch (c){
+                    case 0:
+                        A1_button.setTag(R.id.tagpiece,"rook");
+                        A1_button.setTag(R.id.tagcolor,"white");
+                        A2_button.setTag(R.id.tagpiece,"pawn");
+                        A2_button.setTag(R.id.tagcolor,"white");
+                        A7_button.setTag(R.id.tagpiece,"pawn");
+                        A7_button.setTag(R.id.tagcolor,"black");
+                        A8_button.setTag(R.id.tagpiece,"rook");
+                        A8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 1:
+                        B1_button.setTag(R.id.tagpiece,"knight");
+                        B1_button.setTag(R.id.tagcolor,"white");
+                        B2_button.setTag(R.id.tagpiece,"pawn");
+                        B2_button.setTag(R.id.tagcolor,"white");
+                        B7_button.setTag(R.id.tagpiece,"pawn");
+                        B7_button.setTag(R.id.tagcolor,"black");
+                        B8_button.setTag(R.id.tagpiece,"knight");
+                        B8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 2:
+                        C1_button.setTag(R.id.tagpiece,"bishop");
+                        C1_button.setTag(R.id.tagcolor,"white");
+                        C2_button.setTag(R.id.tagpiece,"pawn");
+                        C2_button.setTag(R.id.tagcolor,"white");
+                        C7_button.setTag(R.id.tagpiece,"pawn");
+                        C7_button.setTag(R.id.tagcolor,"black");
+                        C8_button.setTag(R.id.tagpiece,"bishop");
+                        C8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 3:
+                        D1_button.setTag(R.id.tagpiece,"queen");
+                        D1_button.setTag(R.id.tagcolor,"white");
+                        D2_button.setTag(R.id.tagpiece,"pawn");
+                        D2_button.setTag(R.id.tagcolor,"white");
+                        D7_button.setTag(R.id.tagpiece,"pawn");
+                        D7_button.setTag(R.id.tagcolor,"black");
+                        D8_button.setTag(R.id.tagpiece,"queen");
+                        D8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 4:
+                        E1_button.setTag(R.id.tagpiece,"king");
+                        E1_button.setTag(R.id.tagcolor,"white");
+                        E2_button.setTag(R.id.tagpiece,"pawn");
+                        E2_button.setTag(R.id.tagcolor,"white");
+                        E7_button.setTag(R.id.tagpiece,"pawn");
+                        E7_button.setTag(R.id.tagcolor,"black");
+                        E8_button.setTag(R.id.tagpiece,"king");
+                        E8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 5:
+                        F1_button.setTag(R.id.tagpiece,"bishop");
+                        F1_button.setTag(R.id.tagcolor,"white");
+                        F2_button.setTag(R.id.tagpiece,"pawn");
+                        F2_button.setTag(R.id.tagcolor,"white");
+                        F7_button.setTag(R.id.tagpiece,"pawn");
+                        F7_button.setTag(R.id.tagcolor,"black");
+                        F8_button.setTag(R.id.tagpiece,"bishop");
+                        F8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 6:
+                        G1_button.setTag(R.id.tagpiece,"knight");
+                        G1_button.setTag(R.id.tagcolor,"white");
+                        G2_button.setTag(R.id.tagpiece,"pawn");
+                        G2_button.setTag(R.id.tagcolor,"white");
+                        G7_button.setTag(R.id.tagpiece,"pawn");
+                        G7_button.setTag(R.id.tagcolor,"black");
+                        G8_button.setTag(R.id.tagpiece,"knight");
+                        G8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 7:
+                        H1_button.setTag(R.id.tagpiece,"rook");
+                        H1_button.setTag(R.id.tagcolor,"white");
+                        H2_button.setTag(R.id.tagpiece,"pawn");
+                        H2_button.setTag(R.id.tagcolor,"white");
+                        H7_button.setTag(R.id.tagpiece,"pawn");
+                        H7_button.setTag(R.id.tagcolor,"black");
+                        H8_button.setTag(R.id.tagpiece,"rook");
+                        H8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                }//Switch
+            }//for loop
+        }// if pve or pvp
 
-      if(gameType.equals("fp")){
+        if(gameType.equals("fp")){
 
-      }
+        }
 
     }//End of setPiece method
 
@@ -784,8 +789,7 @@ public class game_screen extends Activity {
     private void displaySpeechRecognizer() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        //intent.putExtra("SilenceTimeOut",RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS);
-        //intent.putExtra("Message",RecognizerIntent.EXTRA_PROMPT);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Hello say movement");
         // Start the activity, the intent will be populated with the speech text
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
     }
@@ -795,12 +799,165 @@ public class game_screen extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
-            List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            String spokenText = results.get(0);
-            // Do something with spokenText
+            ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            System.out.println("Input: ");
+            System.out.println(results);
+            String tempArray[];
+            String finalCommand[] = new String[3];
+            for(int i=0;i<results.size();i++) {
+                String temp;
+                if(results.get(i).split("\\s+").length<3){ //If results is less than 3 add another item
+                    if(results.get(i).split("\\s+").length==1){
+                        temp =   results.get(i).toLowerCase() + " " + "null"+ " " + "null";
+                    }
+                    else{
+                        temp =   results.get(i).toLowerCase() + " " + "null";
+                    }
+                }
+                else{
+                    temp = results.get(i).toLowerCase();
+                }
+                tempArray = temp.split("\\s+");
+                if(tempArray[2].equals("null")){
+                    //tempArray[0] = null;
+                    if(tempArray[1].length()==2){
+                        String scratch = tempArray[1];
+                        tempArray[1] = scratch.charAt(0) + "";
+                        tempArray[2] = scratch.charAt(1) + "";
+                    }
+                    else{
+                        tempArray[1] = null;
+                        tempArray[2] = null;
+                    }
+                }
+                List ranklist = Arrays.asList(rank);
+                List columnlist = Arrays.asList(column);
+                List rowlist = Arrays.asList(row);
+                if (ranklist.contains(tempArray[0])) {
+                    if(finalCommand[0]==null || finalCommand[0].isEmpty()){
+                        finalCommand[0] = tempArray[0];
+                    }
+                }
+                if (columnlist.contains(tempArray[1])) {
+                    if(finalCommand[1]==null || finalCommand[0].isEmpty()){
+                        finalCommand[1] = tempArray[1];
+                    }
+                }
+                if (rowlist.contains(tempArray[2])) {
+                    if(finalCommand[2]==null || finalCommand[0].isEmpty()){
+                        finalCommand[2] = tempArray[2];
+                    }
+                }
+            }
+
+            String spokenText = finalCommand[0] + " " + finalCommand[1] + finalCommand[2];
+            System.out.println("Result: ");
+            System.out.println(spokenText);
             Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
+
+            List finalCommandList = Arrays.asList(finalCommand);
+            if(finalCommandList.contains("null")){
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
+                prevId = possibleMovesPawn(finalCommand);
+                onButtonClick(stringToView(finalCommand));
+            }
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    public void voiceKeyWordsArray(){
+        rank[0] = "rook";
+        rank[1] = "knight";
+        rank[2] = "bishop";
+        rank[3] = "queen";
+        rank[4] = "king";
+        rank[5] = "pawn";
+
+        column[0] = "a";
+        column[1] = "b";
+        column[2] = "c";
+        column[3] = "d";
+        column[4] = "e";
+        column[5] = "f";
+        column[6] = "g";
+        column[7] = "h";
+
+        row[0] = "1";
+        row[1] = "2";
+        row[2] = "3";
+        row[3] = "4";
+        row[4] = "5";
+        row[5] = "6";
+        row[6] = "7";
+        row[7] = "8";
+    }
+
+    public View stringToView(String[] s){
+        String buttonId = s[1].toUpperCase() + s[2]+"_button";
+        int resID = getResources().getIdentifier(buttonId , "id", getPackageName());
+        return findViewById(resID);
+    }
+
+    public int possibleMovesPawn(String[] s){
+        int targetId;
+        if(A2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[0][0] = "A2";
+            pawnMoves[0][1] = "A3";
+            pawnMoves[0][2] = "A4";
+        }
+        if(B2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[1][0] = "B2";
+            pawnMoves[1][1] = "B3";
+            pawnMoves[1][2] = "B4";
+        }
+        if(C2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[2][0] = "C2";
+            pawnMoves[2][1] = "C3";
+            pawnMoves[2][2] = "C4";
+        }
+        if(D2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[3][0] = "D2";
+            pawnMoves[3][1] = "D3";
+            pawnMoves[3][2] = "D4";
+        }
+        if(E2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[4][0] = "E2";
+            pawnMoves[4][1] = "E3";
+            pawnMoves[4][2] = "E4";
+        }
+        if(F2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[5][0] = "F2";
+            pawnMoves[5][1] = "F3";
+            pawnMoves[5][2] = "F4";
+        }
+        if(G2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[6][0] = "G2";
+            pawnMoves[6][1] = "G3";
+            pawnMoves[6][2] = "G4";
+        }
+        if(H2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[7][0] = "H2";
+            pawnMoves[7][1] = "H3";
+            pawnMoves[7][2] = "H4";
+        }
+        String destination = s[1].toUpperCase()+s[2];
+        int champion = 0;
+        for(int i=0;i<8;i++){
+            List tempList = Arrays.asList(pawnMoves[i]);
+            if(tempList.contains(destination)){
+                champion = i;
+            }
+        }
+        targetId = getResources().getIdentifier(pawnMoves[champion][0]+"_button" , "id", getPackageName());
+        pawnMoves[champion][0] =   pawnMoves[champion][1].charAt(0) + (Integer.parseInt(s[2])) + "";
+        pawnMoves[champion][1] =   pawnMoves[champion][1].charAt(0) + (Integer.parseInt(s[2])+1) + "";
+        pawnMoves[champion][2] = "plas";
+        return targetId;
+    }
+
 
 }
