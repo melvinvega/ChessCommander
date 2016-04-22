@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -29,9 +30,13 @@ public class Board {
 	int doubleMoveTile = -1;
 	String FEN;
 	MoveList list;
+	boolean isTurnPlayer;
+	Moves lastPlayerMove;
 	
 	Tile[] tiles = new Tile [64];
-	Moves[] moves = new Moves [1000];
+	Tile[] helpTiles = new Tile[64];
+	
+	ArrayList<Moves> moves = new ArrayList<Moves>();
 	
 	int moveNum = 1;
 	int ply = 1;
@@ -42,10 +47,46 @@ public class Board {
 		myGame = new Game();
 	}
 	
+	public Board(Board original){
+		this.myGame = original.myGame;
+		this.whiteKingCastle = original.whiteKingCastle;
+		this.blackKingCastle = original.blackKingCastle;
+		this.whiteQueenCastle = original.whiteQueenCastle;
+		this.blackQueenCastle = original.blackQueenCastle;
+		this.whiteKingMoved = original.whiteKingMoved;
+		this.whiteKingRookMoved = original.whiteKingRookMoved;
+		this.whiteQueenRookMoved = original.whiteQueenRookMoved;
+		this.blackKingMoved = original.blackKingMoved;
+		this.blackKingRookMoved = original.blackKingRookMoved;
+		this.blackQueenRookMoved = original.blackQueenRookMoved;
+		this.halfmove = original.halfmove;
+		this.fullmove = original.fullmove;
+		this.playerMove = original.playerMove;
+		this.doubleMoveTile = original.doubleMoveTile;
+		this.FEN = original.FEN;
+		this.list = original.list;
+		
+		this.tiles = new Tile [64];
+		this.moves = new ArrayList<Moves>();
+		
+		this.moveNum = 1;
+		this.ply = 1;
+	}
 	
-	public MoveList getMoveList(char c){
+	private Board copyBoard(){
+		return new Board(this);
+	}
+	
+	public Tile[] setCustomBoard(Tile[] t){
+		if(t.length == 64){
+			tiles = t;
+		}
+		return tiles;
+	}
+	
+	public MoveList getMoveList(char c, boolean h){
 		list = new MoveList(tiles, c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
-				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved);
+				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, h);
 		return list;
 	}
 	
@@ -85,6 +126,7 @@ public class Board {
 				r = 1 + i;
 				
 				tiles[curr] = new Tile( c + r , (i == 0 || i == 7) , curr);
+				helpTiles[curr] = new Tile( c + r , (i == 0 || i == 7) , curr);
 			}
 		}
 		return tiles;
@@ -130,12 +172,13 @@ public class Board {
 			tiles[i].setPiece(pieces[j]);
 			j++;
 		}
-		getMoveList('W');
+		getMoveList('W', false);
 		returnFEN();
 		return tiles;
 	}
 	
-	public boolean move(int start, int end, char c){
+	public boolean move(int start, int end, char c, boolean ip){
+		isTurnPlayer = true;
 		boolean capture = false;
 		boolean promotion = false;
 		
@@ -159,7 +202,7 @@ public class Board {
 							capture = true;
 							halfmove = 0;
 							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
-							moves[ply] = new Moves(tiles[start].getPiece(), start, end, capture, 
+							moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
 									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 56, 
@@ -168,7 +211,7 @@ public class Board {
 									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
 									tiles[start].getPiece().getType() == 'P', 
 									promotion, 
-									ply, moveNum, c, tiles);
+									ply, moveNum, c, copyBoard()));
 							if(tiles[start].getID() == 60){
 								whiteKingMoved = true;
 							}
@@ -188,7 +231,7 @@ public class Board {
 							ply++;
 							playerMove = 1;
 							returnFEN();
-							list = getMoveList('B');
+							list = getMoveList('B', false);
 							return true;
 						}
 						else{
@@ -196,7 +239,7 @@ public class Board {
 						}
 					}
 					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
-					moves[ply] = new Moves(tiles[start].getPiece(), start, end, capture, 
+					moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
 							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 56, 
@@ -205,7 +248,7 @@ public class Board {
 							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
 							tiles[start].getPiece().getType() == 'P', 
 							promotion, 
-							ply, moveNum, c, tiles);
+							ply, moveNum, c, copyBoard()));
 					if(tiles[start].getID() == 60){
 						whiteKingMoved = true;
 					}
@@ -224,7 +267,7 @@ public class Board {
 					ply++;
 					playerMove = 1;
 					returnFEN();
-					list = getMoveList('B');
+					list = getMoveList('B', false);
 					return true;
 				}
 				else{
@@ -247,7 +290,7 @@ public class Board {
 							capture = true;
 							halfmove = 0;
 							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
-							moves[ply] = new Moves(tiles[start].getPiece(), start, end, capture, 
+							moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
 									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 56, 
@@ -256,7 +299,7 @@ public class Board {
 									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
 									tiles[start].getPiece().getType() == 'P', 
 									tiles[end].getID() <= 7 && tiles[end].getID() >=0, 
-									ply, moveNum, c, tiles);
+									ply, moveNum, c, copyBoard()));
 							if(tiles[start].getID() == 4){
 								blackKingMoved = true;
 							}
@@ -278,7 +321,7 @@ public class Board {
 							fullmove++;
 							playerMove = 0;
 							returnFEN();
-							list = getMoveList('W');
+							list = getMoveList('W', false);
 							return true;
 						}
 						else{
@@ -286,7 +329,7 @@ public class Board {
 						}
 					}
 					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
-					moves[ply] = new Moves(tiles[start].getPiece(), start, end, capture, 
+					moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
 							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 56, 
@@ -295,7 +338,7 @@ public class Board {
 							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
 							tiles[start].getPiece().getType() == 'P', 
 							tiles[end].getID() <= 7 && tiles[end].getID() >=0, 
-							ply, moveNum, c, tiles);
+							ply, moveNum, c, copyBoard()));
 					if(tiles[start].getID() == 4){
 						blackKingMoved = true;
 					}
@@ -316,7 +359,7 @@ public class Board {
 					fullmove++;
 					playerMove = 0;
 					returnFEN();
-					list = getMoveList('W');
+					list = getMoveList('W', false);
 					return true;
 				}
 				else{
@@ -326,7 +369,193 @@ public class Board {
 		}
 	}
 	
-
+	public boolean testMove(int start, int end, char c, boolean ip){
+		isTurnPlayer = true;
+		boolean capture = false;
+		boolean promotion = false;
+		
+		if(c == 'W'){
+			if(!tiles[start].getIfOccupied()){
+				return false;
+			}
+			else{
+				if(tiles[start].getPiece().getColor() == 'W'){
+					
+					halfmove ++;
+					if(tiles[start].getPieceChar() == 'P'){
+						halfmove = 0;
+					}
+					if(tiles[end].getIfOccupied()){
+						if(tiles[end].getPiece().getColor() == 'B'){
+							capture = true;
+							halfmove = 0;
+							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+							moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
+									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
+									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
+									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 56, 
+									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 0, 
+									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 63, 
+									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
+									tiles[start].getPiece().getType() == 'P', 
+									promotion, 
+									ply, moveNum, c, copyBoard()));
+							if(tiles[start].getID() == 60){
+								whiteKingMoved = true;
+							}
+							if(tiles[start].getID() == 63){
+								whiteKingRookMoved = true;
+							}
+							if(tiles[start].getID() == 56){
+								whiteQueenRookMoved = true;
+							}
+							tiles[end].removePiece();
+							tiles[end].setPiece(tiles[start].getPiece());
+							if(promotion){
+								char n = askForPromotion();
+								tiles[end].pieceInTile.setType(n);
+							}
+							tiles[start].removePiece();
+							ply++;
+							playerMove = 1;
+							returnFEN();
+							list = getMoveList('B', true);
+							return true;
+						}
+						else{
+							return false;
+						}
+					}
+					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+					moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
+							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
+							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
+							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 56, 
+							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 0, 
+							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 63, 
+							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
+							tiles[start].getPiece().getType() == 'P', 
+							promotion, 
+							ply, moveNum, c, copyBoard()));
+					if(tiles[start].getID() == 60){
+						whiteKingMoved = true;
+					}
+					if(tiles[start].getID() == 63){
+						whiteKingRookMoved = true;
+					}
+					if(tiles[start].getID() == 56){
+						whiteQueenRookMoved = true;
+					}
+					tiles[end].setPiece(tiles[start].getPiece());
+					if(promotion){
+						char n = askForPromotion();
+						tiles[end].pieceInTile.setType(n);
+					}
+					tiles[start].removePiece();
+					ply++;
+					playerMove = 1;
+					returnFEN();
+					list = getMoveList('B', true);
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+		}
+		else{
+			if(!tiles[start].getIfOccupied()){
+				return false;
+			}
+			else{
+				halfmove ++;
+				if(tiles[start].getPiece().getColor() == 'B'){
+					if(tiles[start].getPieceChar() == 'P'){
+						halfmove = 0;
+					}
+					if(tiles[end].getIfOccupied()){
+						if(tiles[end].getPiece().getColor() == 'W'){
+							capture = true;
+							halfmove = 0;
+							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+							moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
+									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
+									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
+									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 56, 
+									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 0, 
+									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 63, 
+									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
+									tiles[start].getPiece().getType() == 'P', 
+									tiles[end].getID() <= 7 && tiles[end].getID() >=0, 
+									ply, moveNum, c, copyBoard()));
+							if(tiles[start].getID() == 4){
+								blackKingMoved = true;
+							}
+							if(tiles[start].getID() == 7){
+								blackKingRookMoved = true;
+							}
+							if(tiles[start].getID() == 0){
+								blackQueenRookMoved = true;
+							}
+							tiles[end].removePiece();
+							tiles[end].setPiece(tiles[start].getPiece());
+							if(promotion){
+								char n = askForPromotion();
+								tiles[end].pieceInTile.setType(n);
+							}
+							tiles[start].removePiece();
+							ply++;
+							moveNum++;
+							fullmove++;
+							playerMove = 0;
+							returnFEN();
+							list = getMoveList('W', true);
+							return true;
+						}
+						else{
+							return false;
+						}
+					}
+					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+					moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
+							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
+							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
+							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 56, 
+							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 0, 
+							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 63, 
+							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
+							tiles[start].getPiece().getType() == 'P', 
+							tiles[end].getID() <= 7 && tiles[end].getID() >=0, 
+							ply, moveNum, c, copyBoard()));
+					if(tiles[start].getID() == 4){
+						blackKingMoved = true;
+					}
+					if(tiles[start].getID() == 7){
+						blackKingRookMoved = true;
+					}
+					if(tiles[start].getID() == 0){
+						blackQueenRookMoved = true;
+					}
+					tiles[end].setPiece(tiles[start].getPiece());
+					if(promotion){
+						char n = askForPromotion();
+						tiles[end].pieceInTile.setType(n);
+					}
+					tiles[start].removePiece();
+					ply++;
+					moveNum++;
+					fullmove++;
+					playerMove = 0;
+					returnFEN();
+					list = getMoveList('W', true);
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+		}
+	}
 	private char askForPromotion() {
 		
 		System.out.println("Promotion!");
@@ -347,13 +576,17 @@ public class Board {
 		return tiles;
 	}
 	
+	public Tile[] getHelpBoard(){
+		return helpTiles;
+	}
+	
 	public Tile getTile(int id){
 		return tiles[id];
 	}
 	
 	public MoveList checkAllLegal(char c){
 		MoveList ml = new MoveList(tiles, c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
-				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved);
+				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);
 		return ml;
 	}
 	
@@ -486,12 +719,12 @@ public class Board {
 	 * For debugging purposes. Prints contents of a move object.
 	 */
 	public void printMove(int m){
-		System.out.println("Move # " + moves[m].getMoveNumber());
-		System.out.println("Ply # " + moves[m].getPly() );
-		System.out.println(moves[m].getStartSquareID());
-		System.out.println(moves[m].getEndSquareID());
-		System.out.println(moves[m].getMovedPiece().getType());
-		System.out.println(moves[m].getMoveDoneBy());
+		System.out.println("Move # " + moves.get(m).getMoveNumber());
+		System.out.println("Ply # " + moves.get(m).getPly() );
+		System.out.println(moves.get(m).getStartSquareID());
+		System.out.println(moves.get(m).getEndSquareID());
+		System.out.println(moves.get(m).getMovedPiece().getType());
+		System.out.println(moves.get(m).getMoveDoneBy());
 		System.out.println();
 	}
 	
@@ -517,7 +750,7 @@ public class Board {
 		tiles[63].setPiece(new Piece('N','W'));
 		tiles[7].setPiece(new Piece('N','B'));
 		tiles[56].setPiece(new Piece('N','B'));
-		getMoveList('W');
+		getMoveList('W', false);
 		return tiles;
 	}
 	
@@ -530,7 +763,7 @@ public class Board {
 		tiles[38].setPiece(new Piece('P','W'));
 		tiles[54].setPiece(new Piece('P','W'));
 		tiles[46].setPiece(new Piece('P','B'));
-		getMoveList('W');
+		getMoveList('W', false);
 		return tiles;
 	}
 	
@@ -542,7 +775,7 @@ public class Board {
 		tiles[20].setPiece(new Piece('P','B'));
 		tiles[51].setPiece(new Piece('P','B'));
 		tiles[52].setPiece(new Piece('P','W'));
-		getMoveList('W');
+		getMoveList('W', false);
 		return tiles;
 	}
 	
@@ -555,7 +788,7 @@ public class Board {
 		tiles[52].setPiece(new Piece('P','W'));
 		tiles[33].setPiece(new Piece('P','W'));
 		tiles[38].setPiece(new Piece('P','B'));
-		getMoveList('W');
+		getMoveList('W', false);
 		return tiles;
 	}
 	
@@ -564,7 +797,7 @@ public class Board {
 		tiles[63].setPiece(new Piece('R','W'));
 		tiles[4].setPiece(new Piece('K','B'));
 		tiles[0].setPiece(new Piece('R', 'B'));
-		getMoveList('W');
+		getMoveList('W', false);
 		return tiles;
 	}
 	
@@ -572,7 +805,7 @@ public class Board {
 		tiles[35].setPiece(new Piece('K','W'));
 		tiles[37].setPiece(new Piece('K','B'));
 		tiles[4].setPiece(new Piece('K','B'));
-		getMoveList('W');
+		getMoveList('W', false);
 		return tiles;
 	}
 	
@@ -580,7 +813,7 @@ public class Board {
 		tiles[52].setPiece(new Piece('P','W'));
 		tiles[8].setPiece(new Piece('P','W'));
 		tiles[29].setPiece(new Piece('P','B'));
-		getMoveList('W');
+		getMoveList('W', false);
 		return tiles;
 	}
 }

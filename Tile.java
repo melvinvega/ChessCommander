@@ -1,4 +1,3 @@
-import java.lang.Cloneable;
 /**
  * The class Tile contains information pertaining to the contents of 1 tile in the chess
  * board.
@@ -52,6 +51,14 @@ public class Tile {
 		notation = n;
 		isPromotionSquare = ips;
 		id = i;
+	}
+	
+	public Tile(Tile copy){
+		this.containsPiece = copy.containsPiece;
+		this.pieceInTile = copy.pieceInTile;
+		this.notation = copy.notation;
+		this.isPromotionSquare = copy.isPromotionSquare;
+		this.id = copy.id;
 	}
 	
 	

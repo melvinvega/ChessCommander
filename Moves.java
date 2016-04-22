@@ -20,11 +20,12 @@ public class Moves {
 	int ply;
 	int moveNumber;
 	char moveDoneBy;
-	Tile[] boardBeforeMove = new Tile [64];
+	Board stateCopy;
+	
 	
 	
 	public Moves(Piece p, int start, int end, boolean hC, boolean wk, boolean bk, boolean wkr, boolean bkr,
-			boolean wqr, boolean bqr, boolean pm, boolean promo, int pl, int m, char c, Tile[] b){
+			boolean wqr, boolean bqr, boolean pm, boolean promo, int pl, int m, char c, Board b){
 		movedPiece = p;
 		startSquareID = start;
 		endSquareID = end;
@@ -41,7 +42,7 @@ public class Moves {
 		moveNumber = m;
 		moveDoneBy= c;
 		
-		boardBeforeMove = b;
+		stateCopy = new Board(b);
 	}
 
 
@@ -195,13 +196,12 @@ public class Moves {
 	}
 
 
-	public Tile[] getBoardBeforeMove() {
-		return boardBeforeMove;
+	public Board getBoardBeforeMove(){
+		return stateCopy;
 	}
-
-
-	public void setBoardBeforeMove(Tile[] boardBeforeMove) {
-		this.boardBeforeMove = boardBeforeMove;
+	
+	public void printVisualBoardBeforeMove(){
+		stateCopy.printVisualBoard();
 	}
 	
 }
