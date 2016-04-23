@@ -20,7 +20,7 @@ import java.util.List;
 //
 public class game_screen extends Activity {
 
-
+//Test
     /*
     * prevId = hold the ID of the previous button pressed, this is used to know from where to take
     *          the background from and then set it to 0. -1 means no previous ID
