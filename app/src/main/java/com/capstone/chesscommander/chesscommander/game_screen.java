@@ -115,9 +115,6 @@ public class game_screen extends Activity {
         setupOmophones();
         setupLists();
 
-        Board b = new Board();
-        b.setInitialPosition();
-        b.printVisualBoard();
 
     }
 
