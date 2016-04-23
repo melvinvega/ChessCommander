@@ -11,8 +11,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
 
 /**
  * Created by Melvin on 3/20/16.
@@ -20,7 +21,7 @@ import java.util.List;
 //
 public class game_screen extends Activity {
 
-//Test
+
     /*
     * prevId = hold the ID of the previous button pressed, this is used to know from where to take
     *          the background from and then set it to 0. -1 means no previous ID
@@ -41,6 +42,39 @@ public class game_screen extends Activity {
 
     private String gameType,difficulty,playerColor;
     private int[] tempBoard = new int[64];
+    private String[] numberss = new String[8];
+
+    private String[] rank = new String[6];
+    private String[] column = new String[8];
+    private String[] row = new String[8];
+
+    private String[] queenOmophones = new String[10];
+    private String[] kingOmophones = new String[10];
+    private String[] rookOmophones = new String[15];
+    private String[] knightOmophones = new String[10];
+    private String[] bishopOmophones = new String[10];
+    private String[] pawnOmophones = new String[10];
+
+    private String[] aOmophones = new String[10];
+    private String[] bOmophones = new String[10];
+    private String[] cOmophones = new String[10];
+    private String[] dOmophones = new String[10];
+    private String[] eOmophones = new String[10];
+    private String[] fOmophones = new String[10];
+    private String[] gOmophones = new String[10];
+    private String[] hOmophones = new String[10];
+
+    private String[] Omophones1 = new String[10];
+    private String[] Omophones2 = new String[10];
+    private String[] Omophones3 = new String[10];
+    private String[] Omophones4 = new String[10];
+    private String[] Omophones5 = new String[10];
+    private String[] Omophones6 = new String[10];
+    private String[] Omophones7 = new String[10];
+    private String[] Omophones8 = new String[10];
+
+
+
     private ImageButton[][] board = new ImageButton[8][8];
     private ImageButton[][] initialBoard = new ImageButton[8][8];
     private ImageButton A8_button,B8_button,C8_button,D8_button,E8_button,F8_button,G8_button,H8_button;
@@ -53,8 +87,14 @@ public class game_screen extends Activity {
     private ImageButton A1_button,B1_button,C1_button,D1_button,E1_button,F1_button,G1_button,H1_button;
     private Bundle extras;
     private static final int SPEECH_REQUEST_CODE = 0;
-    //public static final String EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS = "300";
-    //public static final String EXTRA_PROMPT = "Say Piece Colum Row";
+    private List ranklist,columnlist, rowlist;
+    private List rookOmoList,pawnOmoList,knightOmoList,kingOmoList,queenOmoList,bishopOmoList;
+    private List aOmoList,bOmoList,cOmoList,dOmoList,eOmoList,fOmoList,gOmoList,hOmoList;
+    private List OmoList1,OmoList2,OmoList3,OmoList4,OmoList5,OmoList6,OmoList7,OmoList8;
+    private List numbers;
+
+
+    private String[][] pawnMoves = new String[8][3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +110,11 @@ public class game_screen extends Activity {
         setDescriptions();
         prevId = -1;
         initialBoard = board.clone();
+        voiceKeyWordsArray();
+        resetBoard();
+        setupOmophones();
+        setupLists();
+
 
     }
 
@@ -143,7 +188,6 @@ public class game_screen extends Activity {
 
     public void onVoiceButtonClick(View view){
         displaySpeechRecognizer();
-
     }
 
     public void onUndoButtonClick(View view){
@@ -461,96 +505,96 @@ public class game_screen extends Activity {
 
     private void setPieceTags(){
 
-      if(gameType.equals("pve") | gameType.equals("pvp")){
-          for(int c=0;c<8;c++){
-              switch (c){
-                  case 0:
-                      A1_button.setTag(R.id.tagpiece,"rook");
-                      A1_button.setTag(R.id.tagcolor,"white");
-                      A2_button.setTag(R.id.tagpiece,"pawn");
-                      A2_button.setTag(R.id.tagcolor,"white");
-                      A7_button.setTag(R.id.tagpiece,"pawn");
-                      A7_button.setTag(R.id.tagcolor,"black");
-                      A8_button.setTag(R.id.tagpiece,"rook");
-                      A8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 1:
-                      B1_button.setTag(R.id.tagpiece,"knight");
-                      B1_button.setTag(R.id.tagcolor,"white");
-                      B2_button.setTag(R.id.tagpiece,"pawn");
-                      B2_button.setTag(R.id.tagcolor,"white");
-                      B7_button.setTag(R.id.tagpiece,"pawn");
-                      B7_button.setTag(R.id.tagcolor,"black");
-                      B8_button.setTag(R.id.tagpiece,"knight");
-                      B8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 2:
-                      C1_button.setTag(R.id.tagpiece,"bishop");
-                      C1_button.setTag(R.id.tagcolor,"white");
-                      C2_button.setTag(R.id.tagpiece,"pawn");
-                      C2_button.setTag(R.id.tagcolor,"white");
-                      C7_button.setTag(R.id.tagpiece,"pawn");
-                      C7_button.setTag(R.id.tagcolor,"black");
-                      C8_button.setTag(R.id.tagpiece,"bishop");
-                      C8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 3:
-                      D1_button.setTag(R.id.tagpiece,"queen");
-                      D1_button.setTag(R.id.tagcolor,"white");
-                      D2_button.setTag(R.id.tagpiece,"pawn");
-                      D2_button.setTag(R.id.tagcolor,"white");
-                      D7_button.setTag(R.id.tagpiece,"pawn");
-                      D7_button.setTag(R.id.tagcolor,"black");
-                      D8_button.setTag(R.id.tagpiece,"queen");
-                      D8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 4:
-                      E1_button.setTag(R.id.tagpiece,"king");
-                      E1_button.setTag(R.id.tagcolor,"white");
-                      E2_button.setTag(R.id.tagpiece,"pawn");
-                      E2_button.setTag(R.id.tagcolor,"white");
-                      E7_button.setTag(R.id.tagpiece,"pawn");
-                      E7_button.setTag(R.id.tagcolor,"black");
-                      E8_button.setTag(R.id.tagpiece,"king");
-                      E8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 5:
-                      F1_button.setTag(R.id.tagpiece,"bishop");
-                      F1_button.setTag(R.id.tagcolor,"white");
-                      F2_button.setTag(R.id.tagpiece,"pawn");
-                      F2_button.setTag(R.id.tagcolor,"white");
-                      F7_button.setTag(R.id.tagpiece,"pawn");
-                      F7_button.setTag(R.id.tagcolor,"black");
-                      F8_button.setTag(R.id.tagpiece,"bishop");
-                      F8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 6:
-                      G1_button.setTag(R.id.tagpiece,"knight");
-                      G1_button.setTag(R.id.tagcolor,"white");
-                      G2_button.setTag(R.id.tagpiece,"pawn");
-                      G2_button.setTag(R.id.tagcolor,"white");
-                      G7_button.setTag(R.id.tagpiece,"pawn");
-                      G7_button.setTag(R.id.tagcolor,"black");
-                      G8_button.setTag(R.id.tagpiece,"knight");
-                      G8_button.setTag(R.id.tagcolor,"black");
-                      break;
-                  case 7:
-                      H1_button.setTag(R.id.tagpiece,"rook");
-                      H1_button.setTag(R.id.tagcolor,"white");
-                      H2_button.setTag(R.id.tagpiece,"pawn");
-                      H2_button.setTag(R.id.tagcolor,"white");
-                      H7_button.setTag(R.id.tagpiece,"pawn");
-                      H7_button.setTag(R.id.tagcolor,"black");
-                      H8_button.setTag(R.id.tagpiece,"rook");
-                      H8_button.setTag(R.id.tagcolor,"black");
-                      break;
-              }//Switch
-          }//for loop
-      }// if pve or pvp
+        if(gameType.equals("pve") | gameType.equals("pvp")){
+            for(int c=0;c<8;c++){
+                switch (c){
+                    case 0:
+                        A1_button.setTag(R.id.tagpiece,"rook");
+                        A1_button.setTag(R.id.tagcolor,"white");
+                        A2_button.setTag(R.id.tagpiece,"pawn");
+                        A2_button.setTag(R.id.tagcolor,"white");
+                        A7_button.setTag(R.id.tagpiece,"pawn");
+                        A7_button.setTag(R.id.tagcolor,"black");
+                        A8_button.setTag(R.id.tagpiece,"rook");
+                        A8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 1:
+                        B1_button.setTag(R.id.tagpiece,"knight");
+                        B1_button.setTag(R.id.tagcolor,"white");
+                        B2_button.setTag(R.id.tagpiece,"pawn");
+                        B2_button.setTag(R.id.tagcolor,"white");
+                        B7_button.setTag(R.id.tagpiece,"pawn");
+                        B7_button.setTag(R.id.tagcolor,"black");
+                        B8_button.setTag(R.id.tagpiece,"knight");
+                        B8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 2:
+                        C1_button.setTag(R.id.tagpiece,"bishop");
+                        C1_button.setTag(R.id.tagcolor,"white");
+                        C2_button.setTag(R.id.tagpiece,"pawn");
+                        C2_button.setTag(R.id.tagcolor,"white");
+                        C7_button.setTag(R.id.tagpiece,"pawn");
+                        C7_button.setTag(R.id.tagcolor,"black");
+                        C8_button.setTag(R.id.tagpiece,"bishop");
+                        C8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 3:
+                        D1_button.setTag(R.id.tagpiece,"queen");
+                        D1_button.setTag(R.id.tagcolor,"white");
+                        D2_button.setTag(R.id.tagpiece,"pawn");
+                        D2_button.setTag(R.id.tagcolor,"white");
+                        D7_button.setTag(R.id.tagpiece,"pawn");
+                        D7_button.setTag(R.id.tagcolor,"black");
+                        D8_button.setTag(R.id.tagpiece,"queen");
+                        D8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 4:
+                        E1_button.setTag(R.id.tagpiece,"king");
+                        E1_button.setTag(R.id.tagcolor,"white");
+                        E2_button.setTag(R.id.tagpiece,"pawn");
+                        E2_button.setTag(R.id.tagcolor,"white");
+                        E7_button.setTag(R.id.tagpiece,"pawn");
+                        E7_button.setTag(R.id.tagcolor,"black");
+                        E8_button.setTag(R.id.tagpiece,"king");
+                        E8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 5:
+                        F1_button.setTag(R.id.tagpiece,"bishop");
+                        F1_button.setTag(R.id.tagcolor,"white");
+                        F2_button.setTag(R.id.tagpiece,"pawn");
+                        F2_button.setTag(R.id.tagcolor,"white");
+                        F7_button.setTag(R.id.tagpiece,"pawn");
+                        F7_button.setTag(R.id.tagcolor,"black");
+                        F8_button.setTag(R.id.tagpiece,"bishop");
+                        F8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 6:
+                        G1_button.setTag(R.id.tagpiece,"knight");
+                        G1_button.setTag(R.id.tagcolor,"white");
+                        G2_button.setTag(R.id.tagpiece,"pawn");
+                        G2_button.setTag(R.id.tagcolor,"white");
+                        G7_button.setTag(R.id.tagpiece,"pawn");
+                        G7_button.setTag(R.id.tagcolor,"black");
+                        G8_button.setTag(R.id.tagpiece,"knight");
+                        G8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                    case 7:
+                        H1_button.setTag(R.id.tagpiece,"rook");
+                        H1_button.setTag(R.id.tagcolor,"white");
+                        H2_button.setTag(R.id.tagpiece,"pawn");
+                        H2_button.setTag(R.id.tagcolor,"white");
+                        H7_button.setTag(R.id.tagpiece,"pawn");
+                        H7_button.setTag(R.id.tagcolor,"black");
+                        H8_button.setTag(R.id.tagpiece,"rook");
+                        H8_button.setTag(R.id.tagcolor,"black");
+                        break;
+                }//Switch
+            }//for loop
+        }// if pve or pvp
 
-      if(gameType.equals("fp")){
+        if(gameType.equals("fp")){
 
-      }
+        }
 
     }//End of setPiece method
 
@@ -784,8 +828,7 @@ public class game_screen extends Activity {
     private void displaySpeechRecognizer() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        //intent.putExtra("SilenceTimeOut",RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS);
-        //intent.putExtra("Message",RecognizerIntent.EXTRA_PROMPT);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Hello say movement");
         // Start the activity, the intent will be populated with the speech text
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
     }
@@ -795,12 +838,513 @@ public class game_screen extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
-            List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            String spokenText = results.get(0);
-            // Do something with spokenText
+            ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            System.out.println("Input: ");
+            System.out.println(results);
+            String tempArray[];
+            String interArray[];
+            String finalCommand[] = new String[3];
+
+
+            for(int i=0;i<results.size();i++) {
+                String temp=results.get(i).toLowerCase();
+
+                if(temp.split("\\s+").length<3){ //If results is less than 3 add another item
+                    if(temp.split("\\s+").length==1){
+                        temp =   temp + " " + "trash"+ " " + "trash";
+                    }
+                    else{
+                        temp =   temp + " " + "trash";
+                    }
+                }
+
+                tempArray = temp.split("\\s+");
+
+                tempArray = checkPieceOmophones(tempArray);
+
+                tempArray = checkcolumOmophones(tempArray);
+
+                tempArray = checkrowOmophones(tempArray);
+
+
+                if (ranklist.contains(tempArray[0])) {
+                    if(finalCommand[0]==null){
+                        finalCommand[0] = tempArray[0];
+                    }
+                }
+                if (columnlist.contains(tempArray[1])) {
+                    if(finalCommand[1]==null){
+                        finalCommand[1] = tempArray[1];
+                    }
+                }
+                if (rowlist.contains(tempArray[2])) {
+                    if(finalCommand[2]==null){
+                        finalCommand[2] = tempArray[2];
+                    }
+                }
+            }
+
+            String spokenText = finalCommand[0] + " " + finalCommand[1] + finalCommand[2];
+            System.out.println("Result: ");
+            System.out.println(spokenText);
             Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void voiceKeyWordsArray(){
+        rank[0] = "rook";
+        rank[1] = "knight";
+        rank[2] = "bishop";
+        rank[3] = "queen";
+        rank[4] = "king";
+        rank[5] = "pawn";
+
+        column[0] = "a";
+        column[1] = "b";
+        column[2] = "c";
+        column[3] = "d";
+        column[4] = "e";
+        column[5] = "f";
+        column[6] = "g";
+        column[7] = "h";
+
+        row[0] = "1";
+        row[1] = "2";
+        row[2] = "3";
+        row[3] = "4";
+        row[4] = "5";
+        row[5] = "6";
+        row[6] = "7";
+        row[7] = "8";
+    }
+
+    public View stringToView(String[] s){
+        String buttonId = s[1].toUpperCase() + s[2]+"_button";
+        int resID = getResources().getIdentifier(buttonId , "id", getPackageName());
+        return findViewById(resID);
+    }
+
+    public int possibleMovesPawn(String[] s){
+        int targetId;
+        if(A2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[0][0] = "A2";
+            pawnMoves[0][1] = "A3";
+            pawnMoves[0][2] = "A4";
+        }
+        if(B2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[1][0] = "B2";
+            pawnMoves[1][1] = "B3";
+            pawnMoves[1][2] = "B4";
+        }
+        if(C2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[2][0] = "C2";
+            pawnMoves[2][1] = "C3";
+            pawnMoves[2][2] = "C4";
+        }
+        if(D2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[3][0] = "D2";
+            pawnMoves[3][1] = "D3";
+            pawnMoves[3][2] = "D4";
+        }
+        if(E2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[4][0] = "E2";
+            pawnMoves[4][1] = "E3";
+            pawnMoves[4][2] = "E4";
+        }
+        if(F2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[5][0] = "F2";
+            pawnMoves[5][1] = "F3";
+            pawnMoves[5][2] = "F4";
+        }
+        if(G2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[6][0] = "G2";
+            pawnMoves[6][1] = "G3";
+            pawnMoves[6][2] = "G4";
+        }
+        if(H2_button.getTag(R.id.tagpiece).equals("pawn")){
+            pawnMoves[7][0] = "H2";
+            pawnMoves[7][1] = "H3";
+            pawnMoves[7][2] = "H4";
+        }
+        String destination = s[1].toUpperCase()+s[2];
+        int champion = 0;
+        for(int i=0;i<8;i++){
+            List tempList = Arrays.asList(pawnMoves[i]);
+            if(tempList.contains(destination)){
+                champion = i;
+            }
+        }
+        targetId = getResources().getIdentifier(pawnMoves[champion][0]+"_button" , "id", getPackageName());
+        pawnMoves[champion][0] =   pawnMoves[champion][1].charAt(0) + (Integer.parseInt(s[2])) + "";
+        pawnMoves[champion][1] =   pawnMoves[champion][1].charAt(0) + (Integer.parseInt(s[2])+1) + "";
+        pawnMoves[champion][2] = "plas";
+        return targetId;
+    }
+
+    private void setupOmophones(){
+        rookOmophones[0] = "rugby";
+        rookOmophones[1] = "rocky";
+        rookOmophones[2] = "route";
+        rookOmophones[3] = "rock";
+        rookOmophones[4] = "brooke";
+        rookOmophones[5] = "rookie";
+        rookOmophones[6] = "bruxie";
+        rookOmophones[7] = "roxy";
+        rookOmophones[8] = "brook";
+        rookOmophones[9] = "look";
+        rookOmophones[10]= "root";
+        rookOmophones[10]= "brooks";
+
+        pawnOmophones[0] = "honda";
+        pawnOmophones[1] = "pond";
+        pawnOmophones[2] = "palm";
+        pawnOmophones[3] = "pon";
+        pawnOmophones[4] = "pawned";
+        pawnOmophones[5] = "home";
+        pawnOmophones[6] = "paul";
+        pawnOmophones[7] = "pawnee";
+
+        aOmophones[0] = "8" ;
+        aOmophones[1] = "eight";
+
+        bOmophones[0] = "bee";
+        bOmophones[1] = "be";
+        bOmophones[2] = "me";
+        bOmophones[3] = "v";
+        bOmophones[4] = "before";
+        bOmophones[5] = "de";
+        bOmophones[6] = "beat";
+
+        cOmophones[0] = "z";
+        cOmophones[1] = "see";
+        cOmophones[2] = "sea";
+        cOmophones[3] = "x";
+        cOmophones[3] = "seat";
+        cOmophones[3] = "seats";
+
+        dOmophones[0] = "depot" ;
+        dOmophones[1] = "deep";
+
+        eOmophones[0] = "essex" ;
+        eOmophones[1] = "east";
+        eOmophones[2] = "eat";
+
+        fOmophones[0] = "ff" ;
+        fOmophones[1] = "of";
+        fOmophones[0] = "after" ;
+
+        hOmophones[0] = "8";
+
+        Omophones1[0] = "one";
+
+        Omophones2[0] = "two";
+        Omophones2[1] = "to";
+        Omophones2[2] = "too";
+        Omophones2[3] = "t";
+        Omophones2[4] = "ii";
+
+        Omophones3[0] = "z";
+        Omophones3[1] = "sea";
+        Omophones3[2] = "see";
+        Omophones3[3] = "iii";
+
+        Omophones4[0] = "four";
+        Omophones4[1] = "store";
+        Omophones4[2] = "before";
+        Omophones4[3] = "seaford";
+        Omophones4[4] = "for";
+
+        Omophones5[0] = "five";
+        Omophones5[1] = "v";
+
+        Omophones6[0] = "six";
+        Omophones6[1] = "asics";
+
+        Omophones7[0] = "seven";
+
+        Omophones8[0] = "eight";
+        Omophones8[1] = "date";
+        Omophones8[2] = "h";
+
+        numberss[0] = "1";
+        numberss[1] = "2";
+        numberss[2] = "3";
+        numberss[3] = "4";
+        numberss[4] = "5";
+        numberss[5] = "6";
+        numberss[6] = "7";
+        numberss[7] = "8";
+
+
+    }
+
+    private void setupLists(){
+        rookOmoList   = Arrays.asList(rookOmophones);
+        pawnOmoList   = Arrays.asList(pawnOmophones);
+        knightOmoList = Arrays.asList(knightOmophones);
+        kingOmoList   = Arrays.asList(kingOmophones);
+        queenOmoList  = Arrays.asList(queenOmophones);
+        bishopOmoList = Arrays.asList(bishopOmophones);
+
+        aOmoList = Arrays.asList(aOmophones);
+        bOmoList = Arrays.asList(bOmophones);
+        cOmoList = Arrays.asList(cOmophones);
+        dOmoList = Arrays.asList(dOmophones);
+        eOmoList = Arrays.asList(eOmophones);
+        fOmoList = Arrays.asList(fOmophones);
+        gOmoList = Arrays.asList(gOmophones);
+        hOmoList = Arrays.asList(hOmophones);
+
+        OmoList1 = Arrays.asList(Omophones1);
+        OmoList2 = Arrays.asList(Omophones2);
+        OmoList3 = Arrays.asList(Omophones3);
+        OmoList4 = Arrays.asList(Omophones4);
+        OmoList5 = Arrays.asList(Omophones5);
+        OmoList6 = Arrays.asList(Omophones6);
+        OmoList7 = Arrays.asList(Omophones7);
+        OmoList8 = Arrays.asList(Omophones7);
+
+        ranklist   = Arrays.asList(rank);
+        columnlist = Arrays.asList(column);
+        rowlist    = Arrays.asList(row);
+
+        numbers = Arrays.asList(numberss);
+
+    }
+
+    private String[] checkPieceOmophones(String[] s) {
+        for(int i=0;i<6;i++){
+            switch (i) {
+                case 0: {
+                    if(rookOmoList.contains(s[0])){
+                        s[0]="rook";
+                    }
+                    break;
+                }
+                case 1: {
+                    if(pawnOmoList.contains(s[0])){
+                        if(s[0].equals("pawnee")){
+                            s[2]=s[1];
+                            s[1]="e";
+                        }
+                        s[0]="pawn";
+                    }
+                    break;
+                }
+                case 2: {
+                    if(knightOmoList.contains(s[0])){
+                        s[0]="knight";
+                    }
+                    break;
+                }
+                case 3: {
+                    if(bishopOmoList.contains(s[0])){
+                        s[0]="bishop";
+                    }
+                    break;
+                }
+                case 4: {
+                    if(queenOmoList.contains(s[0])){
+                        s[0]="queen";
+                    }
+                    break;
+                }
+                case 5: {
+                    if(kingOmoList.contains(s[0])){
+                        s[0]="king";
+                    }
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+        return s;
+    }
+
+    private String[] checkcolumOmophones(String[] s){
+        for(int i=0;i<6;i++){
+            switch (i) {
+                case 0: {
+                    if(aOmoList.contains(s[1])){
+                        s[1]="a";
+                    }
+                    if(s[1].length()==2 && !aOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(aOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "a";
+                        }
+                    }
+                    break;
+                }
+                case 1: {
+                    if(bOmoList.contains(s[1])){
+                        if(s[1].equals("before")){
+                            s[2]="4";
+                        }
+                        s[1]="b";
+                    }
+                    if(s[1].length()==2 && !bOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(bOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "b";
+                        }
+                    }
+                    break;
+                }
+                case 2: {
+                    if(cOmoList.contains(s[1])){
+                        s[1]="c";
+                    }
+                    if(s[1].length()==2 && !cOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(aOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "c";
+                        }
+                    }
+                    break;
+                }
+                case 3: {
+                    if(dOmoList.contains(s[1])){
+                        s[1]="d";
+                    }
+                    if(s[1].length()==2 && !dOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(dOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "d";
+                        }
+                    }
+                    break;
+                }
+                case 4: {
+                    if(eOmoList.contains(s[1])){
+                        s[1]="e";
+                    }
+                    if(s[1].length()==2 && !eOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(eOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "e";
+                        }
+                    }
+                    break;
+                }
+                case 5: {
+                    if(fOmoList.contains(s[1])){
+                        s[1]="f";
+                    }
+                    if(s[1].length()==2 && !fOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(fOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "f";
+                        }
+                    }
+                    break;
+                }
+                case 6: {
+                    if(gOmoList.contains(s[1])){
+                        s[1]="g";
+                    }
+                    if(s[1].length()==2 && !gOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(gOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "g";
+                        }
+                    }
+                    break;
+                }
+                case 7: {
+                    if(hOmoList.contains(s[1])){
+                        s[1]="h";
+                    }
+                    if(s[1].length()==2 && !hOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(hOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "h";
+                        }
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        return s;
+    }
+
+    private String[] checkrowOmophones(String[] s){
+        for(int i=0;i<8;i++){
+            switch (i) {
+                case 0: {
+                    if(OmoList1.contains(s[2])){
+                        s[2]="1";
+                    }
+                    break;
+                }
+                case 1: {
+                    if(OmoList2.contains(s[2])){
+                        s[2]="2";
+                    }
+                    break;
+                }
+                case 2: {
+                    if(OmoList3.contains(s[2])){
+                        s[2]="3";
+                    }
+                    break;
+                }
+                case 3: {
+                    if(OmoList4.contains(s[2])){
+                        s[2]="4";
+                    }
+                    break;
+                }
+                case 4: {
+                    if(OmoList5.contains(s[2])){
+                        s[2]="5";
+                    }
+                    break;
+                }
+                case 5: {
+                    if(OmoList6.contains(s[2])){
+                        s[2]="6";
+                    }
+                    break;
+                }
+                case 6: {
+                    if(OmoList7.contains(s[2])){
+                        s[2]="7";
+                    }
+                    break;
+                }
+                case 7: {
+                    if(OmoList8.contains(s[2])){
+                        s[2]="8";
+                    }
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+        return s;
+    }
 }
