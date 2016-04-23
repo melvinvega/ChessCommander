@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * Created by Melvin on 3/20/16.
  */
@@ -43,9 +42,39 @@ public class game_screen extends Activity {
 
     private String gameType,difficulty,playerColor;
     private int[] tempBoard = new int[64];
+    private String[] numberss = new String[8];
+
     private String[] rank = new String[6];
     private String[] column = new String[8];
     private String[] row = new String[8];
+
+    private String[] queenOmophones = new String[10];
+    private String[] kingOmophones = new String[10];
+    private String[] rookOmophones = new String[15];
+    private String[] knightOmophones = new String[10];
+    private String[] bishopOmophones = new String[10];
+    private String[] pawnOmophones = new String[10];
+
+    private String[] aOmophones = new String[10];
+    private String[] bOmophones = new String[10];
+    private String[] cOmophones = new String[10];
+    private String[] dOmophones = new String[10];
+    private String[] eOmophones = new String[10];
+    private String[] fOmophones = new String[10];
+    private String[] gOmophones = new String[10];
+    private String[] hOmophones = new String[10];
+
+    private String[] Omophones1 = new String[10];
+    private String[] Omophones2 = new String[10];
+    private String[] Omophones3 = new String[10];
+    private String[] Omophones4 = new String[10];
+    private String[] Omophones5 = new String[10];
+    private String[] Omophones6 = new String[10];
+    private String[] Omophones7 = new String[10];
+    private String[] Omophones8 = new String[10];
+
+
+
     private ImageButton[][] board = new ImageButton[8][8];
     private ImageButton[][] initialBoard = new ImageButton[8][8];
     private ImageButton A8_button,B8_button,C8_button,D8_button,E8_button,F8_button,G8_button,H8_button;
@@ -58,6 +87,12 @@ public class game_screen extends Activity {
     private ImageButton A1_button,B1_button,C1_button,D1_button,E1_button,F1_button,G1_button,H1_button;
     private Bundle extras;
     private static final int SPEECH_REQUEST_CODE = 0;
+    private List ranklist,columnlist, rowlist;
+    private List rookOmoList,pawnOmoList,knightOmoList,kingOmoList,queenOmoList,bishopOmoList;
+    private List aOmoList,bOmoList,cOmoList,dOmoList,eOmoList,fOmoList,gOmoList,hOmoList;
+    private List OmoList1,OmoList2,OmoList3,OmoList4,OmoList5,OmoList6,OmoList7,OmoList8;
+    private List numbers;
+
 
     private String[][] pawnMoves = new String[8][3];
 
@@ -77,6 +112,13 @@ public class game_screen extends Activity {
         initialBoard = board.clone();
         voiceKeyWordsArray();
         resetBoard();
+        setupOmophones();
+        setupLists();
+
+        Board b = new Board();
+        b.setInitialPosition();
+        b.printVisualBoard();
+
     }
 
     public void onButtonClick(View view){
@@ -803,48 +845,43 @@ public class game_screen extends Activity {
             System.out.println("Input: ");
             System.out.println(results);
             String tempArray[];
+            String interArray[];
             String finalCommand[] = new String[3];
+
+
             for(int i=0;i<results.size();i++) {
-                String temp;
-                if(results.get(i).split("\\s+").length<3){ //If results is less than 3 add another item
-                    if(results.get(i).split("\\s+").length==1){
-                        temp =   results.get(i).toLowerCase() + " " + "null"+ " " + "null";
+                String temp=results.get(i).toLowerCase();
+
+                if(temp.split("\\s+").length<3){ //If results is less than 3 add another item
+                    if(temp.split("\\s+").length==1){
+                        temp =   temp + " " + "trash"+ " " + "trash";
                     }
                     else{
-                        temp =   results.get(i).toLowerCase() + " " + "null";
+                        temp =   temp + " " + "trash";
                     }
                 }
-                else{
-                    temp = results.get(i).toLowerCase();
-                }
+
                 tempArray = temp.split("\\s+");
-                if(tempArray[2].equals("null")){
-                    //tempArray[0] = null;
-                    if(tempArray[1].length()==2){
-                        String scratch = tempArray[1];
-                        tempArray[1] = scratch.charAt(0) + "";
-                        tempArray[2] = scratch.charAt(1) + "";
-                    }
-                    else{
-                        tempArray[1] = null;
-                        tempArray[2] = null;
-                    }
-                }
-                List ranklist = Arrays.asList(rank);
-                List columnlist = Arrays.asList(column);
-                List rowlist = Arrays.asList(row);
+
+                tempArray = checkPieceOmophones(tempArray);
+
+                tempArray = checkcolumOmophones(tempArray);
+
+                tempArray = checkrowOmophones(tempArray);
+
+
                 if (ranklist.contains(tempArray[0])) {
-                    if(finalCommand[0]==null || finalCommand[0].isEmpty()){
+                    if(finalCommand[0]==null){
                         finalCommand[0] = tempArray[0];
                     }
                 }
                 if (columnlist.contains(tempArray[1])) {
-                    if(finalCommand[1]==null || finalCommand[0].isEmpty()){
+                    if(finalCommand[1]==null){
                         finalCommand[1] = tempArray[1];
                     }
                 }
                 if (rowlist.contains(tempArray[2])) {
-                    if(finalCommand[2]==null || finalCommand[0].isEmpty()){
+                    if(finalCommand[2]==null){
                         finalCommand[2] = tempArray[2];
                     }
                 }
@@ -854,17 +891,6 @@ public class game_screen extends Activity {
             System.out.println("Result: ");
             System.out.println(spokenText);
             Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
-
-            List finalCommandList = Arrays.asList(finalCommand);
-            if(finalCommandList.contains("null")){
-                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
-                prevId = possibleMovesPawn(finalCommand);
-                onButtonClick(stringToView(finalCommand));
-            }
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -959,5 +985,369 @@ public class game_screen extends Activity {
         return targetId;
     }
 
+    private void setupOmophones(){
+        rookOmophones[0] = "rugby";
+        rookOmophones[1] = "rocky";
+        rookOmophones[2] = "route";
+        rookOmophones[3] = "rock";
+        rookOmophones[4] = "brooke";
+        rookOmophones[5] = "rookie";
+        rookOmophones[6] = "bruxie";
+        rookOmophones[7] = "roxy";
+        rookOmophones[8] = "brook";
+        rookOmophones[9] = "look";
+        rookOmophones[10]= "root";
+        rookOmophones[10]= "brooks";
 
+        pawnOmophones[0] = "honda";
+        pawnOmophones[1] = "pond";
+        pawnOmophones[2] = "palm";
+        pawnOmophones[3] = "pon";
+        pawnOmophones[4] = "pawned";
+        pawnOmophones[5] = "home";
+        pawnOmophones[6] = "paul";
+        pawnOmophones[7] = "pawnee";
+
+        aOmophones[0] = "8" ;
+        aOmophones[1] = "eight";
+
+        bOmophones[0] = "bee";
+        bOmophones[1] = "be";
+        bOmophones[2] = "me";
+        bOmophones[3] = "v";
+        bOmophones[4] = "before";
+        bOmophones[5] = "de";
+        bOmophones[6] = "beat";
+
+        cOmophones[0] = "z";
+        cOmophones[1] = "see";
+        cOmophones[2] = "sea";
+        cOmophones[3] = "x";
+        cOmophones[3] = "seat";
+        cOmophones[3] = "seats";
+
+        dOmophones[0] = "depot" ;
+        dOmophones[1] = "deep";
+
+        eOmophones[0] = "essex" ;
+        eOmophones[1] = "east";
+        eOmophones[2] = "eat";
+
+        fOmophones[0] = "ff" ;
+        fOmophones[1] = "of";
+        fOmophones[0] = "after" ;
+
+        hOmophones[0] = "8";
+
+        Omophones1[0] = "one";
+
+        Omophones2[0] = "two";
+        Omophones2[1] = "to";
+        Omophones2[2] = "too";
+        Omophones2[3] = "t";
+        Omophones2[4] = "ii";
+
+        Omophones3[0] = "z";
+        Omophones3[1] = "sea";
+        Omophones3[2] = "see";
+        Omophones3[3] = "iii";
+
+        Omophones4[0] = "four";
+        Omophones4[1] = "store";
+        Omophones4[2] = "before";
+        Omophones4[3] = "seaford";
+        Omophones4[4] = "for";
+
+        Omophones5[0] = "five";
+        Omophones5[1] = "v";
+
+        Omophones6[0] = "six";
+        Omophones6[1] = "asics";
+
+        Omophones7[0] = "seven";
+
+        Omophones8[0] = "eight";
+        Omophones8[1] = "date";
+        Omophones8[2] = "h";
+
+        numberss[0] = "1";
+        numberss[1] = "2";
+        numberss[2] = "3";
+        numberss[3] = "4";
+        numberss[4] = "5";
+        numberss[5] = "6";
+        numberss[6] = "7";
+        numberss[7] = "8";
+
+
+    }
+
+    private void setupLists(){
+        rookOmoList   = Arrays.asList(rookOmophones);
+        pawnOmoList   = Arrays.asList(pawnOmophones);
+        knightOmoList = Arrays.asList(knightOmophones);
+        kingOmoList   = Arrays.asList(kingOmophones);
+        queenOmoList  = Arrays.asList(queenOmophones);
+        bishopOmoList = Arrays.asList(bishopOmophones);
+
+        aOmoList = Arrays.asList(aOmophones);
+        bOmoList = Arrays.asList(bOmophones);
+        cOmoList = Arrays.asList(cOmophones);
+        dOmoList = Arrays.asList(dOmophones);
+        eOmoList = Arrays.asList(eOmophones);
+        fOmoList = Arrays.asList(fOmophones);
+        gOmoList = Arrays.asList(gOmophones);
+        hOmoList = Arrays.asList(hOmophones);
+
+        OmoList1 = Arrays.asList(Omophones1);
+        OmoList2 = Arrays.asList(Omophones2);
+        OmoList3 = Arrays.asList(Omophones3);
+        OmoList4 = Arrays.asList(Omophones4);
+        OmoList5 = Arrays.asList(Omophones5);
+        OmoList6 = Arrays.asList(Omophones6);
+        OmoList7 = Arrays.asList(Omophones7);
+        OmoList8 = Arrays.asList(Omophones7);
+
+        ranklist   = Arrays.asList(rank);
+        columnlist = Arrays.asList(column);
+        rowlist    = Arrays.asList(row);
+
+        numbers = Arrays.asList(numberss);
+
+    }
+
+    private String[] checkPieceOmophones(String[] s) {
+       for(int i=0;i<6;i++){
+            switch (i) {
+                case 0: {
+                    if(rookOmoList.contains(s[0])){
+                        s[0]="rook";
+                    }
+                    break;
+                }
+                case 1: {
+                    if(pawnOmoList.contains(s[0])){
+                        if(s[0].equals("pawnee")){
+                            s[2]=s[1];
+                            s[1]="e";
+                        }
+                        s[0]="pawn";
+                    }
+                    break;
+                }
+                case 2: {
+                    if(knightOmoList.contains(s[0])){
+                        s[0]="knight";
+                    }
+                    break;
+                }
+                case 3: {
+                    if(bishopOmoList.contains(s[0])){
+                        s[0]="bishop";
+                    }
+                    break;
+                }
+                case 4: {
+                    if(queenOmoList.contains(s[0])){
+                        s[0]="queen";
+                    }
+                    break;
+                }
+                case 5: {
+                    if(kingOmoList.contains(s[0])){
+                        s[0]="king";
+                    }
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+        return s;
+    }
+
+    private String[] checkcolumOmophones(String[] s){
+        for(int i=0;i<6;i++){
+            switch (i) {
+                case 0: {
+                    if(aOmoList.contains(s[1])){
+                        s[1]="a";
+                    }
+                    if(s[1].length()==2 && !aOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(aOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "a";
+                        }
+                    }
+                    break;
+                }
+                case 1: {
+                    if(bOmoList.contains(s[1])){
+                        if(s[1].equals("before")){
+                            s[2]="4";
+                        }
+                        s[1]="b";
+                    }
+                    if(s[1].length()==2 && !bOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(bOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "b";
+                        }
+                    }
+                    break;
+                }
+                case 2: {
+                    if(cOmoList.contains(s[1])){
+                        s[1]="c";
+                    }
+                    if(s[1].length()==2 && !cOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(aOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "c";
+                        }
+                    }
+                    break;
+                }
+                case 3: {
+                    if(dOmoList.contains(s[1])){
+                        s[1]="d";
+                    }
+                    if(s[1].length()==2 && !dOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(dOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "d";
+                        }
+                    }
+                    break;
+                }
+                case 4: {
+                    if(eOmoList.contains(s[1])){
+                        s[1]="e";
+                    }
+                    if(s[1].length()==2 && !eOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(eOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "e";
+                        }
+                    }
+                    break;
+                }
+                case 5: {
+                    if(fOmoList.contains(s[1])){
+                        s[1]="f";
+                    }
+                    if(s[1].length()==2 && !fOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(fOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "f";
+                        }
+                    }
+                    break;
+                }
+                case 6: {
+                    if(gOmoList.contains(s[1])){
+                        s[1]="g";
+                    }
+                    if(s[1].length()==2 && !gOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(gOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "g";
+                        }
+                    }
+                    break;
+                }
+                case 7: {
+                    if(hOmoList.contains(s[1])){
+                        s[1]="h";
+                    }
+                    if(s[1].length()==2 && !hOmoList.contains(s[1])){
+                        if(numbers.contains(s[1].charAt(1)+"")){
+                            s[2]= s[1].charAt(1)+"";
+                        }
+                        if(hOmoList.contains(s[1].charAt(0)+"")){
+                            s[1] = "h";
+                        }
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        return s;
+    }
+
+    private String[] checkrowOmophones(String[] s){
+        for(int i=0;i<8;i++){
+            switch (i) {
+                case 0: {
+                    if(OmoList1.contains(s[2])){
+                        s[2]="1";
+                    }
+                    break;
+                }
+                case 1: {
+                    if(OmoList2.contains(s[2])){
+                        s[2]="2";
+                    }
+                    break;
+                }
+                case 2: {
+                    if(OmoList3.contains(s[2])){
+                        s[2]="3";
+                    }
+                    break;
+                }
+                case 3: {
+                    if(OmoList4.contains(s[2])){
+                        s[2]="4";
+                    }
+                    break;
+                }
+                case 4: {
+                    if(OmoList5.contains(s[2])){
+                        s[2]="5";
+                    }
+                    break;
+                }
+                case 5: {
+                    if(OmoList6.contains(s[2])){
+                        s[2]="6";
+                    }
+                    break;
+                }
+                case 6: {
+                    if(OmoList7.contains(s[2])){
+                        s[2]="7";
+                    }
+                    break;
+                }
+                case 7: {
+                    if(OmoList8.contains(s[2])){
+                        s[2]="8";
+                    }
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+        return s;
+    }
 }
