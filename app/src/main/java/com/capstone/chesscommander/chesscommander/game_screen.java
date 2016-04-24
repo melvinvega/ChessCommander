@@ -849,12 +849,13 @@ public class game_screen extends Activity {
             System.out.println("InputPiece: ");
             System.out.println(pieceResultsList);
             if(castling.contains(pieceResultsList.get(0))){
-                //Casting move
+                String temp="Castling";
+                Toast.makeText(this, temp, Toast.LENGTH_SHORT).show();
             }
             else{
             pieceResult = checkPieceOmophones(pieceResultsList.get(0).toLowerCase());
             finalCommand[0]=pieceResult;
-            displaySpeechRecognizer(SPEECH_REQUEST_CODE_PIECE);
+            displaySpeechRecognizer(SPEECH_REQUEST_CODE_POSITION);
             }
         }
         if(requestCode == SPEECH_REQUEST_CODE_POSITION && resultCode == RESULT_OK) {
