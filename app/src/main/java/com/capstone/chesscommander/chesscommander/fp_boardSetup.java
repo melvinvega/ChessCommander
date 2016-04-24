@@ -716,7 +716,9 @@ public class fp_boardSetup extends Activity {
             }
             int transfer[] = new int[64];
             int pos=0;
-                for(int r=0;r<8;r++){
+                //White Pawn = 0,  King = 1, Queen = 2, Bishop = 3, Knight = 4, Rook = 5
+                //Black Pawn = 6, King = 7, Queen = 8, Bishop = 9, Knight = 10, Rook = 11
+                for(int r=7;r>=0;r--){
                     for(int c=0;c<8;c++){
                         String taginfo =board[r][c].getTag(R.id.tagpiece).toString();
                         switch (taginfo){
@@ -736,7 +738,7 @@ public class fp_boardSetup extends Activity {
                                     transfer[pos] = 8;
                                 }
                                 break;
-                            case "rook":
+                            case "bishop":
                                 if(board[r][c].getTag(R.id.tagcolor).toString().equals("white")){
                                     transfer[pos] = 3;
                                 }
@@ -744,7 +746,7 @@ public class fp_boardSetup extends Activity {
                                     transfer[pos] = 9;
                                 }
                                 break;
-                            case "bishop":
+                            case "knight":
                                 if(board[r][c].getTag(R.id.tagcolor).toString().equals("white")){
                                     transfer[pos] = 4;
                                 }
@@ -752,7 +754,7 @@ public class fp_boardSetup extends Activity {
                                     transfer[pos] = 10;
                                 }
                                 break;
-                            case "knight":
+                            case "rook":
                                 if(board[r][c].getTag(R.id.tagcolor).toString().equals("white")){
                                     transfer[pos] = 5;
                                 }
@@ -762,14 +764,14 @@ public class fp_boardSetup extends Activity {
                                 break;
                             case "pawn":
                                 if(board[r][c].getTag(R.id.tagcolor).toString().equals("white")){
-                                    transfer[pos] = 6;
+                                    transfer[pos] = 0;
                                 }
                                 if(board[r][c].getTag(R.id.tagcolor).toString().equals("black")){
-                                    transfer[pos] = 12;
+                                    transfer[pos] = 6;
                                 }
                                 break;
                             default:
-                                transfer[pos] = 0;
+                                transfer[pos] = -1;
                                 break;
                         }
                       pos++;

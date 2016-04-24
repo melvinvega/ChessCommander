@@ -23,8 +23,48 @@ public class Piece {
 	 *  If the character 'x' is returned, it is treated as a null piece;
 	 */
 	char type;
-	
-	
+
+	public Piece(int i){
+		switch (i){
+			case 0: type = 'P';
+				color = 'W';
+				break;
+			case 1: type = 'K';
+				color = 'W';
+				break;
+			case 2: type = 'Q';
+				color = 'W';
+				break;
+			case 3: type = 'B';
+				color = 'W';
+				break;
+			case 4: type = 'N';
+				color = 'W';
+				break;
+			case 5: type = 'R';
+				color = 'W';
+				break;
+			case 6: type = 'p';
+				color = 'B';
+				break;
+			case 7: type = 'k';
+				color = 'B';
+				break;
+			case 8: type = 'q';
+				color = 'B';
+				break;
+			case 9: type = 'b';
+				color = 'B';
+				break;
+			case 10: type = 'n';
+				color = 'B';
+				break;
+			case 11: type = 'r';
+				color = 'B';
+				break;
+		}
+	}
+
 	public char getType() {
 		return type;
 	}

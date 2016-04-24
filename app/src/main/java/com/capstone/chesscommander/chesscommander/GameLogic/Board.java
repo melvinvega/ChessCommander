@@ -29,7 +29,7 @@ public class Board {
 	int playerMove = 0;
 	int doubleMoveTile = -100;
 	String FEN;
-	MoveList list;
+	public MoveList list;
 	boolean isTurnPlayer;
 	Moves lastPlayerMove;
 	
@@ -76,7 +76,20 @@ public class Board {
 	private Board copyBoard(){
 		return new Board(this);
 	}
-	
+
+	public Tile[] setCustomBoard(int[] num){
+		genBoard();
+		if(num.length == 64){
+			for(int i = 0; i <64; i++){
+				if(num[i] != -1){
+					tiles[i].setPiece(new Piece(num[i]));
+				}
+			}
+		}
+
+		return tiles;
+	}
+
 	public Tile[] setCustomBoard(Tile[] t){
 		if(t.length == 64){
 			tiles = t;
@@ -796,4 +809,6 @@ public class Board {
 		getMoveList('W', false);
 		return tiles;
 	}
+
+
 }

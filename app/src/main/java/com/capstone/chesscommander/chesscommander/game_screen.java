@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.capstone.chesscommander.chesscommander.GameLogic.Board;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -96,8 +98,9 @@ public class game_screen extends Activity {
     private List OmoList1,OmoList2,OmoList3,OmoList4,OmoList5,OmoList6,OmoList7,OmoList8;
     private List numbers,castling;
 
-
     private String[][] pawnMoves = new String[8][3];
+
+    private Board boardEduardo = new Board();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +122,8 @@ public class game_screen extends Activity {
         setupLists();
 
 
+        boardEduardo.printVisualBoard();
+
     }
 
     public void onButtonClick(View view){
@@ -129,29 +134,39 @@ public class game_screen extends Activity {
         }
         else if(!empty && prevId==-1){
             prevId = view.getId();
-
+            boardEduardo.list.printWhiteMoves();
         }
-        else if(empty && prevId>0){
+        else if(prevId>0){
             //Verify if legal move
-            bgdraw = findViewById(prevId).getBackground();
+            if(!findViewById(prevId).equals(view)){
+                int SSQ = (Integer)findViewById(prevId).getTag(R.id.tagboardpos);
+                int ESQ = (Integer)view.getTag(R.id.tagboardpos);
+                char color;
+                if(findViewById(prevId).getTag(R.id.tagcolor).equals("white")){
+                    color = 'W';
+                }
+                else{
+                    color = 'B';
+                }
+                if(boardEduardo.move(SSQ,ESQ,color,true)) {
+                    bgdraw = findViewById(prevId).getBackground();
 
-            view.setBackground(bgdraw);
-            view.setTag(R.id.tagpiece, findViewById(prevId).getTag(R.id.tagpiece));
-            view.setTag(R.id.tagcolor, findViewById(prevId).getTag(R.id.tagcolor));
-            CharSequence description = view.getContentDescription().subSequence(0,2);
-            description = description + " " + view.getTag(R.id.tagcolor) + " " + view.getTag(R.id.tagpiece);
-            view.setContentDescription(description);
+                    view.setBackground(bgdraw);
+                    view.setTag(R.id.tagpiece, findViewById(prevId).getTag(R.id.tagpiece));
+                    view.setTag(R.id.tagcolor, findViewById(prevId).getTag(R.id.tagcolor));
+                    CharSequence description = view.getContentDescription().subSequence(0, 2);
+                    description = description + " " + view.getTag(R.id.tagcolor) + " " + view.getTag(R.id.tagpiece);
+                    view.setContentDescription(description);
 
-            findViewById(prevId).setBackgroundResource(0);
-            findViewById(prevId).setTag(R.id.tagpiece, "");
-            findViewById(prevId).setTag(R.id.tagcolor, "");
-            description = findViewById(prevId).getContentDescription().subSequence(0,2);
-            findViewById(prevId).setContentDescription(description);
+                    findViewById(prevId).setBackgroundResource(0);
+                    findViewById(prevId).setTag(R.id.tagpiece, "");
+                    findViewById(prevId).setTag(R.id.tagcolor, "");
+                    description = findViewById(prevId).getContentDescription().subSequence(0, 2);
+                    findViewById(prevId).setContentDescription(description);
+                }
+            }
             prevId = -1;
-        }
-        else if(!empty && prevId>0){
-            //Verify if legal move
-            //Verify if capturable
+            boardEduardo.printVisualBoard();
         }
     }
 
@@ -177,6 +192,7 @@ public class game_screen extends Activity {
                         boardSetup(gameType);
                         setPieceTags();
                         setDescriptions();
+                        boardEduardo.setInitialPosition();
                         prevId = -1;
                         break;
                     case 3://Home Screen
@@ -357,6 +373,7 @@ public class game_screen extends Activity {
                 square will appear on top of empty tiles since it is a imageButton and the default background is grey
                 board[r][c] represents the button on the board.
              */
+            boardEduardo.setInitialPosition();
             String content = "";
             for (int r = 0; r < 8; r++) {
                 for (int c = 0; c < 8; c++) {
@@ -433,8 +450,11 @@ public class game_screen extends Activity {
                             break;
                     }
                     board[r][c].setContentDescription(content + (r+1));
+                    //White Pawn = 0,  King = 1, Queen = 2, Bishop = 3, Knight = 4, Rook = 5
+                    //Black Pawn = 6, King = 7, Queen = 8, Bishop = 9, Knight = 10, Rook = 11
+                    boardEduardo.setCustomBoard(tempBoard);
                     switch (tempBoard[t]){
-                        case 0:
+                        case -1:
                             board[r][c].setBackgroundResource(0);
                             board[r][c].setTag(R.id.tagpiece,"");
                             board[r][c].setTag(R.id.tagcolor,"");
@@ -450,21 +470,21 @@ public class game_screen extends Activity {
                             board[r][c].setTag(R.id.tagcolor,"white");
                             break;
                         case 3:
-                            board[r][c].setBackgroundResource(R.drawable.rook_w);
-                            board[r][c].setTag(R.id.tagpiece,"rook");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 4:
                             board[r][c].setBackgroundResource(R.drawable.bishop_w);
                             board[r][c].setTag(R.id.tagpiece,"bishop");
                             board[r][c].setTag(R.id.tagcolor,"white");
                             break;
-                        case 5:
+                        case 4:
                             board[r][c].setBackgroundResource(R.drawable.knight_w);
                             board[r][c].setTag(R.id.tagpiece,"knight");
                             board[r][c].setTag(R.id.tagcolor,"white");
                             break;
-                        case 6:
+                        case 5:
+                            board[r][c].setBackgroundResource(R.drawable.rook_w);
+                            board[r][c].setTag(R.id.tagpiece,"rook");
+                            board[r][c].setTag(R.id.tagcolor,"white");
+                            break;
+                        case 0:
                             board[r][c].setBackgroundResource(R.drawable.pawn_w);
                             board[r][c].setTag(R.id.tagpiece,"pawn");
                             board[r][c].setTag(R.id.tagcolor,"white");
@@ -480,21 +500,21 @@ public class game_screen extends Activity {
                             board[r][c].setTag(R.id.tagcolor,"black");
                             break;
                         case 9:
-                            board[r][c].setBackgroundResource(R.drawable.rook_b);
-                            board[r][c].setTag(R.id.tagpiece,"rook");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 10:
                             board[r][c].setBackgroundResource(R.drawable.bishop_b);
                             board[r][c].setTag(R.id.tagpiece,"bishop");
                             board[r][c].setTag(R.id.tagcolor,"black");
                             break;
-                        case 11:
+                        case 10:
                             board[r][c].setBackgroundResource(R.drawable.knight_b);
                             board[r][c].setTag(R.id.tagpiece,"knight");
                             board[r][c].setTag(R.id.tagcolor,"black");
                             break;
-                        case 12:
+                        case 11:
+                            board[r][c].setBackgroundResource(R.drawable.rook_b);
+                            board[r][c].setTag(R.id.tagpiece,"rook");
+                            board[r][c].setTag(R.id.tagcolor,"black");
+                            break;
+                        case 6:
                             board[r][c].setBackgroundResource(R.drawable.pawn_b);
                             board[r][c].setTag(R.id.tagpiece,"pawn");
                             board[r][c].setTag(R.id.tagcolor,"black");
@@ -507,6 +527,71 @@ public class game_screen extends Activity {
     }//End of method
 
     private void setPieceTags(){
+
+        A8_button.setTag(R.id.tagboardpos,0);
+        B8_button.setTag(R.id.tagboardpos,1);
+        C8_button.setTag(R.id.tagboardpos,2);
+        D8_button.setTag(R.id.tagboardpos,3);
+        E8_button.setTag(R.id.tagboardpos,4);
+        F8_button.setTag(R.id.tagboardpos,5);
+        G8_button.setTag(R.id.tagboardpos,6);
+        H8_button.setTag(R.id.tagboardpos,7);
+        A7_button.setTag(R.id.tagboardpos,8);
+        B7_button.setTag(R.id.tagboardpos,9);
+        C7_button.setTag(R.id.tagboardpos,10);
+        D7_button.setTag(R.id.tagboardpos,11);
+        E7_button.setTag(R.id.tagboardpos,12);
+        F7_button.setTag(R.id.tagboardpos,13);
+        G7_button.setTag(R.id.tagboardpos,14);
+        H7_button.setTag(R.id.tagboardpos,15);
+        A6_button.setTag(R.id.tagboardpos,16);
+        B6_button.setTag(R.id.tagboardpos,17);
+        C6_button.setTag(R.id.tagboardpos,18);
+        D6_button.setTag(R.id.tagboardpos,19);
+        E6_button.setTag(R.id.tagboardpos,20);
+        F6_button.setTag(R.id.tagboardpos,21);
+        G6_button.setTag(R.id.tagboardpos,22);
+        H6_button.setTag(R.id.tagboardpos,23);
+        A5_button.setTag(R.id.tagboardpos,24);
+        B5_button.setTag(R.id.tagboardpos,25);
+        C5_button.setTag(R.id.tagboardpos,26);
+        D5_button.setTag(R.id.tagboardpos,27);
+        E5_button.setTag(R.id.tagboardpos,28);
+        F5_button.setTag(R.id.tagboardpos,29);
+        G5_button.setTag(R.id.tagboardpos,30);
+        H5_button.setTag(R.id.tagboardpos,31);
+        A4_button.setTag(R.id.tagboardpos,32);
+        B4_button.setTag(R.id.tagboardpos,33);
+        C4_button.setTag(R.id.tagboardpos,34);
+        D4_button.setTag(R.id.tagboardpos,35);
+        E4_button.setTag(R.id.tagboardpos,36);
+        F4_button.setTag(R.id.tagboardpos,37);
+        G4_button.setTag(R.id.tagboardpos,38);
+        H4_button.setTag(R.id.tagboardpos,39);
+        A3_button.setTag(R.id.tagboardpos,40);
+        B3_button.setTag(R.id.tagboardpos,41);
+        C3_button.setTag(R.id.tagboardpos,42);
+        D3_button.setTag(R.id.tagboardpos,43);
+        E3_button.setTag(R.id.tagboardpos,44);
+        F3_button.setTag(R.id.tagboardpos,45);
+        G3_button.setTag(R.id.tagboardpos,46);
+        H3_button.setTag(R.id.tagboardpos,47);
+        A2_button.setTag(R.id.tagboardpos,48);
+        B2_button.setTag(R.id.tagboardpos,49);
+        C2_button.setTag(R.id.tagboardpos,50);
+        D2_button.setTag(R.id.tagboardpos,51);
+        E2_button.setTag(R.id.tagboardpos,52);
+        F2_button.setTag(R.id.tagboardpos,53);
+        G2_button.setTag(R.id.tagboardpos,54);
+        H2_button.setTag(R.id.tagboardpos,55);
+        A1_button.setTag(R.id.tagboardpos,56);
+        B1_button.setTag(R.id.tagboardpos,57);
+        C1_button.setTag(R.id.tagboardpos,58);
+        D1_button.setTag(R.id.tagboardpos,59);
+        E1_button.setTag(R.id.tagboardpos,60);
+        F1_button.setTag(R.id.tagboardpos,61);
+        G1_button.setTag(R.id.tagboardpos,62);
+        H1_button.setTag(R.id.tagboardpos,63);
 
         if(gameType.equals("pve") | gameType.equals("pvp")){
             for(int c=0;c<8;c++){
@@ -594,10 +679,6 @@ public class game_screen extends Activity {
                 }//Switch
             }//for loop
         }// if pve or pvp
-
-        if(gameType.equals("fp")){
-
-        }
 
     }//End of setPiece method
 
@@ -754,6 +835,7 @@ public class game_screen extends Activity {
                             break;
                     }
                     board[r][c].setContentDescription(content + (r+1));
+                    boardEduardo.setCustomBoard(tempBoard);
                     switch (tempBoard[t]){
                         case 0:
                             board[r][c].setBackgroundResource(0);

@@ -4,4 +4,5 @@
     <item type="id" name="tagpiece"></item>
     <item type="id" name="tagcolor"></item>
     <item type="id" name="tagbench"></item>
+    <item type="id" name="tagboardpos"></item>
 </resources>

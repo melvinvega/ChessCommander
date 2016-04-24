@@ -83,7 +83,7 @@ public class Tile {
 		return pieceInTile;
 	}
 	
-	char getPieceChar(){
+	public char getPieceChar(){
 		if(containsPiece){
 		return pieceInTile.getType();
 		}
