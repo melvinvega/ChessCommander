@@ -73,7 +73,9 @@ public class game_screen extends Activity {
     private String[] Omophones7 = new String[10];
     private String[] Omophones8 = new String[10];
 
+    private String[] castlingOmophones = new String[10];
 
+    private String[] finalCommand = new String[2];
 
     private ImageButton[][] board = new ImageButton[8][8];
     private ImageButton[][] initialBoard = new ImageButton[8][8];
@@ -86,12 +88,13 @@ public class game_screen extends Activity {
     private ImageButton A2_button,B2_button,C2_button,D2_button,E2_button,F2_button,G2_button,H2_button;
     private ImageButton A1_button,B1_button,C1_button,D1_button,E1_button,F1_button,G1_button,H1_button;
     private Bundle extras;
-    private static final int SPEECH_REQUEST_CODE = 0;
+    private static final int SPEECH_REQUEST_CODE_PIECE = 0;
+    private static final int SPEECH_REQUEST_CODE_POSITION = 1;
     private List ranklist,columnlist, rowlist;
     private List rookOmoList,pawnOmoList,knightOmoList,kingOmoList,queenOmoList,bishopOmoList;
     private List aOmoList,bOmoList,cOmoList,dOmoList,eOmoList,fOmoList,gOmoList,hOmoList;
     private List OmoList1,OmoList2,OmoList3,OmoList4,OmoList5,OmoList6,OmoList7,OmoList8;
-    private List numbers;
+    private List numbers,castling;
 
 
     private String[][] pawnMoves = new String[8][3];
@@ -187,7 +190,7 @@ public class game_screen extends Activity {
     }
 
     public void onVoiceButtonClick(View view){
-        displaySpeechRecognizer();
+        displaySpeechRecognizer(SPEECH_REQUEST_CODE_PIECE);
     }
 
     public void onUndoButtonClick(View view){
@@ -825,71 +828,56 @@ public class game_screen extends Activity {
     }
 
     // Create an intent that can start the Speech Recognizer activity
-    private void displaySpeechRecognizer() {
+    private void displaySpeechRecognizer(int request_code) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Hello say movement");
         // Start the activity, the intent will be populated with the speech text
-        startActivityForResult(intent, SPEECH_REQUEST_CODE);
+        startActivityForResult(intent, request_code);
     }
 
     // This callback is invoked when the Speech Recognizer returns.
     // This is where you process the intent and extract the speech text from the intent.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
-            ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            System.out.println("Input: ");
-            System.out.println(results);
-            String tempArray[];
-            String interArray[];
-            String finalCommand[] = new String[3];
-
-
-            for(int i=0;i<results.size();i++) {
-                String temp=results.get(i).toLowerCase();
-
-                if(temp.split("\\s+").length<3){ //If results is less than 3 add another item
-                    if(temp.split("\\s+").length==1){
-                        temp =   temp + " " + "trash"+ " " + "trash";
-                    }
-                    else{
-                        temp =   temp + " " + "trash";
-                    }
-                }
-
-                tempArray = temp.split("\\s+");
-
-                tempArray = checkPieceOmophones(tempArray);
-
-                tempArray = checkcolumOmophones(tempArray);
-
-                tempArray = checkrowOmophones(tempArray);
-
-
-                if (ranklist.contains(tempArray[0])) {
-                    if(finalCommand[0]==null){
-                        finalCommand[0] = tempArray[0];
-                    }
-                }
-                if (columnlist.contains(tempArray[1])) {
-                    if(finalCommand[1]==null){
-                        finalCommand[1] = tempArray[1];
-                    }
-                }
-                if (rowlist.contains(tempArray[2])) {
-                    if(finalCommand[2]==null){
-                        finalCommand[2] = tempArray[2];
-                    }
-                }
+        String pieceResult;
+        String positionResult;
+        ArrayList<String> pieceResultsList;
+        ArrayList<String> positionResultsList;
+        if (requestCode == SPEECH_REQUEST_CODE_PIECE && resultCode == RESULT_OK) {
+            pieceResultsList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            System.out.println("InputPiece: ");
+            System.out.println(pieceResultsList);
+            if(castling.contains(pieceResultsList.get(0))){
+                //Casting move
             }
+            else{
+            pieceResult = checkPieceOmophones(pieceResultsList.get(0).toLowerCase());
+            finalCommand[0]=pieceResult;
+            displaySpeechRecognizer(SPEECH_REQUEST_CODE_PIECE);
+            }
+        }
+        if(requestCode == SPEECH_REQUEST_CODE_POSITION && resultCode == RESULT_OK) {
+            positionResultsList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            System.out.println("InputPosition: ");
+            System.out.println(positionResultsList);
+            positionResult = positionResultsList.get(0).toLowerCase();
+            if(positionResult.charAt(0)=='0'){
+                positionResult= "A" + positionResult.charAt(1);
+            }
+            if(positionResult.charAt(0)=='V'){
+                positionResult= "B" + positionResult.charAt(1);
+            }
+            if(positionResult.charAt(1)=='H'){
+                positionResult= positionResult.charAt(0) + "8";
+            }
+            finalCommand[1] = positionResult;
 
-            String spokenText = finalCommand[0] + " " + finalCommand[1] + finalCommand[2];
+            String spokenText = finalCommand[0] + " " + finalCommand[1];
             System.out.println("Result: ");
             System.out.println(spokenText);
             Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void voiceKeyWordsArray(){
@@ -983,27 +971,59 @@ public class game_screen extends Activity {
     }
 
     private void setupOmophones(){
-        rookOmophones[0] = "rugby";
-        rookOmophones[1] = "rocky";
+        rookOmophones[0] = "work";
+        rookOmophones[1] = "hook";
         rookOmophones[2] = "route";
         rookOmophones[3] = "rock";
         rookOmophones[4] = "brooke";
-        rookOmophones[5] = "rookie";
-        rookOmophones[6] = "bruxie";
+        rookOmophones[5] = "group";
+        rookOmophones[6] = "luke";
         rookOmophones[7] = "roxy";
         rookOmophones[8] = "brook";
         rookOmophones[9] = "look";
         rookOmophones[10]= "root";
-        rookOmophones[10]= "brooks";
+        rookOmophones[11]= "brooks";
 
-        pawnOmophones[0] = "honda";
+        pawnOmophones[0] = "pon";
         pawnOmophones[1] = "pond";
         pawnOmophones[2] = "palm";
-        pawnOmophones[3] = "pon";
+        pawnOmophones[3] = "pong";
         pawnOmophones[4] = "pawned";
         pawnOmophones[5] = "home";
         pawnOmophones[6] = "paul";
         pawnOmophones[7] = "pawnee";
+
+        knightOmophones[0] = "night";
+        knightOmophones[1] = "nite";
+        knightOmophones[2] = "knife";
+        knightOmophones[3] = "nice";
+        knightOmophones[4] = "light";
+        knightOmophones[5] = "9th";
+        knightOmophones[5] = "ninth";
+
+        queenOmophones[0] = "quean";
+        queenOmophones[1] = "queens";
+        queenOmophones[2] = "kween";
+        queenOmophones[3] = "quinn";
+        queenOmophones[4] = "clean";
+        queenOmophones[4] = "quin";
+
+        kingOmophones[0]="kane";
+        kingOmophones[1]="quing";
+        kingOmophones[2]="kim";
+        kingOmophones[3]="can";
+        kingOmophones[4]="kinh";
+        kingOmophones[5]="kang";
+        kingOmophones[6]="tang";
+        kingOmophones[7]="ting";
+        kingOmophones[8]="kin";
+
+        bishopOmophones[0] = "bisharp";
+        bishopOmophones[1] = "bischoff";
+        bishopOmophones[2] = "fish shop";
+        bishopOmophones[3] = "fish app";
+        bishopOmophones[3] = "the shop";
+        bishopOmophones[3] = "vishal";
 
         aOmophones[0] = "8" ;
         aOmophones[1] = "eight";
@@ -1076,6 +1096,16 @@ public class game_screen extends Activity {
         numberss[6] = "7";
         numberss[7] = "8";
 
+        castlingOmophones[0] = "kathleen";
+        castlingOmophones[1] = "gasoline";
+        castlingOmophones[2] = "cathleen";
+        castlingOmophones[3] = "cancelling";
+        castlingOmophones[4] = "castle";
+        castlingOmophones[5] = "cassie";
+        castlingOmophones[6] = "cassel";
+        castlingOmophones[7] = "catholic";
+        castlingOmophones[8] = "castling";
+
 
     }
 
@@ -1111,48 +1141,46 @@ public class game_screen extends Activity {
 
         numbers = Arrays.asList(numberss);
 
+        castling = Arrays.asList(castlingOmophones);
+
     }
 
-    private String[] checkPieceOmophones(String[] s) {
+    private String checkPieceOmophones(String s) {
         for(int i=0;i<6;i++){
             switch (i) {
                 case 0: {
-                    if(rookOmoList.contains(s[0])){
-                        s[0]="rook";
+                    if(rookOmoList.contains(s)){
+                        s="rook";
                     }
                     break;
                 }
                 case 1: {
-                    if(pawnOmoList.contains(s[0])){
-                        if(s[0].equals("pawnee")){
-                            s[2]=s[1];
-                            s[1]="e";
-                        }
-                        s[0]="pawn";
+                    if(pawnOmoList.contains(s)){
+                        s="pawn";
                     }
                     break;
                 }
                 case 2: {
-                    if(knightOmoList.contains(s[0])){
-                        s[0]="knight";
+                    if(knightOmoList.contains(s)){
+                        s="knight";
                     }
                     break;
                 }
                 case 3: {
-                    if(bishopOmoList.contains(s[0])){
-                        s[0]="bishop";
+                    if(bishopOmoList.contains(s)){
+                        s="bishop";
                     }
                     break;
                 }
                 case 4: {
-                    if(queenOmoList.contains(s[0])){
-                        s[0]="queen";
+                    if(queenOmoList.contains(s)){
+                        s="queen";
                     }
                     break;
                 }
                 case 5: {
-                    if(kingOmoList.contains(s[0])){
-                        s[0]="king";
+                    if(kingOmoList.contains(s)){
+                        s="king";
                     }
                     break;
                 }
