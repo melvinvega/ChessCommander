@@ -1,4 +1,4 @@
-/*
+package com.capstone.chesscommander.chesscommander.GameLogic;/*
  * Records move information in game
  * @author Eduardo
  */

@@ -1,3 +1,4 @@
+package com.capstone.chesscommander.chesscommander.GameLogic;
 
 public class ShortMove {
 	char color;

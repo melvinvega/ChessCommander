@@ -1,3 +1,5 @@
+package com.capstone.chesscommander.chesscommander.GameLogic;
+
 import java.lang.*;
 
 /**

@@ -1,3 +1,5 @@
+package com.capstone.chesscommander.chesscommander.GameLogic;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -2232,28 +2234,28 @@ public class MoveList {
 	
 	public void printWhiteIDMoves(){
 		for(ShortMove s: whiteMoves){
-			System.out.println("Piece: " + s.getType() + " Start: " + s.getStartSquare() + " End: " + s.getEndSquare());
+			System.out.println("com.capstone.chesscommander.chesscommander.GameLogic.Piece: " + s.getType() + " Start: " + s.getStartSquare() + " End: " + s.getEndSquare());
 	} 	
 		System.out.println();
 	}
 	
 	public void printBlackIDMoves(){
 		for(ShortMove s: blackMoves){
-			System.out.println("Piece: " + s.getType() + " Start: " + s.getStartSquare() + " End: " + s.getEndSquare());
+			System.out.println("com.capstone.chesscommander.chesscommander.GameLogic.Piece: " + s.getType() + " Start: " + s.getStartSquare() + " End: " + s.getEndSquare());
 		} 	
 		System.out.println();
 	}	
 	
 	public void printWhiteMoves(){
 		for(ShortMove s: whiteMoves){
-			System.out.println("Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
+			System.out.println("com.capstone.chesscommander.chesscommander.GameLogic.Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
 		} 	
 		System.out.println();
 	}
 	
 	public void printBlackMoves(){
 		for(ShortMove s: blackMoves){
-			System.out.println("Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
+			System.out.println("com.capstone.chesscommander.chesscommander.GameLogic.Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
 		} 	
 		System.out.println();
 	}	
@@ -2261,13 +2263,13 @@ public class MoveList {
 	public void printPieceMoves(char t){
 		for(ShortMove s: whiteMoves){
 			if(s.getType() == t || s.getType() == Character.toUpperCase(t)){
-				System.out.println("Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
+				System.out.println("com.capstone.chesscommander.chesscommander.GameLogic.Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
 			}
 		}
 		System.out.println();
 		for(ShortMove s: blackMoves){
 			if(s.getType() == t || s.getType() == Character.toLowerCase(t)){
-				System.out.println("Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
+				System.out.println("com.capstone.chesscommander.chesscommander.GameLogic.Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
 			}
 		}
 		System.out.println();
@@ -2277,7 +2279,7 @@ public class MoveList {
 		if(c == 'W'){
 			for(ShortMove s: whiteMoves){
 				if(s.getType() == t || s.getType() == Character.toUpperCase(t)){
-					System.out.println("Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
+					System.out.println("com.capstone.chesscommander.chesscommander.GameLogic.Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
 				}
 			}
 			System.out.println();
@@ -2285,7 +2287,7 @@ public class MoveList {
 		else if(c == 'B'){
 			for(ShortMove s: blackMoves){
 				if(s.getType() == t || s.getType() == Character.toLowerCase(t)){
-					System.out.println("Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
+					System.out.println("com.capstone.chesscommander.chesscommander.GameLogic.Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
 				}
 			}
 			System.out.println();
@@ -2352,7 +2354,7 @@ public class MoveList {
 	
 	public void printPieceMoves(){
 		for(ShortMove s: pieceMoves){
-				System.out.println("Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
+				System.out.println("com.capstone.chesscommander.chesscommander.GameLogic.Piece: " + s.getType() + " Start: " + tileToNotation(s.getStartSquare()) + " End: " + tileToNotation(s.getEndSquare()));
 		}
 		System.out.println();
 	}

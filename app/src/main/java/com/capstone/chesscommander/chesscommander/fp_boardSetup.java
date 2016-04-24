@@ -165,7 +165,7 @@ public class fp_boardSetup extends Activity {
                     break;
             }
         }
-        else if(!empty && pieceSelected){//Remove Piece
+        else if(!empty && pieceSelected){//Remove com.capstone.chesscommander.chesscommander.GameLogic.Piece
             if(view.getBackground().equals(currentPiece.getBackground())){
                 view.setBackgroundResource(0);
                 view.setTag(R.id.tagpiece, "");
@@ -236,7 +236,7 @@ public class fp_boardSetup extends Activity {
                         break;
                 }
             }
-            else{//Replace Piece
+            else{//Replace com.capstone.chesscommander.chesscommander.GameLogic.Piece
                 String taginfo =view.getTag(R.id.tagpiece).toString();
                 switch (taginfo){
                     case "king":

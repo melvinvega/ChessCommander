@@ -1,3 +1,5 @@
+package com.capstone.chesscommander.chesscommander.GameLogic;
+
 /**
  * The class Tile contains information pertaining to the contents of 1 tile in the chess
  * board.
@@ -28,7 +30,7 @@ public class Tile {
 	
 	/**
 	 * Recommended constructor for the class. 
-	 * @param p - Piece to be set into the tile
+	 * @param p - com.capstone.chesscommander.chesscommander.GameLogic.Piece to be set into the tile
 	 * @param n - Algebraic notation to represent the tile
 	 * @param ips - Sets whether or not the tile is a promotion square
 	 * @param i - Numeric ID.

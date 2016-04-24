@@ -1,3 +1,4 @@
+package com.capstone.chesscommander.chesscommander.GameLogic;
 
 import java.util.ArrayList;
 
@@ -541,7 +542,7 @@ public class Board {
 //		Scanner s = new Scanner(System.in);
 //		char in = 'x';
 //		while(true){
-//			System.out.println("Insert Promotion Piece");
+//			System.out.println("Insert Promotion com.capstone.chesscommander.chesscommander.GameLogic.Piece");
 //			in = s.nextLine().charAt(0);
 //			if(in == 'Q' || in == 'R' || in == 'B' ||in != 'N'){
 //					break;
@@ -687,7 +688,7 @@ public class Board {
 	 */
 	
 	public void printBoard(){
-		System.out.println("Notation / Piece / ID / Promotion / Occupied ");
+		System.out.println("Notation / com.capstone.chesscommander.chesscommander.GameLogic.Piece / ID / Promotion / Occupied ");
 		for(int i = 0; i < 64; i++){
 		System.out.println(tiles[i].getNotation() + " " +tiles[i].getPieceChar() + " " + 
 		tiles[i].getID() + " " + tiles[i].getIfPromotionSquare() + " "+ tiles[i].getIfOccupied());
