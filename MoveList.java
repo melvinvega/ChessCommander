@@ -1817,6 +1817,17 @@ public class MoveList {
 			
 		}	
 		
+		if(!wkm && !wkrm && !checkIfCheck('W') && !board[61].getIfOccupied() && !board[62].getIfOccupied() && !isAttacked(61, 'W') && !isAttacked(62, 'W')){
+			bKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 2));
+			whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 2));
+		}
+		
+		if(!wkm && !wqrm && !checkIfCheck('W') && !board[59].getIfOccupied() && !board[58].getIfOccupied() && !board[57].getIfOccupied() && !isAttacked(59, 'W') && !isAttacked(58, 'W')){
+			wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 2));
+			whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 2));
+		}
+		
+		
 	}
 	
 	private void findBlackKingMoves(){
@@ -2093,6 +2104,16 @@ public class MoveList {
 			
 		}	
 		
+		if(!bkm && !bkrm && !checkIfCheck('B') && !board[5].getIfOccupied() && !board[6].getIfOccupied() && !isAttacked(5, 'B') && !isAttacked(6, 'B')){
+			bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 2));
+			blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 2));
+		}
+		
+		if(!bkm && !bqrm && !checkIfCheck('B') && !board[3].getIfOccupied() && !board[2].getIfOccupied() && !board[1].getIfOccupied() && !isAttacked(3, 'B') && !isAttacked(2, 'B')){
+			bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 2));
+			blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 2));
+		}
+		
 	}
 	
 	public boolean checkStalemate(char c){
@@ -2141,7 +2162,36 @@ public class MoveList {
 			return false;
 		}
 	}
+	
+	public boolean wouldBeCheck(int ss, int es, char c){
+		helper.setCustomBoard(helpBoard);
+		helper.testMove(ss, es, c, true);
+		if(helper.getMoveList(c, true).checkIfCheck(c)){
+			return true;
+		}
+		return false;
+	}
 
+	public boolean isAttacked(int sq, char c){
+		if(c == 'W'){
+			for(ShortMove s : blackMoves){
+				if(s.getEndSquare() == sq){
+					return true;
+				}
+			}
+			return false;
+		}
+		else if(c == 'B'){
+			for(ShortMove s : whiteMoves){
+				if(s.getEndSquare() == sq){
+					return true;
+				}
+			}
+			return false;
+		}
+		return false;
+	}
+	
 	public boolean checkIfLegal(int s, int e, char c){
 		if(c == 'W'){
 			List<ShortMove> pieceMoves = new ArrayList<ShortMove>();
@@ -2152,14 +2202,7 @@ public class MoveList {
 			}
 			for(ShortMove sm: pieceMoves){
 				if(sm.getEndSquare() == e){
-					if(sm.getType() == 'K'){
-						//Tile[] copy = board.clone();
-						//if(copy[e].containsPiece){
-							return false; // temporary
-						//}
-					}
-					else
-						if(!checkIfCheck('W')){
+						if(!checkIfCheck('W') && !wouldBeCheck(sm.startSquare, sm.endSquare, 'W')){
 							return true;
 						}	
 				}
@@ -2175,14 +2218,7 @@ public class MoveList {
 			}
 			for(ShortMove sm: pieceMoves){
 				if(sm.getEndSquare() == e){
-					if(sm.getType() == 'K'){
-						//Tile[] copy = board.clone();
-						//if(copy[e].containsPiece){
-							return false; // temporary
-						//}
-					}
-					else
-						if(!checkIfCheck('B')){
+						if(!checkIfCheck('B')&& !wouldBeCheck(sm.startSquare, sm.endSquare, 'B')){
 							return true;
 						}	
 				}
