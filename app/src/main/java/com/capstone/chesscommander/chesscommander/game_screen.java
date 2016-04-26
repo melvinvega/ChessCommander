@@ -582,10 +582,23 @@ public class game_screen extends Activity {
             }
             finalCommand[1] = positionResult;
 
-            String spokenText = finalCommand[0] + " " + finalCommand[1];
             System.out.println("Result: ");
-            System.out.println(spokenText);
-            Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
+            int tempnum = notationToInt(finalCommand[1]);
+            System.out.println("ESQ voice = "+ tempnum);
+            int[] resultNum = boardEduardo.list.getMoveVoice(finalCommand[0],notationToInt(finalCommand[1]),'W');
+            int SSQ = resultNum[0];
+            int ESQ = resultNum[1];
+            System.out.println("SSQ = "+ SSQ);
+            System.out.println("ESQ = "+ ESQ);
+            if(boardEduardo.move(SSQ,ESQ,'W',true)){
+                refreshBoard();
+                String spokenText = finalCommand[0] + " " + finalCommand[1];
+                Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(this, "Illegal Move", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -1193,4 +1206,138 @@ public class game_screen extends Activity {
         return boardNotation[pos];
     }
 
+    private int notationToInt(String notation){
+        switch (notation.toLowerCase()) {
+            case "a8":
+                return 0;
+            case "b8":
+                return 1;
+            case "c8":
+                return 2;
+            case "d8":
+                return 3;
+            case "e8":
+                return 4;
+            case "f8":
+                return 5;
+            case "g8":
+                return 6;
+            case "h8":
+                return 7;
+            case "a7":
+                return 8;
+            case "b7":
+                return 9;
+            case "c7":
+                return 10;
+            case "d7":
+                return 11;
+            case "e7":
+                return 12;
+            case "f7":
+                return 13;
+            case "g7":
+                return 14;
+            case "h7":
+                return 15;
+            case "a6":
+                return 16;
+            case "b6":
+                return 17;
+            case "c6":
+                return 18;
+            case "d6":
+                return 19;
+            case "e6":
+                return 20;
+            case "f6":
+                return 21;
+            case "g6":
+                return 22;
+            case "h6":
+                return 23;
+            case "a5":
+                return 24;
+            case "b5":
+                return 25;
+            case "c5":
+                return 26;
+            case "d5":
+                return 27;
+            case "e5":
+                return 28;
+            case "f5":
+                return 29;
+            case "g5":
+                return 30;
+            case "h5":
+                return 31;
+            case "a4":
+                return 32;
+            case "b4":
+                return 33;
+            case "c4":
+                return 34;
+            case "d4":
+                return 35;
+            case "e4":
+                return 36;
+            case "f4":
+                return 37;
+            case "g4":
+                return 38;
+            case "h4":
+                return 39;
+            case "a3":
+                return 40;
+            case "b3":
+                return 41;
+            case "c3":
+                return 42;
+            case "d3":
+                return 43;
+            case "e3":
+                return 44;
+            case "f3":
+                return 45;
+            case "g3":
+                return 46;
+            case "h3":
+                return 47;
+            case "a2":
+                return 48;
+            case "b2":
+                return 49;
+            case "c2":
+                return 50;
+            case "d2":
+                return 51;
+            case "e2":
+                return 52;
+            case "f2":
+                return 53;
+            case "g2":
+                return 54;
+            case "h2":
+                return 55;
+            case "a1":
+                return 56;
+            case "b1":
+                return 57;
+            case "c1":
+                return 58;
+            case "d1":
+                return 59;
+            case "e1":
+                return 60;
+            case "f1":
+                return 61;
+            case "g1":
+                return 62;
+            case "h1":
+                return 63;
+            default:
+                return -1;
+        }
+    }
 }
