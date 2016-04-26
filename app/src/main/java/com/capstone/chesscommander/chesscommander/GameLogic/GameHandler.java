@@ -20,6 +20,7 @@ public class GameHandler {
     Board current = new Board();
     Board holder = new Board();
     int[] lastMove;
+    int[] lastMoveEx;
     // Engine class here
     String difficulty;
 
@@ -54,6 +55,8 @@ public class GameHandler {
     }
 
     public void startGame() {
+        int co;
+        char gameResult;
         if (standardGame) {
             past.setInitialPosition();
             current.setInitialPosition();
@@ -63,23 +66,148 @@ public class GameHandler {
         }
         else{
             // free play code here
+            if(opponentType.equals("player")){
+                gameType = "pvp";
+            }
+            else if(opponentType.equals("computer")){
+                gameType = "pve";
+            }
         }
 
         if(gameType.equals("pvp")){
             currentPlayer = "white";
-            // code for physical move here
-            // update so the move can only be performed if the attempted move is equal to currentPlayer
 
-            if(current.list.checkStalemate(Character.toUpperCase(currentPlayer.charAt(0)))){
-                // code for draw
+            while(true){
+
+                // code for physical move here
+                // update so the move can only be performed if the attempted move is equal to currentPlayer
+                // proceed only if move was performed. In other words if move returns true.
+
+                if(true){ //true is a placeholder for move
+                    // save the values of the squares used in move for storage in last move later
+
+                    // helper.move(this.startSquare, this.endSquare, currentPlayer, true);
+
+                    if (current.list.verifyCheckmate((Character.toUpperCase(currentPlayer.charAt(0))))) {
+                        gameResult = 'W';
+                        break;
+                    }
+                    else if (current.list.checkStalemate(Character.toUpperCase(currentPlayer.charAt(0)))) {
+                        gameResult = 'D';
+                        break;
+                    }
+                    if(ply != 1){
+                        if(lastMove[2] == 0){
+                            past.move(lastMove[0],lastMove[1],'W',true);
+                        }
+                        else if(lastMove[2] == 1){
+                            past.move(lastMove[0],lastMove[1],'B',true);
+                        }
+                    }
+
+                    if(currentPlayer.equals("white")){
+                        co = 0;
+                    }
+                    else{
+                        co = 1;
+                    }
+
+                    lastMove[0] = 0; // Placeholder. Value of start square used in move
+                    lastMove[1] = 0; // Placeholder. Value of end square used in move
+                    lastMove[2] = co; //Contains value assigned to each color
+
+                    if (currentPlayer.equals("white")) {
+                        ply++;
+                        currentPlayer = "black";
+                    }
+                    else{
+                        ply++;
+                        turnNum++;
+                        currentPlayer = "white";
+                    }
+                 }
+            }
+
+            if(gameResult == 'D'){
+                // code for actions upon game draw here
+            }
+            else if(gameResult == 'W'){
+                // code for action upon checkmate here
             }
 
         }
         else if(gameType.equals("pve")){
+            int waitTime;
+            switch(difficulty){ // sets wait time for engine to think
+                case "easy": waitTime = 1000;
+                    break;
+                case "medium": waitTime = 2500;
+                    break;
+                case "hard": waitTime = 10000;
+                    break;
+                default: waitTime = 2500;
+                    break;
+            }
             currentPlayer = "white";
-            if(playerColor.equals(currentPlayer)){
-                //code for physical move here
-                // update so the move can only be performed if the attempted move is equal to currentPlayer
+            while(true) {
+                if (playerColor.equals(currentPlayer)) {
+                    //code for physical move here
+                    // update so the move can only be performed if the attempted move is equal to currentPlayer
+                    // save values of move made
+                }
+
+                else{
+                    // code for engine functions here
+                    // parse values from engine library to integers
+                    // save value of move made
+                    lastMoveEx[0] = 0;
+                    lastMoveEx[1] = 0;
+                    if(playerColor.equals("White")){
+                        lastMoveEx[2] = 1;
+                    }
+                    else{
+                        lastMoveEx[2] = 0;
+                    }
+                }
+
+                if(true){ //true is a placeholder for move. Will always return true to an engine move.
+
+                    if (current.list.verifyCheckmate((Character.toUpperCase(currentPlayer.charAt(0))))) {
+                        gameResult = 'W';
+                        break;
+                    }
+                    else if (current.list.checkStalemate(Character.toUpperCase(currentPlayer.charAt(0)))) {
+                        gameResult = 'D';
+                        break;
+                    }
+
+                    if(currentPlayer.equals(playerColor)){
+                        if(ply != 1){
+                            if(lastMove[2] == 0){
+                                past.move(lastMove[0],lastMove[1],'W',true);
+                                past.move(lastMoveEx[0], lastMoveEx[1], 'B', false);
+                            }
+                            else if(lastMove[2] == 1){
+                                past.move(lastMove[0],lastMove[1],'B',true);
+                                past.move(lastMoveEx[0],lastMoveEx[1],'W',false);
+                            }
+                        }
+                    }
+
+                    if (currentPlayer.equals("white")) {
+                        currentPlayer = "black";
+                    }
+                    else{
+                        currentPlayer = "white";
+                    }
+                }
+            }
+
+            if(gameResult == 'D'){
+                // code for actions upon game draw here
+            }
+            else if(gameResult == 'W'){
+                // code for action upon checkmate here
             }
         }
     }

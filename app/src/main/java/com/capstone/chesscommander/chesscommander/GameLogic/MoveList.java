@@ -2178,6 +2178,10 @@ public class MoveList {
 		return false;
 	}
 
+	public boolean verifyCheckmate(char c){
+		return checkStalemate(c) && checkIfCheck(c);
+	}
+
 	public boolean isAttacked(int sq, char c){
 		if(c == 'W'){
 			for(ShortMove s : blackMoves){
