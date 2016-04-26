@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.chesscommander.chesscommander.GameLogic.Board;
+import com.capstone.chesscommander.chesscommander.GameLogic.Stockfish;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,7 +114,7 @@ public class game_screen extends Activity {
     private List rookOmoList,pawnOmoList,knightOmoList,kingOmoList,queenOmoList,bishopOmoList;
     private List aOmoList,bOmoList,cOmoList,dOmoList,eOmoList,fOmoList,gOmoList,hOmoList;
     private List OmoList1,OmoList2,OmoList3,OmoList4,OmoList5,OmoList6,OmoList7,OmoList8;
-    private List numbers,castling;
+    private List numbers,castling,boardNotationList;
 
     private String[][] pawnMoves = new String[8][3];
 
@@ -127,8 +129,11 @@ public class game_screen extends Activity {
     private String currentAllowedColor;
     final Context context = this;
 
-    AccessibilityManager am;
-    boolean isAccessibilityEnabled;
+    private AccessibilityManager am;
+    private boolean isAccessibilityEnabled;
+
+    private Stockfish engine = new Stockfish();
+
 
 
 
@@ -153,6 +158,7 @@ public class game_screen extends Activity {
         am = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         isAccessibilityEnabled = am.isEnabled();
 
+
     }
 
     public void onButtonClick(View view){
@@ -175,15 +181,19 @@ public class game_screen extends Activity {
                 if (currentBoard.move(SSQ, ESQ, color, true)) {
                     refreshBoard();
                     numberOfMoves++;
-                }
+
                 switch(opponentType){
                     case "player":
                         changeAllowedColor();
                         changePlayerColor();
                         break;
                     case "computer":
+                        engine.startEngine();
+                        String moveString = engine.getBestMove(currentBoard.returnFEN(),10);
+                        System.out.println(moveString);
                         changeAllowedColor();
                         break;
+                }
                 }
             }
             past.setInitialPosition();
@@ -263,7 +273,7 @@ public class game_screen extends Activity {
     }
 
     public void onUndoButtonClick(View view){
-        if(numberOfMoves==0){
+        if(currentBoard.getGameMoveList().size()==0){
             Toast.makeText(this, "Cant Undo", Toast.LENGTH_SHORT).show();
         }
         else{
@@ -274,15 +284,14 @@ public class game_screen extends Activity {
                     copyPastToCurrent();
                     changeAllowedColor();
                     changePlayerColor();
-                    numberOfMoves--;
+                    numberOfMoves=currentBoard.getGameMoveList().size();
                     break;
                 case "computer":
                     simulateMoves();
                     copyCurrentToHolder();
                     copyPastToCurrent();
                     changeAllowedColor();
-                    numberOfMoves--;
-                    numberOfMoves--;
+                    numberOfMoves=currentBoard.getGameMoveList().size();
                     break;
             }
             refreshBoard();
@@ -626,6 +635,10 @@ public class game_screen extends Activity {
         }
         currentTurn=0;
         numberOfMoves=0;
+        //currentBoard.getGameMoveList().clear();
+        TextView tv = (TextView)findViewById(R.id.game_screen_currAAllowed);
+        tv.setText(currentAllowedColor.substring(0, 1).toUpperCase() + currentAllowedColor.substring(1));
+
         }
 
     // Create an intent that can start the Speech Recognizer activity
@@ -663,7 +676,12 @@ public class game_screen extends Activity {
             positionResultsList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             //System.out.println("InputPosition: ");
             //System.out.println(positionResultsList);
-            positionResult = positionResultsList.get(0).toLowerCase();
+            if(boardNotationList.contains(positionResultsList.get(0).toLowerCase())){
+                positionResult = positionResultsList.get(0).toLowerCase();
+            }
+            else{
+                positionResult = positionResultsList.get(1).toLowerCase();
+            }
             if(positionResult.charAt(0)=='0'){
                 positionResult= "A" + positionResult.charAt(1);
             }
@@ -678,7 +696,7 @@ public class game_screen extends Activity {
             //System.out.println("Result: ");
             int tempnum = notationToInt(finalCommand[1]);
             //System.out.println("ESQ voice = "+ tempnum);
-            int[] resultNum = currentBoard.list.getMoveVoice(finalCommand[0],notationToInt(finalCommand[1]),'W');
+            int[] resultNum = currentBoard.list.getMoveVoice(finalCommand[0],notationToInt(finalCommand[1]),playerColor.toUpperCase().charAt(0));
             int SSQ = resultNum[0];
             int ESQ = resultNum[1];
             System.out.println("SSQ = "+ SSQ);
@@ -907,6 +925,9 @@ public class game_screen extends Activity {
         numbers = Arrays.asList(numberss);
 
         castling = Arrays.asList(castlingOmophones);
+
+        boardNotationList = Arrays.asList(boardNotation);
+
 
     }
 
@@ -1454,6 +1475,9 @@ public class game_screen extends Activity {
         else{
             currentAllowedColor = "white";
         }
+
+        TextView tv = (TextView)findViewById(R.id.game_screen_currAAllowed);
+        tv.setText(currentAllowedColor.substring(0, 1).toUpperCase() + currentAllowedColor.substring(1));
     }
 
     private void changePlayerColor(){
@@ -1517,4 +1541,5 @@ public class game_screen extends Activity {
         }
         holder.setInitialPosition();
     }
+
 }

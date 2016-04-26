@@ -9,7 +9,7 @@
     <ImageButton
         android:id="@+id/game_screen_voice_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:layout_alignBottom="@+id/game_screen_options_button"
         android:layout_alignParentStart="true"
         android:clickable="true"
@@ -18,7 +18,8 @@
         android:focusable="true"
         android:src="@drawable/ic_keyboard_voice_24dp"
         android:tint="#ffffff"
-        android:onClick="onVoiceButtonClick" />
+        android:onClick="onVoiceButtonClick"
+        android:paddingTop="5dp" />
 
     <ImageButton
         android:id="@+id/game_screen_options_button"
@@ -33,7 +34,8 @@
         android:tint="#ffffff"
         android:onClick="onOptionsButtonClick"
         android:nestedScrollingEnabled="false"
-        android:longClickable="false" />
+        android:longClickable="false"
+        android:paddingTop="5dp" />
 
     <Button
         android:id="@+id/game_screen_undo_button"
@@ -67,7 +69,7 @@
         android:layout_below="@+id/game_screen_voice_button"
         android:layout_weight=".125"
         android:orientation="horizontal"
-        >
+        android:paddingTop="20dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -1787,6 +1789,27 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Currently Playing:"
+        android:id="@+id/CurrPlaying_textview"
+        android:layout_alignTop="@+id/game_screen_voice_button"
+        android:layout_centerHorizontal="true"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="color"
+        android:id="@+id/game_screen_currAAllowed"
+        android:textSize="25sp"
+        android:layout_below="@+id/CurrPlaying_textview"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="5dp" />
 
 
 </RelativeLayout>
