@@ -574,6 +574,8 @@ public class Board {
 		return 'q';
 	}
 
+	public Board getBoardBoard(){return this;}
+
 	public Tile[] getBoard(){
 		return tiles;
 	}

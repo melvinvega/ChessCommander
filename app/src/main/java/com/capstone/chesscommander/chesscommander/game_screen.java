@@ -41,11 +41,13 @@ public class game_screen extends Activity {
     *             row[0-7] = 1-8
     *             col[0-7] = A-H
     * */
-    private int prevId;
+
+    private int prevId,currentTurn;
     private Drawable bgdraw;
     private boolean empty;
 
     private String gameType,difficulty,playerColor;
+    private String currentMove,playAs,opponentType;
     private int[] tempBoard = new int[64];
     private String[] numberss = new String[8];
     private String[] boardNotation = new String[64];
@@ -114,12 +116,18 @@ public class game_screen extends Activity {
 
     private String[][] pawnMoves = new String[8][3];
 
-    private Board boardEduardo = new Board();
+    private Board past = new Board();
+    private Board currentBoard = new Board();
+    private Board holder = new Board();
 
+    private ArrayList<Board> pastList = new ArrayList();
+
+    private String currentAllowedColor;
     final Context context = this;
 
     AccessibilityManager am;
     boolean isAccessibilityEnabled;
+
 
 
     @Override
@@ -131,6 +139,23 @@ public class game_screen extends Activity {
         difficulty = extras.getString("Difficulty");
         playerColor = extras.getString("PlayerColor");
         tempBoard = extras.getIntArray("Board");
+        if(gameType=="fp"){
+            currentMove = extras.getString("CurrentMove");
+            playerColor = extras.getString("PlayAs");
+            opponentType = extras.getString("OpponentType");
+            currentAllowedColor = currentMove;
+        }
+        if(gameType.equals("pvp") | gameType.equals("pve") ){
+            playerColor="white";
+            currentAllowedColor = "white";
+            if(gameType.equals("pve")){
+                opponentType = "computer";
+            }
+            else{
+                opponentType = "player";
+            }
+        }
+
         boardSetup(gameType);
         refreshBoard();
         prevId = -1;
@@ -139,13 +164,10 @@ public class game_screen extends Activity {
 
         setupOmophones();
         setupLists();
-
         am = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         isAccessibilityEnabled = am.isEnabled();
-    }
-
-    protected boolean dispatchPopulateAccessibilityEvent(){
-        return true;
+        currentTurn=0;
+        pastList.add(currentTurn,currentBoard);
     }
 
     public void onButtonClick(View view){
@@ -155,22 +177,34 @@ public class game_screen extends Activity {
             //Do nothing
         }
         else if(!empty && prevId==-1){
-            prevId = view.getId();
-            //boardEduardo.list.printWhiteMoves();
+           if(currentAllowedColor.equals(view.getTag(R.id.tagcolor)) && currentAllowedColor.equals(playerColor)){
+               prevId = view.getId();
+           }
         }
-        else if(prevId>0){
-            //Verify if legal move
-            if(!findViewById(prevId).equals(view)){
-                int SSQ = (Integer)findViewById(prevId).getTag(R.id.tagboardpos);
-                int ESQ = (Integer)view.getTag(R.id.tagboardpos);
-                char color = boardEduardo.getTile((Integer)findViewById(prevId).getTag(R.id.tagboardpos)).getPiece().getColor();
-                if(boardEduardo.move(SSQ,ESQ,color,true)) {
+        else if(prevId>0) {
+            if (!findViewById(prevId).equals(view)) {
+                int SSQ = (Integer) findViewById(prevId).getTag(R.id.tagboardpos);
+                int ESQ = (Integer) view.getTag(R.id.tagboardpos);
+                char color = currentBoard.getTile((Integer) findViewById(prevId).getTag(R.id.tagboardpos)).getPiece().getColor();
+                if (currentBoard.move(SSQ, ESQ, color, true)) {
                     refreshBoard();
+
                 }
+                changeAllowedColor();
+                if(opponentType.equals("player")){
+                    changePlayerColor();
+                }
+                if(playerColor.equals("white")){
+                    pastList.add(currentTurn,currentBoard);
+                    currentTurn++;
+                }
+                //Make Engine move,change allowed color, refresh board
             }
             prevId = -1;
-            boardEduardo.printVisualBoard();
+
+            currentBoard.printVisualBoard();
         }
+
     }
 
     public void onOptionsButtonClick(View view){
@@ -187,11 +221,11 @@ public class game_screen extends Activity {
                         reverseRefreshBoard();
                         break;
                     case 1://Move List
-                       System.out.println(boardEduardo.getGameMoveList().toString());
+                       System.out.println(currentBoard.getGameMoveList().toString());
                        String moves = "";
-                        for(int i=0;i<boardEduardo.getGameMoveList().size();i++){
-                            String SSQ = intToNotation(boardEduardo.getGameMoveList().get(i).getStartSquareID());
-                            String ESQ = intToNotation(boardEduardo.getGameMoveList().get(i).getEndSquareID());
+                        for(int i = 0; i< currentBoard.getGameMoveList().size(); i++){
+                            String SSQ = intToNotation(currentBoard.getGameMoveList().get(i).getStartSquareID());
+                            String ESQ = intToNotation(currentBoard.getGameMoveList().get(i).getEndSquareID());
                             moves = moves + "\n" + (i+1) + "."+ SSQ + " " + ESQ + " " ;
                         }
                         CharSequence msg = moves;
@@ -218,11 +252,11 @@ public class game_screen extends Activity {
                         board = initialBoard.clone();
                         boardSetup(gameType);
                         if(gameType.equals("fp")){
-                            boardEduardo.setCustomBoard(tempBoard);
+                            currentBoard.setCustomBoard(tempBoard);
                             refreshBoard();
                         }
                         else{
-                            boardEduardo.setInitialPosition();
+                            currentBoard.setInitialPosition();
                             refreshBoard();
                         }
                         prevId = -1;
@@ -242,8 +276,9 @@ public class game_screen extends Activity {
     }
 
     public void onUndoButtonClick(View view){
-        //Ask engine for undo
+        currentBoard = pastList.get(currentTurn-1);
         refreshBoard();
+        currentTurn--;
     }
 
     public void onRedoButtonClick(View view){
@@ -539,10 +574,14 @@ public class game_screen extends Activity {
         boardNotation[63] = "h1";
 
         if(gameType.equals("pve") || gameType.equals("pvp")) {
-            boardEduardo.setInitialPosition();
+            currentBoard.setInitialPosition();
+            past.setInitialPosition();
+            holder.setInitialPosition();
         }
         else if(gameType.equals("fp")){
-            boardEduardo.setCustomBoard(tempBoard);
+            currentBoard.setCustomBoard(tempBoard);
+            past.setCustomBoard(tempBoard);
+            holder.setCustomBoard(tempBoard);
             }
 
    boardNotation[0] = "a8";
@@ -598,12 +637,12 @@ public class game_screen extends Activity {
             System.out.println("Result: ");
             int tempnum = notationToInt(finalCommand[1]);
             System.out.println("ESQ voice = "+ tempnum);
-            int[] resultNum = boardEduardo.list.getMoveVoice(finalCommand[0],notationToInt(finalCommand[1]),'W');
+            int[] resultNum = currentBoard.list.getMoveVoice(finalCommand[0],notationToInt(finalCommand[1]),'W');
             int SSQ = resultNum[0];
             int ESQ = resultNum[1];
             System.out.println("SSQ = "+ SSQ);
             System.out.println("ESQ = "+ ESQ);
-            if(boardEduardo.move(SSQ,ESQ,'W',true)){
+            if(currentBoard.move(SSQ,ESQ,'W',true)){
                 refreshBoard();
                 String spokenText = finalCommand[0] + " " + finalCommand[1];
                 Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
@@ -1053,8 +1092,8 @@ public class game_screen extends Activity {
         int i=0;
        for(int r=7;r>=0;r--){
            for(int c=0;c<8;c++){
-               if(boardEduardo.getTile(i).getIfOccupied()){
-                   switch (boardEduardo.getTile(i).getPieceChar()){
+               if(currentBoard.getTile(i).getIfOccupied()){
+                   switch (currentBoard.getTile(i).getPieceChar()){
                        case 'P':
                            board[r][c].setTag(R.id.tagpiece,"pawn");
                            board[r][c].setTag(R.id.tagcolor,"white");
@@ -1116,14 +1155,14 @@ public class game_screen extends Activity {
                            board[r][c].setBackgroundResource(R.drawable.rook_b);
                            break;
                    }
-                   CharSequence description = boardEduardo.getTile(i).getNotation().toUpperCase() + " "
+                   CharSequence description = currentBoard.getTile(i).getNotation().toUpperCase() + " "
                                             + board[r][c].getTag(R.id.tagcolor) + " "
                                             + board[r][c].getTag(R.id.tagpiece);
 
                    board[r][c].setContentDescription(description);
                }
                else{
-                   CharSequence description = boardEduardo.getTile(i).getNotation();
+                   CharSequence description = currentBoard.getTile(i).getNotation();
                    board[r][c].setBackgroundResource(0);
                    board[r][c].setContentDescription(description);
                }
@@ -1137,8 +1176,8 @@ public class game_screen extends Activity {
         System.out.println("i = "+i);
         for(int r=7;r>=0;r--){
             for(int c=0;c<8;c++){
-                if(boardEduardo.getTile(i).getIfOccupied()){
-                    switch (boardEduardo.getTile(i).getPieceChar()){
+                if(currentBoard.getTile(i).getIfOccupied()){
+                    switch (currentBoard.getTile(i).getPieceChar()){
                         case 'P':
                             board[r][c].setTag(R.id.tagpiece,"pawn");
                             board[r][c].setTag(R.id.tagcolor,"white");
@@ -1200,14 +1239,14 @@ public class game_screen extends Activity {
                             board[r][c].setBackgroundResource(R.drawable.rook_b);
                             break;
                     }
-                    CharSequence description = boardEduardo.getTile(i).getNotation().toUpperCase() + " "
+                    CharSequence description = currentBoard.getTile(i).getNotation().toUpperCase() + " "
                             + board[r][c].getTag(R.id.tagcolor) + " "
                             + board[r][c].getTag(R.id.tagpiece);
 
                     board[r][c].setContentDescription(description);
                 }
                 else{
-                    CharSequence description = boardEduardo.getTile(i).getNotation();
+                    CharSequence description = currentBoard.getTile(i).getNotation();
                     board[r][c].setBackgroundResource(0);
                     board[r][c].setContentDescription(description);
                 }
@@ -1352,6 +1391,24 @@ public class game_screen extends Activity {
                 return 63;
             default:
                 return -1;
+        }
+    }
+
+    private void changeAllowedColor(){
+        if(currentAllowedColor.equals("white")){
+            currentAllowedColor = "black";
+        }
+        else{
+            currentAllowedColor = "white";
+        }
+    }
+
+    private void changePlayerColor(){
+        if(playerColor.equals("white")){
+            playerColor = "black";
+        }
+        else{
+            playerColor = "white";
         }
     }
 }
