@@ -192,6 +192,7 @@ public class Board {
 			tiles[i].setPiece(pieces[j]);
 			j++;
 		}
+		moves.clear();
 		getMoveList('W', false);
 		returnFEN();
 		return tiles;
