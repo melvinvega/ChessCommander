@@ -45,7 +45,8 @@
         android:layout_toStartOf="@+id/game_screen_redo_button"
         android:contentDescription="Undo"
         android:text="&lt;"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:onClick="onUndoButtonClick" />
 
     <Button
         android:id="@+id/game_screen_redo_button"
