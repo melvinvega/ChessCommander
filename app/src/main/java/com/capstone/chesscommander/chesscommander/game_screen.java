@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -117,6 +118,10 @@ public class game_screen extends Activity {
 
     final Context context = this;
 
+    AccessibilityManager am;
+    boolean isAccessibilityEnabled;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,9 +140,12 @@ public class game_screen extends Activity {
         setupOmophones();
         setupLists();
 
-        boardEduardo.list.printWhiteMoves();
-        boardEduardo.printVisualBoard();
+        am = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
+        isAccessibilityEnabled = am.isEnabled();
+    }
 
+    protected boolean dispatchPopulateAccessibilityEvent(){
+        return true;
     }
 
     public void onButtonClick(View view){
@@ -188,8 +196,13 @@ public class game_screen extends Activity {
                         }
                         CharSequence msg = moves;
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Move List");
-                        builder.setMessage(msg);
+                       if(isAccessibilityEnabled){
+                           builder.setTitle(msg);
+                       }
+                       else{
+                           builder.setTitle("Move List");
+                           builder.setMessage(msg);
+                       }
                         builder.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
                             // if this button is clicked, close dialog
@@ -594,6 +607,7 @@ public class game_screen extends Activity {
                 refreshBoard();
                 String spokenText = finalCommand[0] + " " + finalCommand[1];
                 Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
+
             }
             else{
                 Toast.makeText(this, "Illegal Move", Toast.LENGTH_SHORT).show();

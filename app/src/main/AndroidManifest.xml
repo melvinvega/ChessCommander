@@ -24,7 +24,7 @@
         <activity android:name=".game_screen"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:label="Game Screen"
+            android:label=""
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity android:name=".fp_boardSetup"
             android:configChanges="orientation"

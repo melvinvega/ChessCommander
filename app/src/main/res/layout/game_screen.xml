@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#000000"
-    android:gravity="center_horizontal" >
+    android:gravity="center_horizontal"
+    android:contentDescription="\u00A0">
 
     <ImageButton
         android:id="@+id/game_screen_voice_button"
