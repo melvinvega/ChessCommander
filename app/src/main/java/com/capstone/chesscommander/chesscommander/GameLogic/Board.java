@@ -102,7 +102,10 @@ public class Board {
 				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, h);
 		return list;
 	}
-	
+
+	public ArrayList<Moves> getGameMoveList(){
+		return moves;
+	}
 	/*
 	 *  Generates and returns an empty board of 64 tiles. They'll all have null Pieces;
 	 */

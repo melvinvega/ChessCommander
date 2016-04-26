@@ -2,6 +2,7 @@ package com.capstone.chesscommander.chesscommander;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -46,6 +47,7 @@ public class game_screen extends Activity {
     private String gameType,difficulty,playerColor;
     private int[] tempBoard = new int[64];
     private String[] numberss = new String[8];
+    private String[] boardNotation = new String[64];
 
     private String[] rank = new String[6];
     private String[] column = new String[8];
@@ -113,6 +115,8 @@ public class game_screen extends Activity {
 
     private Board boardEduardo = new Board();
 
+    final Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,7 +179,27 @@ public class game_screen extends Activity {
                         reverseRefreshBoard();
                         break;
                     case 1://Move List
-                        //Get move list from game
+                       System.out.println(boardEduardo.getGameMoveList().toString());
+                       String moves = "";
+                        for(int i=0;i<boardEduardo.getGameMoveList().size();i++){
+                            String SSQ = intToNotation(boardEduardo.getGameMoveList().get(i).getStartSquareID());
+                            String ESQ = intToNotation(boardEduardo.getGameMoveList().get(i).getEndSquareID());
+                            moves = moves + "\n" + (i+1) + "."+ SSQ + " " + ESQ + " " ;
+                        }
+                        CharSequence msg = moves;
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("Move List");
+                        builder.setMessage(msg);
+                        builder.setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            // if this button is clicked, close dialog
+                            dialog.cancel();
+                            }
+                        });
+                        //Create alert dialog
+                        AlertDialog alertDialog = builder.create();
+                        //Show alert dialog
+                        alertDialog.show();
                         break;
                     case 2://New Game
                         board = initialBoard.clone();
@@ -436,12 +460,79 @@ public class game_screen extends Activity {
         G1_button.setTag(R.id.tagboardpos,62);
         H1_button.setTag(R.id.tagboardpos,63);
 
+        boardNotation[0]  = "a8";
+        boardNotation[1]  = "b8";
+        boardNotation[2]  = "c8";
+        boardNotation[3]  = "d8";
+        boardNotation[4]  = "e8";
+        boardNotation[5]  = "f8";
+        boardNotation[6]  = "g8";
+        boardNotation[7]  = "h8";
+        boardNotation[8]  = "a7";
+        boardNotation[9]  = "b7";
+        boardNotation[10] = "c7";
+        boardNotation[11] = "d7";
+        boardNotation[12] = "e7";
+        boardNotation[13] = "f7";
+        boardNotation[14] = "g7";
+        boardNotation[15] = "h7";
+        boardNotation[16] = "a6";
+        boardNotation[17] = "b6";
+        boardNotation[18] = "c6";
+        boardNotation[19] = "d6";
+        boardNotation[20] = "e6";
+        boardNotation[21] = "f6";
+        boardNotation[22] = "g6";
+        boardNotation[23] = "h6";
+        boardNotation[24] = "a5";
+        boardNotation[25] = "b5";
+        boardNotation[26] = "c5";
+        boardNotation[27] = "d5";
+        boardNotation[28] = "e5";
+        boardNotation[29] = "f5";
+        boardNotation[30] = "g5";
+        boardNotation[31] = "h5";
+        boardNotation[32] = "a4";
+        boardNotation[33] = "b4";
+        boardNotation[34] = "c4";
+        boardNotation[35] = "d4";
+        boardNotation[36] = "e4";
+        boardNotation[37] = "f4";
+        boardNotation[38] = "g4";
+        boardNotation[39] = "h4";
+        boardNotation[40] = "a3";
+        boardNotation[41] = "b3";
+        boardNotation[42] = "c3";
+        boardNotation[43] = "d3";
+        boardNotation[44] = "e3";
+        boardNotation[45] = "f3";
+        boardNotation[46] = "g3";
+        boardNotation[47] = "h3";
+        boardNotation[48] = "a2";
+        boardNotation[49] = "b2";
+        boardNotation[50] = "c2";
+        boardNotation[51] = "d2";
+        boardNotation[52] = "e2";
+        boardNotation[53] = "f2";
+        boardNotation[54] = "g2";
+        boardNotation[55] = "h2";
+        boardNotation[56] = "a1";
+        boardNotation[57] = "b1";
+        boardNotation[58] = "c1";
+        boardNotation[59] = "d1";
+        boardNotation[60] = "e1";
+        boardNotation[61] = "f1";
+        boardNotation[62] = "g1";
+        boardNotation[63] = "h1";
+
         if(gameType.equals("pve") || gameType.equals("pvp")) {
             boardEduardo.setInitialPosition();
         }
         else if(gameType.equals("fp")){
             boardEduardo.setCustomBoard(tempBoard);
             }
+
+   boardNotation[0] = "a8";
         }
 
     // Create an intent that can start the Speech Recognizer activity
@@ -1096,6 +1187,10 @@ public class game_screen extends Activity {
                 i--;
             }
         }
+    }
+
+    private String intToNotation(int pos){
+        return boardNotation[pos];
     }
 
 }
