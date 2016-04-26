@@ -57,7 +57,8 @@
         android:layout_alignEnd="@+id/game_screen_options_button"
         android:contentDescription="Redo"
         android:text=">"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:onClick="onRedoButtonClick" />
 
     <LinearLayout
         android:id="@+id/row8"
