@@ -25,6 +25,7 @@ public class Board {
 	boolean blackKingMoved = false;
 	boolean blackKingRookMoved = false;
 	boolean blackQueenRookMoved = false;
+	boolean helpBoard = false;
 	int halfmove = 0;
 	int fullmove = 1;
 	int playerMove = 0;
@@ -78,6 +79,11 @@ public class Board {
 		return new Board(this);
 	}
 
+	public boolean setAsHelper(boolean h){
+		helpBoard = h;
+		return helpBoard;
+	}
+
 	public Tile[] setCustomBoard(int[] num){
 		genBoard();
 		if(num.length == 64){
@@ -101,6 +107,12 @@ public class Board {
 	public MoveList getMoveList(char c, boolean h){
 		list = new MoveList(tiles, c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
 				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, h);
+		if(helpBoard){
+			list.setHelpList();
+		}
+		else{
+			list.setList();
+		}
 		return list;
 	}
 
@@ -595,6 +607,13 @@ public class Board {
 	public MoveList checkAllLegal(char c){
 		MoveList ml = new MoveList(tiles, c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
 				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);
+		if(helpBoard) {
+			ml.setHelpList();
+		}
+		else{
+			ml.setList();
+		}
+
 		return ml;
 	}
 	
