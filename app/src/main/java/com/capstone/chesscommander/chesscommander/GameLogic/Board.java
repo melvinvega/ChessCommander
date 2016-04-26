@@ -13,6 +13,7 @@ import java.util.ArrayList;
  *
  */
 public class Board {
+	public MoveList list;
 	Game myGame;
 	boolean whiteKingCastle = true;
 	boolean blackKingCastle = true;
@@ -29,7 +30,6 @@ public class Board {
 	int playerMove = 0;
 	int doubleMoveTile = -100;
 	String FEN;
-	public MoveList list;
 	boolean isTurnPlayer;
 	Moves lastPlayerMove;
 	
@@ -86,7 +86,7 @@ public class Board {
 				}
 			}
 		}
-
+		getMoveList('W',false);
 		return tiles;
 	}
 
@@ -181,6 +181,10 @@ public class Board {
 			tiles[i].setPiece(pieces[j]);
 			j++;
 		}
+        for(int i = 16; i < 48; i++){
+            tiles[i].removePiece();
+
+        }
 		for(int i = 48; i < 64; i++){
 			tiles[i].setPiece(pieces[j]);
 			j++;
@@ -189,8 +193,9 @@ public class Board {
 		returnFEN();
 		return tiles;
 	}
-	
-	public boolean move(int start, int end, char c, boolean ip){
+
+
+    public boolean move(int start, int end, char c, boolean ip){
 		isTurnPlayer = true;
 		boolean capture = false;
 		boolean promotion = false;
@@ -549,7 +554,8 @@ public class Board {
 			}
 		}
 	}
-	private char askForPromotion() {
+
+    private char askForPromotion() {
 		
 		System.out.println("Promotion!");
 //		Scanner s = new Scanner(System.in);

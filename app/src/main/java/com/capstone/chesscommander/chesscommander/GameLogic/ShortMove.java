@@ -49,6 +49,48 @@ public class ShortMove {
 		return type;
 	}
 
+	public String getFullType() {
+		String pieceType="";
+		switch (type){
+			case 'P':
+				pieceType =  "pawn";
+				break;
+			case 'K':
+				pieceType =  "king";
+				break;
+			case 'Q':
+				pieceType =  "queen";
+				break;
+			case 'B':
+				pieceType =  "bishop";
+				break;
+			case 'N':
+				pieceType =  "knight";
+				break;
+			case 'R':
+				pieceType =  "rook";
+				break;
+			case 'p':
+				pieceType =  "pawn";
+				break;
+			case 'k':
+				pieceType =  "king";
+				break;
+			case 'q':
+				pieceType =  "queen";
+				break;
+			case 'b':
+				pieceType =  "bishop";
+				break;
+			case 'n':
+				pieceType =  "knight";
+				break;
+			case 'r':
+				pieceType =  "rook";
+				break;
+		}
+		return pieceType;
+	}
 
 	public void setType(char type) {
 		this.type = type;

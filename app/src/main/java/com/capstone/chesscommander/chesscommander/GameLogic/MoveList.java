@@ -2319,7 +2319,6 @@ public class MoveList {
 			return true;
 		}
 	}
-
 	/*
 	 * Function generates a list of all pieces of type 'p' and color 'c'.
 	 * Returns false if the resulting list is empty. True if it contains something.

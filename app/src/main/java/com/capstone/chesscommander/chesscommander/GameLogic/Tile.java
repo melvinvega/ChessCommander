@@ -79,7 +79,7 @@ public class Tile {
 		return containsPiece;
 	}
 	
-	Piece getPiece(){
+	public Piece getPiece(){
 		return pieceInTile;
 	}
 	
@@ -134,7 +134,7 @@ public class Tile {
 	 * Returns the algebraic notation that represents the tile.
 	 * @return notation
 	 */
-	String getNotation(){
+	public String getNotation(){
 		return notation;
 	}
 	
@@ -142,7 +142,7 @@ public class Tile {
 	 * Returns the ID value of the tile.
 	 * @return id
 	 */
-	int getID(){
+	public int getID(){
 		return id;
 	}
 	
@@ -150,7 +150,7 @@ public class Tile {
 	 * Returns true if the tile is occupied by a piece, false if it isn't.
 	 * @return
 	 */
-	boolean getIfOccupied(){
+	public boolean getIfOccupied(){
 		return containsPiece;
 	}
 	

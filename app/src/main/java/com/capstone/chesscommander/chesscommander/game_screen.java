@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.capstone.chesscommander.chesscommander.GameLogic.Board;
@@ -89,6 +90,16 @@ public class game_screen extends Activity {
     private ImageButton A3_button,B3_button,C3_button,D3_button,E3_button,F3_button,G3_button,H3_button;
     private ImageButton A2_button,B2_button,C2_button,D2_button,E2_button,F2_button,G2_button,H2_button;
     private ImageButton A1_button,B1_button,C1_button,D1_button,E1_button,F1_button,G1_button,H1_button;
+
+    private ImageView A8_view,B8_view,C8_view,D8_view,E8_view,F8_view,G8_view,H8_view;
+    private ImageView A7_view,B7_view,C7_view,D7_view,E7_view,F7_view,G7_view,H7_view;
+    private ImageView A6_view,B6_view,C6_view,D6_view,E6_view,F6_view,G6_view,H6_view;
+    private ImageView A5_view,B5_view,C5_view,D5_view,E5_view,F5_view,G5_view,H5_view;
+    private ImageView A4_view,B4_view,C4_view,D4_view,E4_view,F4_view,G4_view,H4_view;
+    private ImageView A3_view,B3_view,C3_view,D3_view,E3_view,F3_view,G3_view,H3_view;
+    private ImageView A2_view,B2_view,C2_view,D2_view,E2_view,F2_view,G2_view,H2_view;
+    private ImageView A1_view,B1_view,C1_view,D1_view,E1_view,F1_view,G1_view,H1_view;
+    
     private Bundle extras;
     private static final int SPEECH_REQUEST_CODE_PIECE = 0;
     private static final int SPEECH_REQUEST_CODE_POSITION = 1;
@@ -112,16 +123,15 @@ public class game_screen extends Activity {
         playerColor = extras.getString("PlayerColor");
         tempBoard = extras.getIntArray("Board");
         boardSetup(gameType);
-        setPieceTags();
-        setDescriptions();
+        refreshBoard();
         prevId = -1;
         initialBoard = board.clone();
         voiceKeyWordsArray();
-        resetBoard();
+
         setupOmophones();
         setupLists();
 
-
+        boardEduardo.list.printWhiteMoves();
         boardEduardo.printVisualBoard();
 
     }
@@ -134,35 +144,16 @@ public class game_screen extends Activity {
         }
         else if(!empty && prevId==-1){
             prevId = view.getId();
-            boardEduardo.list.printWhiteMoves();
+            //boardEduardo.list.printWhiteMoves();
         }
         else if(prevId>0){
             //Verify if legal move
             if(!findViewById(prevId).equals(view)){
                 int SSQ = (Integer)findViewById(prevId).getTag(R.id.tagboardpos);
                 int ESQ = (Integer)view.getTag(R.id.tagboardpos);
-                char color;
-                if(findViewById(prevId).getTag(R.id.tagcolor).equals("white")){
-                    color = 'W';
-                }
-                else{
-                    color = 'B';
-                }
+                char color = boardEduardo.getTile((Integer)findViewById(prevId).getTag(R.id.tagboardpos)).getPiece().getColor();
                 if(boardEduardo.move(SSQ,ESQ,color,true)) {
-                    bgdraw = findViewById(prevId).getBackground();
-
-                    view.setBackground(bgdraw);
-                    view.setTag(R.id.tagpiece, findViewById(prevId).getTag(R.id.tagpiece));
-                    view.setTag(R.id.tagcolor, findViewById(prevId).getTag(R.id.tagcolor));
-                    CharSequence description = view.getContentDescription().subSequence(0, 2);
-                    description = description + " " + view.getTag(R.id.tagcolor) + " " + view.getTag(R.id.tagpiece);
-                    view.setContentDescription(description);
-
-                    findViewById(prevId).setBackgroundResource(0);
-                    findViewById(prevId).setTag(R.id.tagpiece, "");
-                    findViewById(prevId).setTag(R.id.tagcolor, "");
-                    description = findViewById(prevId).getContentDescription().subSequence(0, 2);
-                    findViewById(prevId).setContentDescription(description);
+                    refreshBoard();
                 }
             }
             prevId = -1;
@@ -181,18 +172,22 @@ public class game_screen extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0://Change Color
-                        //To be implemented
+                        reverseRefreshBoard();
                         break;
                     case 1://Move List
                         //Get move list from game
                         break;
                     case 2://New Game
                         board = initialBoard.clone();
-                        resetBoard();
                         boardSetup(gameType);
-                        setPieceTags();
-                        setDescriptions();
-                        boardEduardo.setInitialPosition();
+                        if(gameType.equals("fp")){
+                            boardEduardo.setCustomBoard(tempBoard);
+                            refreshBoard();
+                        }
+                        else{
+                            boardEduardo.setInitialPosition();
+                            refreshBoard();
+                        }
                         prevId = -1;
                         break;
                     case 3://Home Screen
@@ -211,10 +206,12 @@ public class game_screen extends Activity {
 
     public void onUndoButtonClick(View view){
         //Ask engine for undo
+        refreshBoard();
     }
 
     public void onRedoButtonClick(View view){
         //ask game for redo
+        refreshBoard();
     }
 
     /*
@@ -367,167 +364,6 @@ public class game_screen extends Activity {
         board[0][6] = G1_button;
         board[0][7] = H1_button;
 
-        if(gameType.equals("pve") || gameType.equals("pvp")) {
-            /*
-                This loop goes through all empty tiles and sets the background to 0, if this is not done a grey
-                square will appear on top of empty tiles since it is a imageButton and the default background is grey
-                board[r][c] represents the button on the board.
-             */
-            boardEduardo.setInitialPosition();
-            String content = "";
-            for (int r = 0; r < 8; r++) {
-                for (int c = 0; c < 8; c++) {
-                    switch (c) {
-                        case 0:
-                            content = "A";
-                            break;
-                        case 1:
-                            content = "B";
-                            break;
-                        case 2:
-                            content = "C";
-                            break;
-                        case 3:
-                            content = "D";
-                            break;
-                        case 4:
-                            content = "E";
-                            break;
-                        case 5:
-                            content = "F";
-                            break;
-                        case 6:
-                            content = "G";
-                            break;
-                        case 7:
-                            content = "H";
-                            break;
-                        default:
-                            break;
-                    }
-                    board[r][c].setContentDescription(content + (r+1));
-                    if (r >= 2 && r <= 5) {
-                        board[r][c].setBackgroundResource(0);
-                        board[r][c].setTag(R.id.tagpiece,"");
-                        board[r][c].setTag(R.id.tagcolor,"");
-                        board[r][c].setContentDescription(content + (r+1));
-                    }
-                }//for c
-            }//for r
-        }//if pve or pvp
-
-        else if(gameType.equals("fp")){
-            int t = 0;
-            String content = "";
-            for (int r = 0; r < 8; r++) {
-                for (int c = 0; c < 8; c++) {
-                    switch (c) {
-                        case 0:
-                            content = "A";
-                            break;
-                        case 1:
-                            content = "B";
-                            break;
-                        case 2:
-                            content = "C";
-                            break;
-                        case 3:
-                            content = "D";
-                            break;
-                        case 4:
-                            content = "E";
-                            break;
-                        case 5:
-                            content = "F";
-                            break;
-                        case 6:
-                            content = "G";
-                            break;
-                        case 7:
-                            content = "H";
-                            break;
-                        default:
-                            break;
-                    }
-                    board[r][c].setContentDescription(content + (r+1));
-                    //White Pawn = 0,  King = 1, Queen = 2, Bishop = 3, Knight = 4, Rook = 5
-                    //Black Pawn = 6, King = 7, Queen = 8, Bishop = 9, Knight = 10, Rook = 11
-                    boardEduardo.setCustomBoard(tempBoard);
-                    switch (tempBoard[t]){
-                        case -1:
-                            board[r][c].setBackgroundResource(0);
-                            board[r][c].setTag(R.id.tagpiece,"");
-                            board[r][c].setTag(R.id.tagcolor,"");
-                            break;
-                        case 1:
-                            board[r][c].setBackgroundResource(R.drawable.king_w);
-                            board[r][c].setTag(R.id.tagpiece,"king");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 2:
-                            board[r][c].setBackgroundResource(R.drawable.queen_w);
-                            board[r][c].setTag(R.id.tagpiece,"queen");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 3:
-                            board[r][c].setBackgroundResource(R.drawable.bishop_w);
-                            board[r][c].setTag(R.id.tagpiece,"bishop");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 4:
-                            board[r][c].setBackgroundResource(R.drawable.knight_w);
-                            board[r][c].setTag(R.id.tagpiece,"knight");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 5:
-                            board[r][c].setBackgroundResource(R.drawable.rook_w);
-                            board[r][c].setTag(R.id.tagpiece,"rook");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 0:
-                            board[r][c].setBackgroundResource(R.drawable.pawn_w);
-                            board[r][c].setTag(R.id.tagpiece,"pawn");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 7:
-                            board[r][c].setBackgroundResource(R.drawable.king_b);
-                            board[r][c].setTag(R.id.tagpiece,"king");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 8:
-                            board[r][c].setBackgroundResource(R.drawable.queen_b);
-                            board[r][c].setTag(R.id.tagpiece,"queen");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 9:
-                            board[r][c].setBackgroundResource(R.drawable.bishop_b);
-                            board[r][c].setTag(R.id.tagpiece,"bishop");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 10:
-                            board[r][c].setBackgroundResource(R.drawable.knight_b);
-                            board[r][c].setTag(R.id.tagpiece,"knight");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 11:
-                            board[r][c].setBackgroundResource(R.drawable.rook_b);
-                            board[r][c].setTag(R.id.tagpiece,"rook");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 6:
-                            board[r][c].setBackgroundResource(R.drawable.pawn_b);
-                            board[r][c].setTag(R.id.tagpiece,"pawn");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                    }
-                    t++;
-                }
-            }
-        }
-    }//End of method
-
-    private void setPieceTags(){
-
         A8_button.setTag(R.id.tagboardpos,0);
         B8_button.setTag(R.id.tagboardpos,1);
         C8_button.setTag(R.id.tagboardpos,2);
@@ -536,6 +372,7 @@ public class game_screen extends Activity {
         F8_button.setTag(R.id.tagboardpos,5);
         G8_button.setTag(R.id.tagboardpos,6);
         H8_button.setTag(R.id.tagboardpos,7);
+
         A7_button.setTag(R.id.tagboardpos,8);
         B7_button.setTag(R.id.tagboardpos,9);
         C7_button.setTag(R.id.tagboardpos,10);
@@ -544,6 +381,7 @@ public class game_screen extends Activity {
         F7_button.setTag(R.id.tagboardpos,13);
         G7_button.setTag(R.id.tagboardpos,14);
         H7_button.setTag(R.id.tagboardpos,15);
+
         A6_button.setTag(R.id.tagboardpos,16);
         B6_button.setTag(R.id.tagboardpos,17);
         C6_button.setTag(R.id.tagboardpos,18);
@@ -552,6 +390,7 @@ public class game_screen extends Activity {
         F6_button.setTag(R.id.tagboardpos,21);
         G6_button.setTag(R.id.tagboardpos,22);
         H6_button.setTag(R.id.tagboardpos,23);
+
         A5_button.setTag(R.id.tagboardpos,24);
         B5_button.setTag(R.id.tagboardpos,25);
         C5_button.setTag(R.id.tagboardpos,26);
@@ -560,6 +399,7 @@ public class game_screen extends Activity {
         F5_button.setTag(R.id.tagboardpos,29);
         G5_button.setTag(R.id.tagboardpos,30);
         H5_button.setTag(R.id.tagboardpos,31);
+
         A4_button.setTag(R.id.tagboardpos,32);
         B4_button.setTag(R.id.tagboardpos,33);
         C4_button.setTag(R.id.tagboardpos,34);
@@ -568,6 +408,7 @@ public class game_screen extends Activity {
         F4_button.setTag(R.id.tagboardpos,37);
         G4_button.setTag(R.id.tagboardpos,38);
         H4_button.setTag(R.id.tagboardpos,39);
+
         A3_button.setTag(R.id.tagboardpos,40);
         B3_button.setTag(R.id.tagboardpos,41);
         C3_button.setTag(R.id.tagboardpos,42);
@@ -576,6 +417,7 @@ public class game_screen extends Activity {
         F3_button.setTag(R.id.tagboardpos,45);
         G3_button.setTag(R.id.tagboardpos,46);
         H3_button.setTag(R.id.tagboardpos,47);
+
         A2_button.setTag(R.id.tagboardpos,48);
         B2_button.setTag(R.id.tagboardpos,49);
         C2_button.setTag(R.id.tagboardpos,50);
@@ -584,6 +426,7 @@ public class game_screen extends Activity {
         F2_button.setTag(R.id.tagboardpos,53);
         G2_button.setTag(R.id.tagboardpos,54);
         H2_button.setTag(R.id.tagboardpos,55);
+
         A1_button.setTag(R.id.tagboardpos,56);
         B1_button.setTag(R.id.tagboardpos,57);
         C1_button.setTag(R.id.tagboardpos,58);
@@ -593,321 +436,13 @@ public class game_screen extends Activity {
         G1_button.setTag(R.id.tagboardpos,62);
         H1_button.setTag(R.id.tagboardpos,63);
 
-        if(gameType.equals("pve") | gameType.equals("pvp")){
-            for(int c=0;c<8;c++){
-                switch (c){
-                    case 0:
-                        A1_button.setTag(R.id.tagpiece,"rook");
-                        A1_button.setTag(R.id.tagcolor,"white");
-                        A2_button.setTag(R.id.tagpiece,"pawn");
-                        A2_button.setTag(R.id.tagcolor,"white");
-                        A7_button.setTag(R.id.tagpiece,"pawn");
-                        A7_button.setTag(R.id.tagcolor,"black");
-                        A8_button.setTag(R.id.tagpiece,"rook");
-                        A8_button.setTag(R.id.tagcolor,"black");
-                        break;
-                    case 1:
-                        B1_button.setTag(R.id.tagpiece,"knight");
-                        B1_button.setTag(R.id.tagcolor,"white");
-                        B2_button.setTag(R.id.tagpiece,"pawn");
-                        B2_button.setTag(R.id.tagcolor,"white");
-                        B7_button.setTag(R.id.tagpiece,"pawn");
-                        B7_button.setTag(R.id.tagcolor,"black");
-                        B8_button.setTag(R.id.tagpiece,"knight");
-                        B8_button.setTag(R.id.tagcolor,"black");
-                        break;
-                    case 2:
-                        C1_button.setTag(R.id.tagpiece,"bishop");
-                        C1_button.setTag(R.id.tagcolor,"white");
-                        C2_button.setTag(R.id.tagpiece,"pawn");
-                        C2_button.setTag(R.id.tagcolor,"white");
-                        C7_button.setTag(R.id.tagpiece,"pawn");
-                        C7_button.setTag(R.id.tagcolor,"black");
-                        C8_button.setTag(R.id.tagpiece,"bishop");
-                        C8_button.setTag(R.id.tagcolor,"black");
-                        break;
-                    case 3:
-                        D1_button.setTag(R.id.tagpiece,"queen");
-                        D1_button.setTag(R.id.tagcolor,"white");
-                        D2_button.setTag(R.id.tagpiece,"pawn");
-                        D2_button.setTag(R.id.tagcolor,"white");
-                        D7_button.setTag(R.id.tagpiece,"pawn");
-                        D7_button.setTag(R.id.tagcolor,"black");
-                        D8_button.setTag(R.id.tagpiece,"queen");
-                        D8_button.setTag(R.id.tagcolor,"black");
-                        break;
-                    case 4:
-                        E1_button.setTag(R.id.tagpiece,"king");
-                        E1_button.setTag(R.id.tagcolor,"white");
-                        E2_button.setTag(R.id.tagpiece,"pawn");
-                        E2_button.setTag(R.id.tagcolor,"white");
-                        E7_button.setTag(R.id.tagpiece,"pawn");
-                        E7_button.setTag(R.id.tagcolor,"black");
-                        E8_button.setTag(R.id.tagpiece,"king");
-                        E8_button.setTag(R.id.tagcolor,"black");
-                        break;
-                    case 5:
-                        F1_button.setTag(R.id.tagpiece,"bishop");
-                        F1_button.setTag(R.id.tagcolor,"white");
-                        F2_button.setTag(R.id.tagpiece,"pawn");
-                        F2_button.setTag(R.id.tagcolor,"white");
-                        F7_button.setTag(R.id.tagpiece,"pawn");
-                        F7_button.setTag(R.id.tagcolor,"black");
-                        F8_button.setTag(R.id.tagpiece,"bishop");
-                        F8_button.setTag(R.id.tagcolor,"black");
-                        break;
-                    case 6:
-                        G1_button.setTag(R.id.tagpiece,"knight");
-                        G1_button.setTag(R.id.tagcolor,"white");
-                        G2_button.setTag(R.id.tagpiece,"pawn");
-                        G2_button.setTag(R.id.tagcolor,"white");
-                        G7_button.setTag(R.id.tagpiece,"pawn");
-                        G7_button.setTag(R.id.tagcolor,"black");
-                        G8_button.setTag(R.id.tagpiece,"knight");
-                        G8_button.setTag(R.id.tagcolor,"black");
-                        break;
-                    case 7:
-                        H1_button.setTag(R.id.tagpiece,"rook");
-                        H1_button.setTag(R.id.tagcolor,"white");
-                        H2_button.setTag(R.id.tagpiece,"pawn");
-                        H2_button.setTag(R.id.tagcolor,"white");
-                        H7_button.setTag(R.id.tagpiece,"pawn");
-                        H7_button.setTag(R.id.tagcolor,"black");
-                        H8_button.setTag(R.id.tagpiece,"rook");
-                        H8_button.setTag(R.id.tagcolor,"black");
-                        break;
-                }//Switch
-            }//for loop
-        }// if pve or pvp
-
-    }//End of setPiece method
-
-    private void setDescriptions(){
-        for(int r=0;r<8;r++){
-            for(int c=0;c<8;c++){
-                CharSequence description = board[r][c].getContentDescription().subSequence(0,2);
-                if(!(board[r][c].getTag(R.id.tagcolor).equals(""))){
-                    description = description + " " + board[r][c].getTag(R.id.tagcolor) + " " + board[r][c].getTag(R.id.tagpiece);
-                }
-                board[r][c].setContentDescription(description);
+        if(gameType.equals("pve") || gameType.equals("pvp")) {
+            boardEduardo.setInitialPosition();
+        }
+        else if(gameType.equals("fp")){
+            boardEduardo.setCustomBoard(tempBoard);
             }
         }
-    }
-
-    private void resetBoard(){
-        if(gameType.equals("pve") | gameType.equals("pvp")){
-
-            A1_button.setTag(R.id.tagpiece,"rook");
-            A1_button.setTag(R.id.tagcolor, "white");
-            A1_button.setBackgroundResource(R.drawable.rook_w);
-            A2_button.setTag(R.id.tagpiece, "pawn");
-            A2_button.setTag(R.id.tagcolor, "white");
-            A2_button.setBackgroundResource(R.drawable.pawn_w);
-            A7_button.setTag(R.id.tagpiece, "pawn");
-            A7_button.setTag(R.id.tagcolor, "black");
-            A7_button.setBackgroundResource(R.drawable.pawn_b);
-            A8_button.setTag(R.id.tagpiece, "rook");
-            A8_button.setTag(R.id.tagcolor, "black");
-            A8_button.setBackgroundResource(R.drawable.rook_b);
-
-            B1_button.setTag(R.id.tagpiece, "knight");
-            B1_button.setTag(R.id.tagcolor, "white");
-            B1_button.setBackgroundResource(R.drawable.knight_w);
-            B2_button.setTag(R.id.tagpiece, "pawn");
-            B2_button.setTag(R.id.tagcolor, "white");
-            B2_button.setBackgroundResource(R.drawable.pawn_w);
-            B7_button.setTag(R.id.tagpiece, "pawn");
-            B7_button.setTag(R.id.tagcolor, "black");
-            B7_button.setBackgroundResource(R.drawable.pawn_b);
-            B8_button.setTag(R.id.tagpiece, "knight");
-            B8_button.setTag(R.id.tagcolor, "black");
-            B8_button.setBackgroundResource(R.drawable.knight_b);
-
-            C1_button.setTag(R.id.tagpiece, "bishop");
-            C1_button.setTag(R.id.tagcolor, "white");
-            C1_button.setBackgroundResource(R.drawable.bishop_w);
-            C2_button.setTag(R.id.tagpiece, "pawn");
-            C2_button.setTag(R.id.tagcolor, "white");
-            C2_button.setBackgroundResource(R.drawable.pawn_w);
-            C7_button.setTag(R.id.tagpiece, "pawn");
-            C7_button.setTag(R.id.tagcolor,"black");
-            C7_button.setBackgroundResource(R.drawable.pawn_b);
-            C8_button.setTag(R.id.tagpiece, "bishop");
-            C8_button.setTag(R.id.tagcolor,"black");
-            C8_button.setBackgroundResource(R.drawable.bishop_b);
-
-            D1_button.setTag(R.id.tagpiece, "queen");
-            D1_button.setTag(R.id.tagcolor,"white");
-            D1_button.setBackgroundResource(R.drawable.queen_w);
-            D2_button.setTag(R.id.tagpiece, "pawn");
-            D2_button.setTag(R.id.tagcolor,"white");
-            D2_button.setBackgroundResource(R.drawable.pawn_w);
-            D7_button.setTag(R.id.tagpiece, "pawn");
-            D7_button.setTag(R.id.tagcolor,"black");
-            D7_button.setBackgroundResource(R.drawable.pawn_b);
-            D8_button.setTag(R.id.tagpiece, "queen");
-            D8_button.setTag(R.id.tagcolor,"black");
-            D8_button.setBackgroundResource(R.drawable.queen_b);
-
-            E1_button.setTag(R.id.tagpiece, "king");
-            E1_button.setTag(R.id.tagcolor,"white");
-            E1_button.setBackgroundResource(R.drawable.king_w);
-            E2_button.setTag(R.id.tagpiece, "pawn");
-            E2_button.setTag(R.id.tagcolor,"white");
-            E2_button.setBackgroundResource(R.drawable.pawn_w);
-            E7_button.setTag(R.id.tagpiece, "pawn");
-            E7_button.setTag(R.id.tagcolor,"black");
-            E7_button.setBackgroundResource(R.drawable.pawn_b);
-            E8_button.setTag(R.id.tagpiece, "king");
-            E8_button.setTag(R.id.tagcolor,"black");
-            E8_button.setBackgroundResource(R.drawable.king_b);
-
-            F1_button.setTag(R.id.tagpiece, "bishop");
-            F1_button.setTag(R.id.tagcolor,"white");
-            F1_button.setBackgroundResource(R.drawable.bishop_w);
-            F2_button.setTag(R.id.tagpiece, "pawn");
-            F2_button.setTag(R.id.tagcolor,"white");
-            F2_button.setBackgroundResource(R.drawable.pawn_w);
-            F7_button.setTag(R.id.tagpiece, "pawn");
-            F7_button.setTag(R.id.tagcolor,"black");
-            F7_button.setBackgroundResource(R.drawable.pawn_b);
-            F8_button.setTag(R.id.tagpiece, "bishop");
-            F8_button.setTag(R.id.tagcolor,"black");
-            F8_button.setBackgroundResource(R.drawable.bishop_b);
-
-            G1_button.setTag(R.id.tagpiece, "knight");
-            G1_button.setTag(R.id.tagcolor,"white");
-            G1_button.setBackgroundResource(R.drawable.knight_w);
-            G2_button.setTag(R.id.tagpiece, "pawn");
-            G2_button.setTag(R.id.tagcolor,"white");
-            G2_button.setBackgroundResource(R.drawable.pawn_w);
-            G7_button.setTag(R.id.tagpiece, "pawn");
-            G7_button.setTag(R.id.tagcolor,"black");
-            G7_button.setBackgroundResource(R.drawable.pawn_b);
-            G8_button.setTag(R.id.tagpiece, "knight");
-            G8_button.setTag(R.id.tagcolor,"black");
-            G8_button.setBackgroundResource(R.drawable.knight_b);
-
-            H1_button.setTag(R.id.tagpiece, "rook");
-            H1_button.setTag(R.id.tagcolor,"white");
-            H1_button.setBackgroundResource(R.drawable.rook_w);
-            H2_button.setTag(R.id.tagpiece, "pawn");
-            H2_button.setTag(R.id.tagcolor,"white");
-            H2_button.setBackgroundResource(R.drawable.pawn_w);
-            H7_button.setTag(R.id.tagpiece, "pawn");
-            H7_button.setTag(R.id.tagcolor,"black");
-            H7_button.setBackgroundResource(R.drawable.pawn_b);
-            H8_button.setTag(R.id.tagpiece, "rook");
-            H8_button.setTag(R.id.tagcolor,"black");
-            H8_button.setBackgroundResource(R.drawable.rook_b);
-        }
-        if(gameType.equals("fp")){
-            int t = 0;
-            String content = "";
-            for (int r = 0; r < 8; r++) {
-                for (int c = 0; c < 8; c++) {
-                    switch (c) {
-                        case 0:
-                            content = "A";
-                            break;
-                        case 1:
-                            content = "B";
-                            break;
-                        case 2:
-                            content = "C";
-                            break;
-                        case 3:
-                            content = "D";
-                            break;
-                        case 4:
-                            content = "E";
-                            break;
-                        case 5:
-                            content = "F";
-                            break;
-                        case 6:
-                            content = "G";
-                            break;
-                        case 7:
-                            content = "H";
-                            break;
-                        default:
-                            break;
-                    }
-                    board[r][c].setContentDescription(content + (r+1));
-                    boardEduardo.setCustomBoard(tempBoard);
-                    switch (tempBoard[t]){
-                        case 0:
-                            board[r][c].setBackgroundResource(0);
-                            board[r][c].setTag(R.id.tagpiece,"");
-                            board[r][c].setTag(R.id.tagcolor,"");
-                            break;
-                        case 1:
-                            board[r][c].setBackgroundResource(R.drawable.king_w);
-                            board[r][c].setTag(R.id.tagpiece,"king");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 2:
-                            board[r][c].setBackgroundResource(R.drawable.queen_w);
-                            board[r][c].setTag(R.id.tagpiece,"queen");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 3:
-                            board[r][c].setBackgroundResource(R.drawable.rook_w);
-                            board[r][c].setTag(R.id.tagpiece,"rook");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 4:
-                            board[r][c].setBackgroundResource(R.drawable.bishop_w);
-                            board[r][c].setTag(R.id.tagpiece,"bishop");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 5:
-                            board[r][c].setBackgroundResource(R.drawable.knight_w);
-                            board[r][c].setTag(R.id.tagpiece,"knight");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 6:
-                            board[r][c].setBackgroundResource(R.drawable.pawn_w);
-                            board[r][c].setTag(R.id.tagpiece,"pawn");
-                            board[r][c].setTag(R.id.tagcolor,"white");
-                            break;
-                        case 7:
-                            board[r][c].setBackgroundResource(R.drawable.king_b);
-                            board[r][c].setTag(R.id.tagpiece,"king");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 8:
-                            board[r][c].setBackgroundResource(R.drawable.queen_b);
-                            board[r][c].setTag(R.id.tagpiece,"queen");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 9:
-                            board[r][c].setBackgroundResource(R.drawable.rook_b);
-                            board[r][c].setTag(R.id.tagpiece,"rook");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 10:
-                            board[r][c].setBackgroundResource(R.drawable.bishop_b);
-                            board[r][c].setTag(R.id.tagpiece,"bishop");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 11:
-                            board[r][c].setBackgroundResource(R.drawable.knight_b);
-                            board[r][c].setTag(R.id.tagpiece,"knight");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                        case 12:
-                            board[r][c].setBackgroundResource(R.drawable.pawn_b);
-                            board[r][c].setTag(R.id.tagpiece,"pawn");
-                            board[r][c].setTag(R.id.tagcolor,"black");
-                            break;
-                    }//Switch
-                    t++;
-                }//for c
-            }//for r
-        }
-    }
 
     // Create an intent that can start the Speech Recognizer activity
     private void displaySpeechRecognizer(int request_code) {
@@ -988,69 +523,6 @@ public class game_screen extends Activity {
         row[5] = "6";
         row[6] = "7";
         row[7] = "8";
-    }
-
-    public View stringToView(String[] s){
-        String buttonId = s[1].toUpperCase() + s[2]+"_button";
-        int resID = getResources().getIdentifier(buttonId , "id", getPackageName());
-        return findViewById(resID);
-    }
-
-    public int possibleMovesPawn(String[] s){
-        int targetId;
-        if(A2_button.getTag(R.id.tagpiece).equals("pawn")){
-            pawnMoves[0][0] = "A2";
-            pawnMoves[0][1] = "A3";
-            pawnMoves[0][2] = "A4";
-        }
-        if(B2_button.getTag(R.id.tagpiece).equals("pawn")){
-            pawnMoves[1][0] = "B2";
-            pawnMoves[1][1] = "B3";
-            pawnMoves[1][2] = "B4";
-        }
-        if(C2_button.getTag(R.id.tagpiece).equals("pawn")){
-            pawnMoves[2][0] = "C2";
-            pawnMoves[2][1] = "C3";
-            pawnMoves[2][2] = "C4";
-        }
-        if(D2_button.getTag(R.id.tagpiece).equals("pawn")){
-            pawnMoves[3][0] = "D2";
-            pawnMoves[3][1] = "D3";
-            pawnMoves[3][2] = "D4";
-        }
-        if(E2_button.getTag(R.id.tagpiece).equals("pawn")){
-            pawnMoves[4][0] = "E2";
-            pawnMoves[4][1] = "E3";
-            pawnMoves[4][2] = "E4";
-        }
-        if(F2_button.getTag(R.id.tagpiece).equals("pawn")){
-            pawnMoves[5][0] = "F2";
-            pawnMoves[5][1] = "F3";
-            pawnMoves[5][2] = "F4";
-        }
-        if(G2_button.getTag(R.id.tagpiece).equals("pawn")){
-            pawnMoves[6][0] = "G2";
-            pawnMoves[6][1] = "G3";
-            pawnMoves[6][2] = "G4";
-        }
-        if(H2_button.getTag(R.id.tagpiece).equals("pawn")){
-            pawnMoves[7][0] = "H2";
-            pawnMoves[7][1] = "H3";
-            pawnMoves[7][2] = "H4";
-        }
-        String destination = s[1].toUpperCase()+s[2];
-        int champion = 0;
-        for(int i=0;i<8;i++){
-            List tempList = Arrays.asList(pawnMoves[i]);
-            if(tempList.contains(destination)){
-                champion = i;
-            }
-        }
-        targetId = getResources().getIdentifier(pawnMoves[champion][0]+"_button" , "id", getPackageName());
-        pawnMoves[champion][0] =   pawnMoves[champion][1].charAt(0) + (Integer.parseInt(s[2])) + "";
-        pawnMoves[champion][1] =   pawnMoves[champion][1].charAt(0) + (Integer.parseInt(s[2])+1) + "";
-        pawnMoves[champion][2] = "plas";
-        return targetId;
     }
 
     private void setupOmophones(){
@@ -1458,4 +930,172 @@ public class game_screen extends Activity {
         }
         return s;
     }
+
+    private void refreshBoard(){
+        int i=0;
+       for(int r=7;r>=0;r--){
+           for(int c=0;c<8;c++){
+               if(boardEduardo.getTile(i).getIfOccupied()){
+                   switch (boardEduardo.getTile(i).getPieceChar()){
+                       case 'P':
+                           board[r][c].setTag(R.id.tagpiece,"pawn");
+                           board[r][c].setTag(R.id.tagcolor,"white");
+                           board[r][c].setBackgroundResource(R.drawable.pawn_w);
+                           break;
+                       case 'K':
+                           board[r][c].setTag(R.id.tagpiece,"king");
+                           board[r][c].setTag(R.id.tagcolor,"white");
+                           board[r][c].setBackgroundResource(R.drawable.king_w);
+                           break;
+                       case 'Q':
+                           board[r][c].setTag(R.id.tagpiece,"queen");
+                           board[r][c].setTag(R.id.tagcolor,"white");
+                           board[r][c].setBackgroundResource(R.drawable.queen_w);
+                           break;
+                       case 'B':
+                           board[r][c].setTag(R.id.tagpiece,"bishop");
+                           board[r][c].setTag(R.id.tagcolor,"white");
+                           board[r][c].setBackgroundResource(R.drawable.bishop_w);
+                           break;
+                       case 'N':
+                           board[r][c].setTag(R.id.tagpiece,"knight");
+                           board[r][c].setTag(R.id.tagcolor,"white");
+                           board[r][c].setBackgroundResource(R.drawable.knight_w);
+                           break;
+                       case 'R':
+                           board[r][c].setTag(R.id.tagpiece,"rook");
+                           board[r][c].setTag(R.id.tagcolor,"white");
+                           board[r][c].setBackgroundResource(R.drawable.rook_w);
+                           break;
+                       case 'p':
+                           board[r][c].setTag(R.id.tagpiece,"pawn");
+                           board[r][c].setTag(R.id.tagcolor,"black");
+                           board[r][c].setBackgroundResource(R.drawable.pawn_b);
+                           break;
+                       case 'k':
+                           board[r][c].setTag(R.id.tagpiece,"king");
+                           board[r][c].setTag(R.id.tagcolor,"black");
+                           board[r][c].setBackgroundResource(R.drawable.king_b);
+                           break;
+                       case 'q':
+                           board[r][c].setTag(R.id.tagpiece,"queen");
+                           board[r][c].setTag(R.id.tagcolor,"black");
+                           board[r][c].setBackgroundResource(R.drawable.queen_b);
+                           break;
+                       case 'b':
+                           board[r][c].setTag(R.id.tagpiece,"bishop");
+                           board[r][c].setTag(R.id.tagcolor,"black");
+                           board[r][c].setBackgroundResource(R.drawable.bishop_b);
+                           break;
+                       case 'n':
+                           board[r][c].setTag(R.id.tagpiece,"knight");
+                           board[r][c].setTag(R.id.tagcolor,"black");
+                           board[r][c].setBackgroundResource(R.drawable.knight_b);
+                           break;
+                       case 'r':
+                           board[r][c].setTag(R.id.tagpiece,"rook");
+                           board[r][c].setTag(R.id.tagcolor,"black");
+                           board[r][c].setBackgroundResource(R.drawable.rook_b);
+                           break;
+                   }
+                   CharSequence description = boardEduardo.getTile(i).getNotation().toUpperCase() + " "
+                                            + board[r][c].getTag(R.id.tagcolor) + " "
+                                            + board[r][c].getTag(R.id.tagpiece);
+
+                   board[r][c].setContentDescription(description);
+               }
+               else{
+                   CharSequence description = boardEduardo.getTile(i).getNotation();
+                   board[r][c].setBackgroundResource(0);
+                   board[r][c].setContentDescription(description);
+               }
+               i++;
+           }
+       }
+    }
+
+    private void reverseRefreshBoard(){
+        int i=63;
+        System.out.println("i = "+i);
+        for(int r=7;r>=0;r--){
+            for(int c=0;c<8;c++){
+                if(boardEduardo.getTile(i).getIfOccupied()){
+                    switch (boardEduardo.getTile(i).getPieceChar()){
+                        case 'P':
+                            board[r][c].setTag(R.id.tagpiece,"pawn");
+                            board[r][c].setTag(R.id.tagcolor,"white");
+                            board[r][c].setBackgroundResource(R.drawable.pawn_w);
+                            break;
+                        case 'K':
+                            board[r][c].setTag(R.id.tagpiece,"king");
+                            board[r][c].setTag(R.id.tagcolor,"white");
+                            board[r][c].setBackgroundResource(R.drawable.king_w);
+                            break;
+                        case 'Q':
+                            board[r][c].setTag(R.id.tagpiece,"queen");
+                            board[r][c].setTag(R.id.tagcolor,"white");
+                            board[r][c].setBackgroundResource(R.drawable.queen_w);
+                            break;
+                        case 'B':
+                            board[r][c].setTag(R.id.tagpiece,"bishop");
+                            board[r][c].setTag(R.id.tagcolor,"white");
+                            board[r][c].setBackgroundResource(R.drawable.bishop_w);
+                            break;
+                        case 'N':
+                            board[r][c].setTag(R.id.tagpiece,"knight");
+                            board[r][c].setTag(R.id.tagcolor,"white");
+                            board[r][c].setBackgroundResource(R.drawable.knight_w);
+                            break;
+                        case 'R':
+                            board[r][c].setTag(R.id.tagpiece,"rook");
+                            board[r][c].setTag(R.id.tagcolor,"white");
+                            board[r][c].setBackgroundResource(R.drawable.rook_w);
+                            break;
+                        case 'p':
+                            board[r][c].setTag(R.id.tagpiece,"pawn");
+                            board[r][c].setTag(R.id.tagcolor,"black");
+                            board[r][c].setBackgroundResource(R.drawable.pawn_b);
+                            break;
+                        case 'k':
+                            board[r][c].setTag(R.id.tagpiece,"king");
+                            board[r][c].setTag(R.id.tagcolor,"black");
+                            board[r][c].setBackgroundResource(R.drawable.king_b);
+                            break;
+                        case 'q':
+                            board[r][c].setTag(R.id.tagpiece,"queen");
+                            board[r][c].setTag(R.id.tagcolor,"black");
+                            board[r][c].setBackgroundResource(R.drawable.queen_b);
+                            break;
+                        case 'b':
+                            board[r][c].setTag(R.id.tagpiece,"bishop");
+                            board[r][c].setTag(R.id.tagcolor,"black");
+                            board[r][c].setBackgroundResource(R.drawable.bishop_b);
+                            break;
+                        case 'n':
+                            board[r][c].setTag(R.id.tagpiece,"knight");
+                            board[r][c].setTag(R.id.tagcolor,"black");
+                            board[r][c].setBackgroundResource(R.drawable.knight_b);
+                            break;
+                        case 'r':
+                            board[r][c].setTag(R.id.tagpiece,"rook");
+                            board[r][c].setTag(R.id.tagcolor,"black");
+                            board[r][c].setBackgroundResource(R.drawable.rook_b);
+                            break;
+                    }
+                    CharSequence description = boardEduardo.getTile(i).getNotation().toUpperCase() + " "
+                            + board[r][c].getTag(R.id.tagcolor) + " "
+                            + board[r][c].getTag(R.id.tagpiece);
+
+                    board[r][c].setContentDescription(description);
+                }
+                else{
+                    CharSequence description = boardEduardo.getTile(i).getNotation();
+                    board[r][c].setBackgroundResource(0);
+                    board[r][c].setContentDescription(description);
+                }
+                i--;
+            }
+        }
+    }
+
 }
