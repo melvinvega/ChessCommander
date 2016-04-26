@@ -71,6 +71,7 @@ public class Board {
 		
 		this.moveNum = 1;
 		this.ply = 1;
+
 	}
 	
 	private Board copyBoard(){
@@ -106,11 +107,10 @@ public class Board {
 	public ArrayList<Moves> getGameMoveList(){
 		return moves;
 	}
+
 	/*
 	 *  Generates and returns an empty board of 64 tiles. They'll all have null Pieces;
 	 */
-	
-	
 	private Tile[] genBoard(){
 		int curr = -1;
 		String  c;
@@ -579,6 +579,10 @@ public class Board {
 	public Tile[] getBoard(){
 		return tiles;
 	}
+
+	public void setBoard(Board b){
+		this.tiles = b.getBoard();
+	}
 	
 	public Tile[] getHelpBoard(){
 		return helpTiles;
@@ -675,9 +679,7 @@ public class Board {
 		FEN = fen;
 		return fen;
 	}
-	
-	
-	
+
 	private String tileToNotation(int t) {
 		String tileNotation = "";
 		int column = t % 8;
@@ -710,7 +712,6 @@ public class Board {
 	/*
 	 * For debugging purposes. Prints the contents of the board.
 	 */
-	
 	public void printBoard(){
 		System.out.println("Notation / com.capstone.chesscommander.chesscommander.GameLogic.Piece / ID / Promotion / Occupied ");
 		for(int i = 0; i < 64; i++){
