@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class Board {
 	public MoveList list;
-	Game myGame;
+	GameHandler myGame;
 	boolean whiteKingCastle = true;
 	boolean blackKingCastle = true;
 	boolean whiteQueenCastle = true;
@@ -44,7 +44,7 @@ public class Board {
 	
 	public Board(){
 		genBoard();
-		myGame = new Game();
+		//myGame = new GameHandler();
 	}
 	
 	public Board(Board original){

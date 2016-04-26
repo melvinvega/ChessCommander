@@ -221,11 +221,15 @@ public class MoveList {
 						break;
 					}
 					if(checkForBlackPiece(tile.getID() - i)){
-						whiteMoves.add(new ShortMove('W','Q',tile.getID(), tile.getID() - i));
+						if(!wouldBeCheck(tile.getID(), tile.getID() - i, 'W')) {
+							whiteMoves.add(new ShortMove('W', 'Q', tile.getID(), tile.getID() - i));
+						}
 						break;
 					}
 					else{
-						whiteMoves.add(new ShortMove('W','Q',tile.getID(), tile.getID() - i));
+						if(!wouldBeCheck(tile.getID(), tile.getID() - i, 'W')) {
+							whiteMoves.add(new ShortMove('W', 'Q', tile.getID(), tile.getID() - i));
+						}
 					}
 				}
 				for(int i = 1; colPos + i <= 7; i++){
@@ -2192,6 +2196,57 @@ public class MoveList {
 			return false;
 		}
 		return false;
+	}
+
+	public int[] getMoveVoice(String piece, int esq, char c){
+		char p;
+		ArrayList<ShortMove> s = new ArrayList<ShortMove>();
+
+		switch(piece){
+			case "pawn": p = 'P';
+				break;
+			case "knight": p = 'N';
+				break;
+			case "rook": p = 'R';
+				break;
+			case "bishop": p = 'B';
+				break;
+			case "queen": p = 'Q';
+				break;
+			case "king": p = 'K';
+				break;
+			default: p = 'P';
+				break;
+		}
+		if(c == 'W'){
+			for (ShortMove sm : whiteMoves) {
+				if (sm.getType() == p && sm.getEndSquare() == esq){
+					s.add(sm);
+				}
+			}
+		}
+		else if(c == 'B'){
+			for (ShortMove sm : blackMoves) {
+				if (sm.getType() == Character.toLowerCase(p) && sm.getEndSquare() == esq){
+					s.add(sm);
+				}
+			}
+		}
+
+		if(s.size() == 3){
+			int[] ia = {s.get(0).getStartSquare(),s.get(0).getEndSquare(), 1, s.get(1).getStartSquare(),s.get(1).getEndSquare(), 1, s.get(2).getStartSquare(),s.get(2).getEndSquare(), 0};
+			return ia;
+		}
+		if(s.size() == 2){
+			int[] ia = {s.get(0).getStartSquare(),s.get(0).getEndSquare(), 1, s.get(1).getStartSquare(),s.get(1).getEndSquare(), 0, -1 , -1 , 0};
+			return ia;
+		}
+		else if(s.size() == 1){
+			int[] ia = {s.get(0).getStartSquare(),s.get(0).getEndSquare(), 0, - 1, -1, 0, -1, -1, 0};
+			return ia;
+		}
+		int[] ia = {-1, -1, -0, -1, -1, 0, -1, -1, 0};
+		return ia;
 	}
 
 	public boolean checkIfLegal(int s, int e, char c){

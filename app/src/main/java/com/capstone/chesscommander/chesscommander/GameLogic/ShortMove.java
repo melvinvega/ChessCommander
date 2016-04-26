@@ -14,7 +14,6 @@ public class ShortMove {
 		type = t;
 	}
 
-
 	public char getColor() {
 		return color;
 	}
