@@ -619,15 +619,18 @@ public class Board {
 	}
 	
 	private boolean checkIfPromotion(Piece p, int t){
-		if(p.getType() == 'P' && (t >= 0 && t <= 7)){
-			return true;
+		if(!helpBoard) {
+			if (p.getType() == 'P' && (t >= 0 && t <= 7)) {
+				return true;
+			}
+			else if (p.getType() == 'p' && (t >= 56 && t <= 63)) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
-		else if(p.getType() == 'p' && (t >= 56 && t <=63)){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return false;
 	}
 	
 	public String returnFEN(){

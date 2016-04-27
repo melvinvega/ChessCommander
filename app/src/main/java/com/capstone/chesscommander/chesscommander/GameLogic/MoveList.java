@@ -921,6 +921,14 @@ public class MoveList {
 						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 9));
 					}
 				}
+				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
+					if(checkForBlackPiece(tile.getID() - 7)&& !wouldBeCheck(tile.getID(), tile.getID() - 7, 'W')){
+						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 7));
+					}
+					if(checkForBlackPiece(tile.getID() - 9)&& !wouldBeCheck(tile.getID(), tile.getID() - 9, 'W')){
+						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 9));
+					}
+				}
 				if(tile.getID() % 8 == 0){
 					if(doublePawnMove == tile.getID() - 7 && !wouldBeCheck(tile.getID(), tile.getID() - 7, 'W')){
 						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 7));
@@ -931,15 +939,7 @@ public class MoveList {
 						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 9));
 					}
 				}
-				if(tile.getID() % 8 != 0 || tile.getID() % 8 != 7){
-					if(doublePawnMove == tile.getID() - 7&& !wouldBeCheck(tile.getID(), tile.getID() - 7, 'W')){
-						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 7));
-					}
-					if(doublePawnMove == tile.getID() - 9&& !wouldBeCheck(tile.getID(), tile.getID() - 9, 'W')){
-						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 9));
-					}
-				}
-				if(tile.getID() % 8 != 0 || tile.getID() % 8 != 7){
+				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
 					if(doublePawnMove == tile.getID() - 7&& !wouldBeCheck(tile.getID(), tile.getID() - 7, 'W')){
 						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 7));
 					}
@@ -1654,6 +1654,14 @@ public class MoveList {
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
 					}
 				}
+				else if(tile.getID() % 8 != 0 && tile.getID() != 7){
+					if(checkForBlackPiece(tile.getID() + 9)&& !wouldBeCheck(tile.getID(), tile.getID() + 9, 'B')){
+						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
+					}
+					if(checkForBlackPiece(tile.getID() + 7)&& !wouldBeCheck(tile.getID(), tile.getID() + 7, 'B')){
+						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
+					}
+				}
 				if(tile.getID() % 8 == 0){
 					if(doublePawnMove == tile.getID() + 9 && !wouldBeCheck(tile.getID(), tile.getID() + 9, 'B')){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
@@ -1664,15 +1672,7 @@ public class MoveList {
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
 					}
 				}
-				if(tile.getID() % 8 != 0 || tile.getID() % 8 != 7){
-					if(doublePawnMove == tile.getID() + 7&& !wouldBeCheck(tile.getID(), tile.getID() + 7, 'B')){
-						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
-					}
-					if(doublePawnMove == tile.getID() + 9&& !wouldBeCheck(tile.getID(), tile.getID() + 9, 'B')){
-						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
-					}
-				}
-				if(tile.getID() % 8 != 0 || tile.getID() % 8 != 7){
+				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
 					if(doublePawnMove == tile.getID() + 7&& !wouldBeCheck(tile.getID(), tile.getID() + 7, 'B')){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
 					}
@@ -2387,6 +2387,15 @@ public class MoveList {
 						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 9));
 					}
 				}
+				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
+					if(checkForBlackPiece(tile.getID() - 7)){
+						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 7));
+					}
+					if(checkForBlackPiece(tile.getID() - 9)){
+						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 9));
+					}
+				}
+
 				if(tile.getID() % 8 == 0){
 					if(doublePawnMove == tile.getID() - 7){
 						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 7));
@@ -2397,15 +2406,7 @@ public class MoveList {
 						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 9));
 					}
 				}
-				if(tile.getID() % 8 != 0 || tile.getID() % 8 != 7){
-					if(doublePawnMove == tile.getID() - 7){
-						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 7));
-					}
-					if(doublePawnMove == tile.getID() - 9){
-						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 9));
-					}
-				}
-				if(tile.getID() % 8 != 0 || tile.getID() % 8 != 7){
+				if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
 					if(doublePawnMove == tile.getID() - 7){
 						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 7));
 					}
@@ -3115,11 +3116,22 @@ public class MoveList {
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
 					}
 				}
+
 				if(tile.getID() % 8 == 7){
 					if(checkForBlackPiece(tile.getID() + 7)){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
 					}
 				}
+
+				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
+					if(!checkForPiece(tile.getID() + 16)){
+						blackMoves.add(new ShortMove('B','p',tile.getID(),tile.getID() + 16));
+					}
+					if(checkForBlackPiece(tile.getID() + 9)){
+						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
+					}
+				}
+
 				if(tile.getID() % 8 == 0){
 					if(doublePawnMove == tile.getID() + 9 ){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
@@ -3130,15 +3142,7 @@ public class MoveList {
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
 					}
 				}
-				if(tile.getID() % 8 != 0 || tile.getID() % 8 != 7){
-					if(doublePawnMove == tile.getID() + 7){
-						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
-					}
-					if(doublePawnMove == tile.getID() + 9){
-						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
-					}
-				}
-				if(tile.getID() % 8 != 0 || tile.getID() % 8 != 7){
+				if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
 					if(doublePawnMove == tile.getID() + 7){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
 					}
