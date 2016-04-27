@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.chesscommander.chesscommander.GameLogic.Board;
-import com.capstone.chesscommander.chesscommander.GameLogic.Stockfish;
+import com.capstone.chesscommander.chesscommander.JavaStockfish.src.com.rahul.stockfish.Stockfish;
 
 import java.util.ArrayList;
 import java.util.Arrays;
