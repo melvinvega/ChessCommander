@@ -1,7 +1,10 @@
 package com.capstone.chesscommander.chesscommander.JavaStockfish.src.com.rahul.stockfish;
 
+import android.content.Context;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
@@ -16,14 +19,17 @@ public class Stockfish {
 	private Process engineProcess;
 	private BufferedReader processReader;
 	private OutputStreamWriter processWriter;
+	private Context context;
+	private static final String PATH = "/data/data/ChessCommander/stockfish";
+	private InputStream in;
 
-	private static final String PATH = "../engine/stockfish";
-
+	//Constructor
+	//public Stockfish(){}
 
 	/**
 	 * Starts Stockfish engine as a process and initializes it
 	 * 
-	 * @param 
+	 * @param
 	 * @return True on success. False otherwise
 	 */
 	public boolean startEngine() {
