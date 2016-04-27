@@ -97,10 +97,19 @@ public class Board {
 		return tiles;
 	}
 
+
 	public Tile[] setCustomBoard(Tile[] t){
-		if(t.length == 64){
-			tiles = t;
+		genBoard();
+		for(int i = 0; i < 64; i++){
+			tiles[i].removePiece();
+
 		}
+		for(int i = 0; i < 64; i++){
+			if(t[i].containsPiece){
+				tiles[i].setPiece(new Piece(t[i].getPieceChar(),t[i].getPiece().getColor()));
+			}
+		}
+		printVisualBoard();
 		return tiles;
 	}
 	

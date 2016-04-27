@@ -66,10 +66,17 @@ public class MoveList {
 	}
 
 	public void setHelpList(){
+		genHelpBoard();
+		findOccupiedTiles();
+		findWhiteTiles();
+		findBlackTiles();
 		whiteMoves = new ArrayList<ShortMove>();
 		blackMoves = new ArrayList<ShortMove>();
 		helpWhiteMoves();
 		helpBlackMoves();
+		if(!help){
+			findKingMoves();
+		}
 	}
 
 
@@ -132,12 +139,13 @@ public class MoveList {
 							helpBoard[i].setPiece(new Piece('K','W'));
 							break;
 						case 'Q':
-							helpBoard[i].setPiece(new Piece('P','W'));
+							helpBoard[i].setPiece(new Piece('Q','W'));
 							break;
 					}
 				}
 				else if(board[i].getPiece().getColor() == 'B'){
 					char p = board[i].getPieceChar();
+
 					switch(p){
 						case 'p':
 							helpBoard[i].setPiece(new Piece('p','B'));
@@ -161,12 +169,19 @@ public class MoveList {
 				}
 			}
 		}
+
 	}
 
 	private void findOccupiedTiles(){
 		int n = 0;
 		for(int i = 0; i < 64; i++){
 			if(board[i].getIfOccupied()){
+				if(board[i].getPieceChar() == 'K'){
+					wKing = board[i];
+				}
+				if(board[i].getPieceChar() == 'k'){
+					bKing = board[i];
+				}
 				pieces.add(board[i]);
 				n++;
 			}
@@ -1645,20 +1660,20 @@ public class MoveList {
 					}
 				}
 				if(tile.getID() % 8 == 0){
-					if(checkForBlackPiece(tile.getID() + 9)&& !wouldBeCheck(tile.getID(), tile.getID() + 9, 'B')){
+					if(checkForWhitePiece(tile.getID() + 9)&& !wouldBeCheck(tile.getID(), tile.getID() + 9, 'B')){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
 					}
 				}
 				if(tile.getID() % 8 == 7){
-					if(checkForBlackPiece(tile.getID() + 7)&& !wouldBeCheck(tile.getID(), tile.getID() + 7, 'B')){
+					if(checkForWhitePiece(tile.getID() + 7)&& !wouldBeCheck(tile.getID(), tile.getID() + 7, 'B')){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
 					}
 				}
 				else if(tile.getID() % 8 != 0 && tile.getID() != 7){
-					if(checkForBlackPiece(tile.getID() + 9)&& !wouldBeCheck(tile.getID(), tile.getID() + 9, 'B')){
+					if(checkForWhitePiece(tile.getID() + 9)&& !wouldBeCheck(tile.getID(), tile.getID() + 9, 'B')){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
 					}
-					if(checkForBlackPiece(tile.getID() + 7)&& !wouldBeCheck(tile.getID(), tile.getID() + 7, 'B')){
+					if(checkForWhitePiece(tile.getID() + 7)&& !wouldBeCheck(tile.getID(), tile.getID() + 7, 'B')){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
 					}
 				}
@@ -3784,9 +3799,10 @@ public class MoveList {
 	}
 
 	public boolean wouldBeCheck(int ss, int es, char c){
-
+		genHelpBoard();
 		helper.setCustomBoard(helpBoard);
 		helper.setAsHelper(true);
+		System.out.println(ss + es + c);
 		helper.testMove(ss, es, c, true);
 		if(helper.getMoveList(c, true).checkIfCheck(c)){
 			return true;
