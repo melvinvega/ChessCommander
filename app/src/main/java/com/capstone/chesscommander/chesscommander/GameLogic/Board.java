@@ -114,16 +114,15 @@ public class Board {
 	}
 	
 	public MoveList getMoveList(char c, boolean h){
-		list = new MoveList(tiles, c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
+		list = new MoveList(tiles, moves , c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
 				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, h);
-		if(helpBoard){
-			list.setHelpList();
-		}
-		else{
+
 			list.setList();
-		}
+
 		return list;
 	}
+
+
 
 	public ArrayList<Moves> getGameMoveList(){
 		return moves;
@@ -615,14 +614,11 @@ public class Board {
 	}
 	
 	public MoveList checkAllLegal(char c){
-		MoveList ml = new MoveList(tiles, c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
+		MoveList ml = new MoveList(tiles,moves, c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
 				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);
-		if(helpBoard) {
-			ml.setHelpList();
-		}
-		else{
+		
 			ml.setList();
-		}
+
 
 		return ml;
 	}
