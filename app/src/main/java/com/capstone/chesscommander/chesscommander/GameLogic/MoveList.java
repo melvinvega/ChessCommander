@@ -4312,4 +4312,28 @@ public class MoveList {
 
 		return tileNotation;
 	}
+
+	public List<ShortMove> getBlackMoves(){
+		return blackMoves;
+	}
+
+	public List<ShortMove> getWhiteMoves(){
+		return whiteMoves;
+	}
+
+	public Tile getWhiteKing(){
+		return wKing;
+	}
+
+	public Tile getBlackKing(){
+		return bKing;
+	}
+
+	public List<ShortMove> getWhiteKingMoves(){
+		return wKingMoves;
+	}
+
+	public List<ShortMove> getBlackKingMoves(){
+		return bKingMoves;
+	}
 }
