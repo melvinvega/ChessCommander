@@ -7,8 +7,8 @@ public class MoveList {
 
 	Tile[] board = new Tile [64];
 	Tile[] helpBoard = new Tile [64];
-	Board temp = new Board();
-	Board helper = new Board();
+	// Board temp = new Board();
+	//Board helper = new Board();
 	char color;
 	List<Tile> pieces = new ArrayList<Tile>();
 	List<Tile> whites = new ArrayList<Tile>();
@@ -51,12 +51,12 @@ public class MoveList {
 		else{
 			doublePawnMove = - 100;
 		}
-		setupTempBoard();
+		//setupTempBoard();
 
 	}
 
 	public void setList(){
-		genHelpBoard();
+		//genHelpBoard();
 		findOccupiedTiles();
 		findWhiteTiles();
 		findBlackTiles();
@@ -80,7 +80,7 @@ public class MoveList {
 			helpKingMoves();
 		}
 	}
-*/
+
 	private void setupTempBoard(){
 		temp.setInitialPosition();
 		for(int i =0;i<moves.size();i++) {
@@ -90,7 +90,7 @@ public class MoveList {
 			temp.testMove(SSQ, ESQ, color, true);
 		}
 	}
-
+*/
 	private void findKingMoves(){
 		findWhiteKingMoves();
 		findBlackKingMoves();
@@ -100,7 +100,7 @@ public class MoveList {
 		helpWhiteKingMoves();
 		helpBlackKingMoves();
 	}
-*/
+	*/
 	private void genHelpBoard(){
 		int curr = -1;
 		String  c;
@@ -3771,7 +3771,7 @@ public class MoveList {
 
 		// king not at column a
 
-		helper.setAsHelper(true);
+		//helper.setAsHelper(true);
 
 		if(wKing.getID() % 8 != 0){
 			if(!checkForWhitePiece(wKing.getID() - 1)){
@@ -3878,7 +3878,7 @@ public class MoveList {
 
 	private void findBlackKingMoves(){
 
-		helper.setAsHelper(true);
+		//helper.setAsHelper(true);
 		// king not at column a
 
 		if(bKing.getID() % 8 != 0){
@@ -4035,7 +4035,7 @@ public class MoveList {
 			return false;
 		}
 	}
-
+/*
 	public boolean wouldBeCheck(int ss, int es, char c){
 		temp.testMove(ss, es, c, true);
 		if(temp.getMoveList(c, true).checkIfCheck(c)){
@@ -4047,7 +4047,7 @@ public class MoveList {
 			return false;
 		}
 	}
-
+*/
 	public boolean verifyCheckmate(char c){
 		return checkStalemate(c) && checkIfCheck(c);
 	}
