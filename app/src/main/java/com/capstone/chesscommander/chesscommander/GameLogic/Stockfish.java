@@ -1,10 +1,7 @@
-package com.capstone.chesscommander.chesscommander.JavaStockfish.src.com.rahul.stockfish;
-
-import android.content.Context;
+package com.capstone.chesscommander.chesscommander.GameLogic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
@@ -19,12 +16,8 @@ public class Stockfish {
 	private Process engineProcess;
 	private BufferedReader processReader;
 	private OutputStreamWriter processWriter;
-	private Context context;
-	private static final String PATH = "/data/data/ChessCommander/stockfish";
-	private InputStream in;
 
-	//Constructor
-	//public Stockfish(){}
+	private static final String PATH = "/Users/Melvin/AndroidStudioProjects/ChessCommander/app/src/main/java/com/capstone/chesscommander/chesscommander/GameLogic/stockfish-6-arm";
 
 	/**
 	 * Starts Stockfish engine as a process and initializes it
@@ -35,8 +28,10 @@ public class Stockfish {
 	public boolean startEngine() {
 		try {
 			engineProcess = Runtime.getRuntime().exec(PATH);
-			processReader = new BufferedReader(new InputStreamReader(engineProcess.getInputStream()));
-			processWriter = new OutputStreamWriter(engineProcess.getOutputStream());
+			processReader = new BufferedReader(new InputStreamReader(
+					engineProcess.getInputStream()));
+			processWriter = new OutputStreamWriter(
+					engineProcess.getOutputStream());
 		} catch (Exception e) {
 			return false;
 		}

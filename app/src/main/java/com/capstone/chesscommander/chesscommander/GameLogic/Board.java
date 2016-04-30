@@ -2,7 +2,7 @@ package com.capstone.chesscommander.chesscommander.GameLogic;
 
 import java.util.ArrayList;
 
-
+import chesspresso.position.Position;
 
 /**
  * Board abstraction class. Contains the 64 tiles in the board, as well as its contents.
@@ -42,7 +42,10 @@ public class Board {
 	
 	int moveNum = 1;
 	int ply = 1;
-	
+//#############Melvin##############
+	private Position position;
+
+
 	
 	public Board(){
 		genBoard();
@@ -110,7 +113,7 @@ public class Board {
 				tiles[i].setPiece(new Piece(t[i].getPieceChar(),t[i].getPiece().getColor()));
 			}
 		}
-		printVisualBoard();
+		//printVisualBoard();
 		return tiles;
 	}
 	
@@ -227,12 +230,13 @@ public class Board {
 		boolean castleKing = false;
 		boolean castleQueen = false;
 		boolean enPassant = false;
-		
+		/*
 		if(!list.checkIfLegal(start, end, c)){
 			System.out.println("Illegal Move!");
 			System.out.println();
 			return false;
 		}
+		*/
 		if(tiles[start].getPieceChar() == 'P' && end == doubleMoveTile){
 		enPassant = true;
 		}
@@ -242,8 +246,6 @@ public class Board {
 				return false;
 			}
 			else{
-				
-				
 				if(tiles[start].getPiece().getColor() == 'W'){
 					if(tiles[start].getPieceChar() == 'K' && start == 60 && end == 62){
 						castleKing = true;
