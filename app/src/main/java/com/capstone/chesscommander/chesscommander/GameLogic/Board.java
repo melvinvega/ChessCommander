@@ -616,7 +616,7 @@ public class Board {
 	public MoveList checkAllLegal(char c){
 		MoveList ml = new MoveList(tiles,moves, c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
 				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);
-		
+
 			ml.setList();
 
 
