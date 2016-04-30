@@ -8,7 +8,7 @@ public class MoveList {
 	Tile[] board = new Tile [64];
 	Tile[] helpBoard = new Tile [64];
 	// Board temp = new Board();
-	//Board helper = new Board();
+	// Board helper = new Board();
 	char color;
 	List<Tile> pieces = new ArrayList<Tile>();
 	List<Tile> whites = new ArrayList<Tile>();
@@ -4000,7 +4000,7 @@ public class MoveList {
 			return false;
 	}
 
-	private boolean checkIfCheck(char c){
+	public boolean checkIfCheck(char c){
 		if(c == 'W'){
 			int king = wKing.getID();
 			for(ShortMove s : blackMoves){

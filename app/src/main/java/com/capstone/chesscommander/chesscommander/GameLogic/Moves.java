@@ -20,12 +20,12 @@ public class Moves {
 	int ply;
 	int moveNumber;
 	char moveDoneBy;
-	Board stateCopy;
+	String fen;
 	
 	
 	
 	public Moves(Piece p, int start, int end, boolean hC, boolean wk, boolean bk, boolean wkr, boolean bkr,
-			boolean wqr, boolean bqr, boolean pm, boolean promo, int pl, int m, char c, Board b){
+			boolean wqr, boolean bqr, boolean pm, boolean promo, int pl, int m, char c, String f){
 		movedPiece = p;
 		startSquareID = start;
 		endSquareID = end;
@@ -42,7 +42,7 @@ public class Moves {
 		moveNumber = m;
 		moveDoneBy= c;
 		
-		stateCopy = new Board(b);
+		fen = f;
 	}
 
 
@@ -196,12 +196,14 @@ public class Moves {
 	}
 
 
-	public Board getBoardBeforeMove(){
-		return stateCopy;
+	public String getFEN(){
+		return fen;
+	}
+
+	public String getShortFEN(){
+		String[] sf = fen.split(" ");
+		return sf[0];
+	}
+
 	}
 	
-	public void printVisualBoardBeforeMove(){
-		stateCopy.printVisualBoard();
-	}
-	
-}

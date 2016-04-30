@@ -31,6 +31,7 @@ public class Board {
 	int playerMove = 0;
 	int doubleMoveTile = -100;
 	String FEN;
+	ArrayList<String> shortFenList = new ArrayList<String>();
 	boolean isTurnPlayer;
 	Moves lastPlayerMove;
 	
@@ -268,7 +269,7 @@ public class Board {
 									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
 									tiles[start].getPiece().getType() == 'P', 
 									promotion, 
-									ply, moveNum, c, copyBoard()));
+									ply, moveNum, c, FEN));
 							if(tiles[start].getPieceChar() == 'P' && start - end == 16){
 								doubleMoveTile = start - 8;
 							}
@@ -320,7 +321,7 @@ public class Board {
 							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
 							tiles[start].getPiece().getType() == 'P', 
 							promotion, 
-							ply, moveNum, c, copyBoard()));
+							ply, moveNum, c, FEN));
 					if(tiles[start].getPieceChar() == 'P' && start - end == 16){
 						doubleMoveTile = start - 8;
 					}
@@ -386,7 +387,7 @@ public class Board {
 									tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
 									tiles[start].getPiece().getType() == 'P', 
 									tiles[end].getID() <= 7 && tiles[end].getID() >=0, 
-									ply, moveNum, c, copyBoard()));
+									ply, moveNum, c, FEN));
 							if(tiles[start].getPieceChar() == 'p' && end - start == 16){
 								doubleMoveTile = start + 8;
 							}
@@ -440,7 +441,7 @@ public class Board {
 							tiles[start].getPiece().getType() == 'R' && tiles[start].getID() == 7, 
 							tiles[start].getPiece().getType() == 'P', 
 							tiles[end].getID() <= 7 && tiles[end].getID() >=0, 
-							ply, moveNum, c, copyBoard()));
+							ply, moveNum, c, FEN));
 					if(tiles[start].getPieceChar() == 'p' && end - start == 16){
 						doubleMoveTile = start + 8;
 					}
@@ -595,6 +596,10 @@ public class Board {
 		return 'q';
 	}
 
+	public boolean verifyIfCheck(char c){
+		return list.checkIfCheck(c);
+	}
+
 	public Board getBoardBoard(){return this;}
 
 	public Tile[] getBoard(){
@@ -706,6 +711,16 @@ public class Board {
 		
 		FEN = fen;
 		return fen;
+	}
+
+	public String getShortFEN(){
+		String[] sf = FEN.split(" ");
+		return sf[0];
+	}
+
+	public ArrayList<String> addShortFEN(){
+		shortFenList.add(getShortFEN());
+		return shortFenList;
 	}
 
 	private String tileToNotation(int t) {
@@ -849,6 +864,5 @@ public class Board {
 		getMoveList('W', false);
 		return tiles;
 	}
-
 
 }

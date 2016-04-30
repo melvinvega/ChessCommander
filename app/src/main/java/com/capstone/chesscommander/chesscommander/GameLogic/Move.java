@@ -20,11 +20,11 @@ public class Move {
 	int ply;
 	int moveNumber;
 	char moveDoneBy;
-	Tile[] boardBeforeMove = new Tile [64];
+	String fen;
 	
 	
 	public Move(Piece p, int start, int end, boolean hC, boolean wk, boolean bk, boolean wkr, boolean bkr,
-			boolean wqr, boolean bqr, boolean pm, boolean promo, int pl, int m, char c, Tile[] b){
+			boolean wqr, boolean bqr, boolean pm, boolean promo, int pl, int m, char c, String f){
 		movedPiece = p;
 		startSquareID = start;
 		endSquareID = end;
@@ -41,7 +41,7 @@ public class Move {
 		moveNumber = m;
 		moveDoneBy= c;
 		
-		boardBeforeMove = b;
+		fen = f;
 	}
 
 
@@ -195,13 +195,11 @@ public class Move {
 	}
 
 
-	public Tile[] getBoardBeforeMove() {
-		return boardBeforeMove;
+	public String getFen() {
+		return fen;
 	}
 
 
-	public void setBoardBeforeMove(Tile[] boardBeforeMove) {
-		this.boardBeforeMove = boardBeforeMove;
-	}
+
 	
 }
