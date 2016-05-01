@@ -790,7 +790,7 @@ public class Board {
 				if(sm.getType() == 'p' || sm.getType() == 'q' || sm.getType() == 'n' || sm.getType() == 'b' || sm.getType() == 'r'){
 					return false;
 				}
-				if(sm.getType() == 'K'){
+				if(sm.getType() == 'k'){
 					if(!quickMove(sm.getStartSquare(),sm.getEndSquare(),'B')){
 						return false;
 					}
