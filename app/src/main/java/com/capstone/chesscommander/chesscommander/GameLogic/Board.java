@@ -97,6 +97,7 @@ public class Board {
 				}
 			}
 		}
+		shortFenList.clear();
 		moves.clear();
 		halfmove = 0;
 		moveNum = 1;
@@ -208,6 +209,7 @@ public class Board {
 		blackKingMoved = false;
 		blackKingRookMoved = false;
 		blackQueenRookMoved = false;
+		shortFenList.clear();
 		Piece[] pieces = new Piece [32];
 		pieces[0] = new Piece('R','B');
 		pieces[1] = new Piece('N','B');

@@ -88,6 +88,13 @@ public class MoveList {
 	 */
 	public void setList(){
 		//genHelpBoard();
+		whites.clear();
+		blacks.clear();
+		whiteMoves.clear();
+		blackMoves.clear();
+		pieces.clear();
+		wKingMoves.clear();
+		bKingMoves.clear();
 		findOccupiedTiles();
 		findWhiteTiles();
 		findBlackTiles();
