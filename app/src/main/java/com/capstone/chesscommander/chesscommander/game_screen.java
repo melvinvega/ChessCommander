@@ -169,7 +169,14 @@ public class game_screen extends Activity {
     }
 
     public void onButtonClick(View view){
-        System.out.println("PrevId = "+prevId);
+        /*System.out.println("PrevId = "+prevId);
+        if(prevId==-1){
+            System.out.println("PrevId = "+prevId);
+            System.out.println("Start View = "+view.getTag(R.id.tagboardpos));
+        }
+        else{
+            System.out.println("Destination View = "+view.getTag(R.id.tagboardpos));
+        }*/
         if(prevId==-1){
            if(currentAllowedColor.equals(view.getTag(R.id.tagcolor)) && currentAllowedColor.equals(playerColor)){
                prevId = view.getId();
@@ -182,7 +189,12 @@ public class game_screen extends Activity {
                 char color = currentBoard.getTile((Integer) findViewById(prevId).getTag(R.id.tagboardpos)).getPiece().getColor();
                 verifyForCheckSetup();
                 if(verifyBoard.move(SSQ, ESQ, color, true) && !verifyBoard.verifyIfCheck(color)){
-                    verifyBoard.setInitialPosition();
+                    if(gameType.equals("fp")){
+                        verifyBoard.setCustomBoard(tempBoard);
+                    }
+                    else{
+                        verifyBoard.setInitialPosition();
+                    }
                     currentBoard.move(SSQ, ESQ, color, true);
                     refreshBoard();
                     changeAllowedColor();
@@ -203,13 +215,21 @@ public class game_screen extends Activity {
                             break;
                         }
                         prevId = -1;
+                    if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
+                        onCheckMatePopUp();
+                    }
+                    if(currentBoard.checkIfDraw(currentAllowedColor.toUpperCase().charAt(0))){
+                        onDrawPopUp();
+                    }
                 }
                 else{
+                    if(gameType.equals("fp")) {verifyBoard.setCustomBoard(tempBoard);}
+                    else {verifyBoard.setInitialPosition();}
                     Toast.makeText(this, "This move would cause a check", Toast.LENGTH_SHORT).show();
                     prevId = -1;
                 }
             }
-           // past.setInitialPosition();
+
         }
     }
 
@@ -363,11 +383,14 @@ public class game_screen extends Activity {
             currentAllowedColor = "white";
             if(gameType.equals("pve")){
                 opponentType = "computer";
+                playerColor = extras.getString("PlayerColor");
             }
             else{
                 opponentType = "player";
+                playerColor = "white";
             }
         }
+
         currentTurn=0;
         //currentBoard.getGameMoveList().clear();
         TextView tv = (TextView)findViewById(R.id.game_screen_currAAllowed);
@@ -382,6 +405,10 @@ public class game_screen extends Activity {
             String endSquare = intToNotation(currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).getEndSquareID());
             Toast.makeText(this,pieceMoved + " " + endSquare , Toast.LENGTH_SHORT).show();
             }
+        if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
+            onCheckMatePopUp();
+            }
+        refreshBoard();
         }
 
     // Create an intent that can start the Speech Recognizer activity
@@ -403,8 +430,7 @@ public class game_screen extends Activity {
         ArrayList<String> positionResultsList;
         if (requestCode == SPEECH_REQUEST_CODE_PIECE && resultCode == RESULT_OK) {
             pieceResultsList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            //System.out.println("InputPiece: ");
-            //System.out.println(pieceResultsList);
+            System.out.println("InputPiece: " + pieceResultsList);
             if(castling.contains(pieceResultsList.get(0))){
                 String temp="Castling";
                 Toast.makeText(this, temp, Toast.LENGTH_SHORT).show();
@@ -417,8 +443,7 @@ public class game_screen extends Activity {
         }
         if(requestCode == SPEECH_REQUEST_CODE_POSITION && resultCode == RESULT_OK) {
             positionResultsList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            //System.out.println("InputPosition: ");
-            //System.out.println(positionResultsList);
+            System.out.println("InputPosition: " + positionResultsList);
             if(boardNotationList.contains(positionResultsList.get(0).toLowerCase())){
                 positionResult = positionResultsList.get(0).toLowerCase();
             }
@@ -436,9 +461,9 @@ public class game_screen extends Activity {
             }
             finalCommand[1] = positionResult;
 
-            //System.out.println("Result: ");
+
             int tempnum = notationToInt(finalCommand[1]);
-            //System.out.println("ESQ voice = "+ tempnum);
+
             int[] resultNum = currentBoard.list.getMoveVoice(finalCommand[0],notationToInt(finalCommand[1]),playerColor.toUpperCase().charAt(0));
             int SSQ = resultNum[0];
             int ESQ = resultNum[1];
@@ -448,23 +473,24 @@ public class game_screen extends Activity {
                 char c = playerColor.toUpperCase().charAt(0);
                 verifyForCheckSetup();
                 if(verifyBoard.move(SSQ,ESQ,c,true)&&!verifyBoard.verifyIfCheck(c)){
-                    currentBoard.printVisualBoard();
-                    currentBoard.printFEN();
                     currentBoard.move(SSQ,ESQ,c,true);
-                    verifyBoard.setInitialPosition();
+                    if(gameType.equals("fp")){
+                        verifyBoard.setCustomBoard(tempBoard);
+                    }
+                    else{
+                        verifyBoard.setInitialPosition();
+                    }
                     refreshBoard();
                     String spokenText = finalCommand[0] + " " + finalCommand[1];
                     Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
+                    changeAllowedColor();
                     switch(opponentType){
                         case "player":
-                            changeAllowedColor();
                             changePlayerColor();
                             break;
                         case "computer":
                             Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
                             engine.sendCommand("position fen "+currentBoard.returnFEN());
-                            currentBoard.printVisualBoard();
-                            currentBoard.printFEN();
                             engineMove();
                             changeAllowedColor();
                             refreshBoard();
@@ -472,9 +498,16 @@ public class game_screen extends Activity {
                             Toast.makeText(this,lastMove , Toast.LENGTH_SHORT).show();
                             break;
                     }
-
+                    if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
+                        onCheckMatePopUp();
+                    }
+                    if(currentBoard.checkIfDraw(currentAllowedColor.toUpperCase().charAt(0))){
+                        onDrawPopUp();
+                    }
                 }
                 if(verifyBoard.verifyIfCheck(c)){
+                    if(gameType.equals("fp")) {verifyBoard.setCustomBoard(tempBoard);}
+                    else {verifyBoard.setInitialPosition();}
                     Toast.makeText(this, "This move would cause a check", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -1575,6 +1608,8 @@ public class game_screen extends Activity {
 
     private void simulateMoves(){
         past.setInitialPosition();
+        if(gameType.equals("fp")) {past.setCustomBoard(tempBoard);}
+        else {past.setInitialPosition();}
         switch (opponentType){
             case "player":
                 for(int i =0;i<currentBoard.getGameMoveList().size()-1;i++){
@@ -1596,7 +1631,8 @@ public class game_screen extends Activity {
     }
 
     private void copyPastToCurrent(){
-        currentBoard.setInitialPosition();
+        if(gameType.equals("fp")) {currentBoard.setCustomBoard(tempBoard);}
+        else {currentBoard.setInitialPosition();}
         for(int i =0;i<past.getGameMoveList().size();i++){
             int SSQ = past.getGameMoveList().get(i).getStartSquareID();
             int ESQ = past.getGameMoveList().get(i).getEndSquareID();
@@ -1606,7 +1642,8 @@ public class game_screen extends Activity {
     }
 
     private void copyCurrentToHolder(){
-        holder.setInitialPosition();
+        if(gameType.equals("fp")) {holder.setCustomBoard(tempBoard);}
+        else {holder.setInitialPosition();}
         for(int i =0;i<currentBoard.getGameMoveList().size();i++){
             int SSQ = currentBoard.getGameMoveList().get(i).getStartSquareID();
             int ESQ = currentBoard.getGameMoveList().get(i).getEndSquareID();
@@ -1616,14 +1653,16 @@ public class game_screen extends Activity {
     }
 
     private void copyHolderToCurrent(){
-        currentBoard.setInitialPosition();
+        if(gameType.equals("fp")) {currentBoard.setCustomBoard(tempBoard);}
+        else {currentBoard.setInitialPosition();}
         for(int i =0;i<holder.getGameMoveList().size();i++){
             int SSQ = holder.getGameMoveList().get(i).getStartSquareID();
             int ESQ = holder.getGameMoveList().get(i).getEndSquareID();
             char color = holder.getGameMoveList().get(i).getMovedPiece().getColor();
             currentBoard.move(SSQ,ESQ,color,true);
         }
-        holder.setInitialPosition();
+        if(gameType.equals("fp")) {holder.setCustomBoard(tempBoard);}
+        else {holder.setInitialPosition();}
     }
 
     private void verifyForCheckSetup(){
@@ -1705,5 +1744,55 @@ public class game_screen extends Activity {
         return results;
     }
 
+    private void onCheckMatePopUp(){
+        final Intent homeScreenIntent = new Intent(this,home_screen.class);
+        homeScreenIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        CharSequence startNew[] = new CharSequence[] {"Start New Game","Home Screen"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Checkmate");
+        builder.setItems(startNew, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0://Start New Gmae
+                        board = initialBoard.clone();
+                        boardSetup(gameType);
+                        prevId = -1;
+                        break;
+                    case 1://Home Screen
+                        engine.stopEngine();
+                        startActivity(homeScreenIntent);
+                        finish();
+                        break;
+                }
+            }
+        });
+        builder.show();
+    }
 
+    private void onDrawPopUp(){
+        final Intent homeScreenIntent = new Intent(this,home_screen.class);
+        homeScreenIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        CharSequence startNew[] = new CharSequence[] {"Start New Game","Home Screen"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Draw");
+        builder.setItems(startNew, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0://Start New Gmae
+                        board = initialBoard.clone();
+                        boardSetup(gameType);
+                        prevId = -1;
+                        break;
+                    case 1://Home Screen
+                        engine.stopEngine();
+                        startActivity(homeScreenIntent);
+                        finish();
+                        break;
+                }
+            }
+        });
+        builder.show();
+    }
 }
