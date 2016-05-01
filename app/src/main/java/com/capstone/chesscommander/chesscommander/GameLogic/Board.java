@@ -781,6 +781,7 @@ public class Board {
 
 	public boolean checkIfFiftyMoveRule(){
 		if(halfmove >= 50){
+			System.out.println("50 Move");
 			return true;
 		}
 		else{
@@ -839,7 +840,7 @@ public class Board {
 			}
 		}
 
-
+		System.out.println("Stalemate");
 		return true;
 	}
 
@@ -848,6 +849,7 @@ public class Board {
 		if(list.pieces.size() > 2){
 			return false;
 		}
+		System.out.println("Table");
 		return true;
 	}
 
@@ -898,6 +900,7 @@ public class Board {
 				}
 			}
 			if(rep >= 3){
+				System.out.println("Three Fold");
 				return true;
 			}
 		}
