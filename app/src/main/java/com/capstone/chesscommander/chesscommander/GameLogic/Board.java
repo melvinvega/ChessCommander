@@ -116,6 +116,7 @@ public class Board {
 		blackQueenRookMoved = true;
 		getMoveList('W',false);
 		returnFEN();
+		addShortFEN();
 		return tiles;
 	}
 
@@ -253,6 +254,7 @@ public class Board {
 		playerMove=0;
 		getMoveList('W', false);
 		returnFEN();
+		addShortFEN();
 		return tiles;
 	}
 
@@ -334,6 +336,7 @@ public class Board {
 							ply++;
 							playerMove = 1;
 							returnFEN();
+							addShortFEN();
 							list = getMoveList('B', false);
 							return true;
 						}
@@ -348,7 +351,6 @@ public class Board {
 						castleQueen = true;
 					}
 					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
-					addShortFEN();
 					moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
@@ -392,6 +394,7 @@ public class Board {
 					ply++;
 					playerMove = 1;
 					returnFEN();
+					addShortFEN();
 					list = getMoveList('B', false);
 					return true;
 				}
@@ -415,7 +418,6 @@ public class Board {
 							capture = true;
 							halfmove = 0;
 							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
-							addShortFEN();
 							moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
@@ -456,6 +458,7 @@ public class Board {
 							fullmove++;
 							playerMove = 0;
 							returnFEN();
+							addShortFEN();
 							list = getMoveList('W', false);
 							return true;
 						}
@@ -470,7 +473,6 @@ public class Board {
 						castleQueen = true;
 					}
 					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
-					addShortFEN();
 					moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
@@ -516,6 +518,7 @@ public class Board {
 					fullmove++;
 					playerMove = 0;
 					returnFEN();
+					addShortFEN();
 					list = getMoveList('W', false);
 					return true;
 				}
