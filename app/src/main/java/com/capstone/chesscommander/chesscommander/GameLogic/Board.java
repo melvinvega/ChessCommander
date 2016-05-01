@@ -839,8 +839,7 @@ public class Board {
 	Does a temporary move. Returns true if the temporary move would be legal. False if otherwise
 	 */
 	public boolean quickMove(int ss, int es, char c){
-		MoveList hList = new MoveList(tiles, moves , c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
-				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);;
+
 		if(tiles[es].containsPiece) {
 			if(tiles[es].getPiece().getColor() == c){
 				return true;
@@ -850,6 +849,8 @@ public class Board {
 			tiles[es].removePiece();
 			tiles[es].setPiece(tiles[ss].getPiece());
 			tiles[ss].removePiece();
+			MoveList hList = new MoveList(tiles, moves , c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
+					whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);
 			hList.setList();
 			isCheck = hList.checkIfCheck(c);
 			tiles[ss].setPiece(tiles[es].getPiece());
@@ -861,6 +862,8 @@ public class Board {
 			boolean isCheck;
 			tiles[es].setPiece(tiles[ss].getPiece());
 			tiles[ss].removePiece();
+			MoveList hList = new MoveList(tiles, moves , c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
+					whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);
 			hList.setList();
 			isCheck = hList.checkIfCheck(c);
 			tiles[ss].setPiece(tiles[es].getPiece());
