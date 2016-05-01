@@ -146,8 +146,6 @@ public class game_screen extends Activity {
         if(!file.exists()){
             createFilething();
         }
-        engine.startEngine();
-        engine.sendCommand("uci");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_screen);
@@ -156,6 +154,7 @@ public class game_screen extends Activity {
         difficulty = extras.getString("Difficulty");
         playerColor = extras.getString("PlayerColor");
         tempBoard = extras.getIntArray("Board");
+        opponentType = extras.getString("OpponentType");
         prevId = -1;
         initialBoard = board.clone();
         voiceKeyWordsArray();
@@ -163,7 +162,10 @@ public class game_screen extends Activity {
         setupLists();
         am = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         isAccessibilityEnabled = am.isEnabled();
-
+       if(gameType.equals("pve")|opponentType.equals("computer")) {
+           engine.startEngine();
+           engine.sendCommand("uci");
+       }
         boardSetup(gameType);
         refreshBoard();
     }
@@ -186,7 +188,9 @@ public class game_screen extends Activity {
             if (!findViewById(prevId).equals(view)) {
                 int SSQ = (Integer) findViewById(prevId).getTag(R.id.tagboardpos);
                 int ESQ = (Integer) view.getTag(R.id.tagboardpos);
-                char color = currentBoard.getTile((Integer) findViewById(prevId).getTag(R.id.tagboardpos)).getPiece().getColor();
+                int tileNumber = (int) findViewById(prevId).getTag(R.id.tagboardpos);
+                currentBoard.printVisualBoard();
+                char color = currentBoard.getTile(tileNumber).getPiece().getColor();
                 verifyForCheckSetup();
                 if(verifyBoard.move(SSQ, ESQ, color, true) && !verifyBoard.verifyIfCheck(color)){
                     if(gameType.equals("fp")){
@@ -194,6 +198,9 @@ public class game_screen extends Activity {
                     }
                     else{
                         verifyBoard.setInitialPosition();
+                    }
+                    if(currentBoard.checkIfPromotion(SSQ,ESQ)){
+                        currentBoard.setPromotionPiece(onPromotionPopUp());
                     }
                     currentBoard.move(SSQ, ESQ, color, true);
                     refreshBoard();
@@ -473,13 +480,16 @@ public class game_screen extends Activity {
                 char c = playerColor.toUpperCase().charAt(0);
                 verifyForCheckSetup();
                 if(verifyBoard.move(SSQ,ESQ,c,true)&&!verifyBoard.verifyIfCheck(c)){
-                    currentBoard.move(SSQ,ESQ,c,true);
                     if(gameType.equals("fp")){
                         verifyBoard.setCustomBoard(tempBoard);
                     }
                     else{
                         verifyBoard.setInitialPosition();
                     }
+                    if(currentBoard.checkIfPromotion(SSQ,ESQ)){
+                        currentBoard.setPromotionPiece(onPromotionPopUp());
+                    }
+                    currentBoard.move(SSQ,ESQ,c,true);
                     refreshBoard();
                     String spokenText = finalCommand[0] + " " + finalCommand[1];
                     Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
@@ -1794,5 +1804,33 @@ public class game_screen extends Activity {
             }
         });
         builder.show();
+    }
+
+    public char onPromotionPopUp(){
+        final char[] piece = new char[1];
+        CharSequence startNew[] = new CharSequence[] {"Start New Game","Home Screen"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Draw");
+        builder.setItems(startNew, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0://Start New Gmae
+                        piece[0] =  'Q';
+                        break;
+                    case 1://Home Screen
+                        piece[0] = 'R';
+                        break;
+                    case 2://Start New Gmae
+                        piece[0] =  'N';
+                        break;
+                    case 3://Home Screen
+                        piece[0] =  'B';
+                        break;
+                }
+            }
+        });
+        builder.show();
+        return piece[0];
     }
 }

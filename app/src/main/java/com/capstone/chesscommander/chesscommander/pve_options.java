@@ -69,6 +69,7 @@ public class pve_options extends Activity {
             intent.putExtra("GameType",gameType);
             intent.putExtra("Difficulty",difficultyValue);
             intent.putExtra("PlayerColor",colorValue);
+            intent.putExtra("OpponentType","computer");
 
             startActivity(intent);
 

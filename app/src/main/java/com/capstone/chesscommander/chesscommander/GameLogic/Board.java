@@ -534,6 +534,7 @@ public class Board {
 	}
 	
 	public boolean testMove(int start, int end, char c, boolean ip){
+
 		isTurnPlayer = true;
 		boolean capture = false;
 		boolean promotion = false;
@@ -674,7 +675,7 @@ public class Board {
 		return ml;
 	}
 	
-	private boolean checkIfPromotion(int ss, int es){
+	public boolean checkIfPromotion(int ss, int es){
 			if(!tiles[ss].getIfOccupied()){
 				return false;
 			}
