@@ -875,12 +875,13 @@ public class Board {
 	public boolean checkThreefoldRepetition(){
 		for(int i = 0; i < shortFenList.size() - 1; i++){
 			int rep = 0;
+			String test = new String(shortFenList.get(i));
 			for(String s : shortFenList){
-				if(shortFenList.get(i).equals(s)){
+				if(test.equals(s)){
 					rep++;
 				}
 			}
-			if(rep == 3){
+			if(rep >= 3){
 				return true;
 			}
 		}
