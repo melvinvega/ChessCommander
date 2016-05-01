@@ -841,15 +841,7 @@ public class Board {
 	}
 
 	public boolean checkForDrawnTable(){
-		if(list.pieces.size() == 3) {
-			for (Tile p : list.pieces) {
-				if (p.getPiece().getType() == 'Q' || p.getPiece().getType() == 'q' ||
-						p.getPiece().getType() == 'R' ||p.getPiece().getType() == 'r' ||
-						p.getPiece().getType() == 'P' ||p.getPiece().getType() == 'p'){
-					return false;
-				}
-			}
-		}
+
 		if(list.pieces.size() > 2){
 			return false;
 		}
