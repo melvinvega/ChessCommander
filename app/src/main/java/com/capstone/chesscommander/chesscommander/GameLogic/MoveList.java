@@ -51,7 +51,7 @@ public class MoveList {
 		else{
 			doublePawnMove = - 100;
 		}
-		//setupTempBoard();
+		setList();
 
 	}
 

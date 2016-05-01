@@ -17,7 +17,7 @@ public class Stockfish {
 	private BufferedReader processReader;
 	private OutputStreamWriter processWriter;
 
-	private static final String PATH = "/Users/Melvin/AndroidStudioProjects/ChessCommander/app/src/main/java/com/capstone/chesscommander/chesscommander/GameLogic/stockfish-6-arm";
+	private static final String PATH = "/data/user/0/com.capstone.chesscommander.chesscommander/files/stockfishandroid";
 
 	/**
 	 * Starts Stockfish engine as a process and initializes it
@@ -77,6 +77,7 @@ public class Stockfish {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		String result = buffer.toString();
 		return buffer.toString();
 	}
 
@@ -93,7 +94,16 @@ public class Stockfish {
 	public String getBestMove(String fen, int waitTime) {
 		sendCommand("position fen " + fen);
 		sendCommand("go movetime " + waitTime);
-		return getOutput(waitTime + 20).split("bestmove ")[1].split(" ")[0];
+		//String fromout = getOutput(waitTime + 20);
+		//String result[] = fromout.split("bestmove");
+		//System.out.println("Size = "+result.length);
+		//for(int i=0; i<result.length;i++){
+		//	System.out.println("getBestMove result["+i+"]: " + result[i]);
+		//}
+		//System.out.println("getBestMove result[0]: " + result[0]);
+		//System.out.println("getBestMove result[1]: " + result[1]);
+		//return result[result.length-1];
+		return getOutput(waitTime + 20);
 	}
 
 	/**

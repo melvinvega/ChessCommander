@@ -222,7 +222,6 @@ public class Board {
 		return tiles;
 	}
 
-
     public boolean move(int start, int end, char c, boolean ip){
 		isTurnPlayer = true;
 		boolean capture = false;
@@ -230,13 +229,13 @@ public class Board {
 		boolean castleKing = false;
 		boolean castleQueen = false;
 		boolean enPassant = false;
-		/*
+
 		if(!list.checkIfLegal(start, end, c)){
-			System.out.println("Illegal Move!");
+			System.out.println("Illegal Move! ");
 			System.out.println();
 			return false;
 		}
-		*/
+
 		if(tiles[start].getPieceChar() == 'P' && end == doubleMoveTile){
 		enPassant = true;
 		}

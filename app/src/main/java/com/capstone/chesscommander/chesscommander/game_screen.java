@@ -16,13 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.chesscommander.chesscommander.GameLogic.Board;
+import com.capstone.chesscommander.chesscommander.GameLogic.Stockfish;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
-
-import chesspresso.position.Position;
 
 /**
  * Created by Melvin on 3/20/16.
@@ -46,7 +49,7 @@ public class game_screen extends Activity {
     *             col[0-7] = A-H
     * */
 
-    private int prevId,currentTurn,numberOfMoves;
+    private int prevId,currentTurn;
     private Drawable bgdraw;
     private boolean empty;
 
@@ -125,6 +128,7 @@ public class game_screen extends Activity {
     private Board past = new Board();
     private Board currentBoard = new Board();
     private Board holder = new Board();
+    private Board verifyBoard = new Board();
 
     private Board[] pastArray = new Board[2];
 
@@ -133,13 +137,15 @@ public class game_screen extends Activity {
 
     private AccessibilityManager am;
     private boolean isAccessibilityEnabled;
+    private Stockfish engine = new Stockfish();
 
-    private List<String> fileList = new ArrayList<String>();
-
-    private Position position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        createFilething();
+        engine.startEngine();
+        engine.sendCommand("uci");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_screen);
         extras = getIntent().getExtras();
@@ -147,17 +153,16 @@ public class game_screen extends Activity {
         difficulty = extras.getString("Difficulty");
         playerColor = extras.getString("PlayerColor");
         tempBoard = extras.getIntArray("Board");
-        boardSetup(gameType);
-        refreshBoard();
         prevId = -1;
         initialBoard = board.clone();
         voiceKeyWordsArray();
-
         setupOmophones();
         setupLists();
         am = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         isAccessibilityEnabled = am.isEnabled();
 
+        boardSetup(gameType);
+        refreshBoard();
     }
 
     public void onButtonClick(View view){
@@ -172,30 +177,35 @@ public class game_screen extends Activity {
                 int SSQ = (Integer) findViewById(prevId).getTag(R.id.tagboardpos);
                 int ESQ = (Integer) view.getTag(R.id.tagboardpos);
                 char color = currentBoard.getTile((Integer) findViewById(prevId).getTag(R.id.tagboardpos)).getPiece().getColor();
-                if(currentBoard.move(SSQ, ESQ, color, true)){
-                refreshBoard();
-                numberOfMoves++;
-                changeAllowedColor();
-                switch(opponentType){
-                    case "player":
-                        changePlayerColor();
-                        break;
-                    case "computer":
-                        Random r = new Random();
-                        int i1 = r.nextInt(currentBoard.list.getBlackMoves().size());
-                        SSQ = currentBoard.list.getBlackMoves().get(i1).getStartSquare();
-                        ESQ = currentBoard.list.getBlackMoves().get(i1).getEndSquare();
-                        color = currentBoard.list.getBlackMoves().get(i1).getColor();
-                        currentBoard.move(SSQ, ESQ, color, true);
-                        refreshBoard();
-                        numberOfMoves++;
-                        changeAllowedColor();
-                        break;
-                    }
+                verifyForCheckSetup();
+                if(verifyBoard.move(SSQ, ESQ, color, true) && !verifyBoard.verifyIfCheck(color)){
+                    verifyBoard.setInitialPosition();
+                    currentBoard.move(SSQ, ESQ, color, true);
+                    refreshBoard();
+                    changeAllowedColor();
+                    Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
+                    switch(opponentType){
+                        case "player":
+                            changePlayerColor();
+                            break;
+                        case "computer":
+                            engine.sendCommand("position fen "+currentBoard.returnFEN());
+                            engineMove();
+                            refreshBoard();
+                            changeAllowedColor();
+                            String pieceMoved = charToStringPiece(currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).getMovedPiece().getType());
+                            String endSquare = intToNotation(currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).getEndSquareID());
+                            Toast.makeText(this,pieceMoved + " " + endSquare , Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        prevId = -1;
+                }
+                else{
+                    Toast.makeText(this, "This move would cause a check", Toast.LENGTH_SHORT).show();
                     prevId = -1;
                 }
             }
-            past.setInitialPosition();
+           // past.setInitialPosition();
         }
     }
 
@@ -279,17 +289,15 @@ public class game_screen extends Activity {
                     copyPastToCurrent();
                     changeAllowedColor();
                     changePlayerColor();
-                    numberOfMoves=currentBoard.getGameMoveList().size();
                     break;
                 case "computer":
                     simulateMoves();
                     copyCurrentToHolder();
                     copyPastToCurrent();
-                    //changeAllowedColor();
-                    numberOfMoves=currentBoard.getGameMoveList().size();
                     break;
             }
             refreshBoard();
+            past.setInitialPosition();
         }
     }
 
@@ -299,7 +307,6 @@ public class game_screen extends Activity {
       }
       else{
           copyHolderToCurrent();
-          numberOfMoves = currentBoard.getGameMoveList().size();
           refreshBoard();
           switch(opponentType){
               case "player":
@@ -332,20 +339,27 @@ public class game_screen extends Activity {
             currentBoard.setInitialPosition();
             past.setInitialPosition();
             holder.setInitialPosition();
+            verifyBoard.setInitialPosition();
         }
         else if(gameType.equals("fp")){
             currentBoard.setCustomBoard(tempBoard);
             past.setCustomBoard(tempBoard);
             holder.setCustomBoard(tempBoard);
+            verifyBoard.setCustomBoard(tempBoard);
             }
         if(gameType.equals("fp")){
             currentMove = extras.getString("CurrentMove");
             playerColor = extras.getString("PlayAs");
             opponentType = extras.getString("OpponentType");
-            currentAllowedColor = currentMove;
+            if(opponentType.equals("computer")){
+               currentAllowedColor =currentMove;
+            }
+            else{
+                currentAllowedColor = "white";
+            }
         }
         if(gameType.equals("pvp") | gameType.equals("pve") ){
-            playerColor="white";
+            //playerColor = extras.getString("playerColor");
             currentAllowedColor = "white";
             if(gameType.equals("pve")){
                 opponentType = "computer";
@@ -355,13 +369,19 @@ public class game_screen extends Activity {
             }
         }
         currentTurn=0;
-        numberOfMoves=0;
         //currentBoard.getGameMoveList().clear();
         TextView tv = (TextView)findViewById(R.id.game_screen_currAAllowed);
         tv.setText(currentAllowedColor.substring(0, 1).toUpperCase() + currentAllowedColor.substring(1));
 
-       // position = Position.createInitialPosition();
-
+        if((opponentType.equals("computer") | gameType.equals("pve")) && playerColor.equals("black")){
+            engine.sendCommand("position fen "+currentBoard.returnFEN());
+            engineMove();
+            refreshBoard();
+            changeAllowedColor();
+            String pieceMoved = charToStringPiece(currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).getMovedPiece().getType());
+            String endSquare = intToNotation(currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).getEndSquareID());
+            Toast.makeText(this,pieceMoved + " " + endSquare , Toast.LENGTH_SHORT).show();
+            }
         }
 
     // Create an intent that can start the Speech Recognizer activity
@@ -426,7 +446,12 @@ public class game_screen extends Activity {
             System.out.println("ESQ = "+ ESQ);
             if(playerColor.equals(currentAllowedColor)){
                 char c = playerColor.toUpperCase().charAt(0);
-                if(currentBoard.move(SSQ,ESQ,c,true)){
+                verifyForCheckSetup();
+                if(verifyBoard.move(SSQ,ESQ,c,true)&&!verifyBoard.verifyIfCheck(c)){
+                    currentBoard.printVisualBoard();
+                    currentBoard.printFEN();
+                    currentBoard.move(SSQ,ESQ,c,true);
+                    verifyBoard.setInitialPosition();
                     refreshBoard();
                     String spokenText = finalCommand[0] + " " + finalCommand[1];
                     Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
@@ -436,14 +461,29 @@ public class game_screen extends Activity {
                             changePlayerColor();
                             break;
                         case "computer":
+                            Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
+                            engine.sendCommand("position fen "+currentBoard.returnFEN());
+                            currentBoard.printVisualBoard();
+                            currentBoard.printFEN();
+                            engineMove();
                             changeAllowedColor();
+                            refreshBoard();
+                            String lastMove = currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).toString();
+                            Toast.makeText(this,lastMove , Toast.LENGTH_SHORT).show();
                             break;
                     }
 
                 }
+                if(verifyBoard.verifyIfCheck(c)){
+                    Toast.makeText(this, "This move would cause a check", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(this, "Illegal Move", Toast.LENGTH_SHORT).show();
+                }
             }
             else{
-                Toast.makeText(this, "Illegal Move", Toast.LENGTH_SHORT).show();
+                String text = "Can only move "+ currentAllowedColor + " pieces";
+                Toast.makeText(this, text , Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -1481,6 +1521,37 @@ public class game_screen extends Activity {
         }
     }
 
+    private String charToStringPiece(char c){
+        switch (c){
+            case 'P':
+                return "white pawn";
+            case 'K':
+                return "white king";
+            case 'Q':
+                return "white queen";
+            case 'B':
+                return "white bishop";
+            case 'N':
+                return "white knight";
+            case 'R':
+                return "white rook";
+            case 'p':
+                return "black pawn";
+            case 'k':
+                return "black king";
+            case 'q':
+                return "black queen";
+            case 'b':
+                return "black bishop";
+            case 'n':
+                return "black knight";
+            case 'r':
+                return "black rook";
+            default:
+                return "";
+        }
+    }
+
     private void changeAllowedColor(){
         if(currentAllowedColor.equals("white")){
             currentAllowedColor = "black";
@@ -1506,7 +1577,7 @@ public class game_screen extends Activity {
         past.setInitialPosition();
         switch (opponentType){
             case "player":
-                for(int i =0;i<numberOfMoves-1;i++){
+                for(int i =0;i<currentBoard.getGameMoveList().size()-1;i++){
                     int SSQ = currentBoard.getGameMoveList().get(i).getStartSquareID();
                     int ESQ = currentBoard.getGameMoveList().get(i).getEndSquareID();
                     char color = currentBoard.getGameMoveList().get(i).getMovedPiece().getColor();
@@ -1514,7 +1585,7 @@ public class game_screen extends Activity {
                 }
                 break;
             case "computer":
-                for(int i =0;i<numberOfMoves-2;i++){
+                for(int i =0;i<currentBoard.getGameMoveList().size()-2;i++){
                     int SSQ = currentBoard.getGameMoveList().get(i).getStartSquareID();
                     int ESQ = currentBoard.getGameMoveList().get(i).getEndSquareID();
                     char color = currentBoard.getGameMoveList().get(i).getMovedPiece().getColor();
@@ -1527,9 +1598,9 @@ public class game_screen extends Activity {
     private void copyPastToCurrent(){
         currentBoard.setInitialPosition();
         for(int i =0;i<past.getGameMoveList().size();i++){
-            int SSQ = currentBoard.getGameMoveList().get(i).getStartSquareID();
-            int ESQ = currentBoard.getGameMoveList().get(i).getEndSquareID();
-            char color = currentBoard.getGameMoveList().get(i).getMovedPiece().getColor();
+            int SSQ = past.getGameMoveList().get(i).getStartSquareID();
+            int ESQ = past.getGameMoveList().get(i).getEndSquareID();
+            char color = past.getGameMoveList().get(i).getMovedPiece().getColor();
             currentBoard.move(SSQ,ESQ,color,true);
         }
     }
@@ -1554,5 +1625,85 @@ public class game_screen extends Activity {
         }
         holder.setInitialPosition();
     }
+
+    private void verifyForCheckSetup(){
+        for(int i =0;i<currentBoard.getGameMoveList().size();i++){
+            int SSQ = currentBoard.getGameMoveList().get(i).getStartSquareID();
+            int ESQ = currentBoard.getGameMoveList().get(i).getEndSquareID();
+            char color = currentBoard.getGameMoveList().get(i).getMovedPiece().getColor();
+            verifyBoard.move(SSQ,ESQ,color,true);
+        }
+    }
+
+    private void createFilething(){
+        InputStream ins = context.getResources().openRawResource (R.raw.stockfish6arm);
+        byte[] buffer = new byte[0];
+        try {
+            buffer = new byte[ins.available()];
+            ins.read(buffer);
+            ins.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        FileOutputStream fos = null;
+        try {
+            fos = context.openFileOutput("stockfishandroid", Context.MODE_PRIVATE);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            fos.write(buffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File file = getFileStreamPath ("stockfishandroid");
+        file.setExecutable(true);
+        System.out.println(file);
+    }
+
+    private void engineMove(){
+        switch (difficulty){
+            case "easy":
+                engine.sendCommand("go depth 1");
+                break;
+            case "medium":
+                engine.sendCommand("go depth 5");
+                break;
+            case "hard":
+                engine.sendCommand("go depth 10");
+                break;
+        }
+        int[] results = engineOutputToMove();
+        currentBoard.move(results[0],results[1],currentAllowedColor.toUpperCase().charAt(0),true);
+    }
+
+    private int[] engineOutputToMove(){
+        int results[] = new int[2];
+        String temp = "";
+        switch (difficulty){
+            case "easy":
+                temp = engine.getOutput(1000).split("bestmove")[1];
+                break;
+            case "medium":
+                temp = engine.getOutput(3000).split("bestmove")[1];
+                break;
+            case "hard":
+                temp = engine.getOutput(5000).split("bestmove")[1];
+                break;
+        }
+        String start = temp.substring(1,3);
+        String end = temp.substring(3,5);
+        results[0] = notationToInt(start);
+        results[1] = notationToInt(end);
+        //Test for promotion
+        return results;
+    }
+
 
 }
