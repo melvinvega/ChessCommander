@@ -3,6 +3,20 @@ package com.capstone.chesscommander.chesscommander.GameLogic;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+* The MoveList class is used to generate all available moves to the pieces, accounting captures, and obstructions. It does NOT
+* account for moves that woud bring you into check.
+* @ param board - Contains the tile array produced in the class Board. This contains all the information on piece position.
+* @ param helpBoard - obsolete, kept to avoid interfering the code at the moment. To be eliminated
+* @ param color - contains the character which contains the color of the player the list was made for: 'W' for white, 'B' for black.
+* @ param pieces - contains the list of all tiles with pieces in the board the MoveList object was created for.
+* @ param whites - contains the list of all tiles with white pieces in the board the MoveList object was created for.
+* @ param blacks - contains the list of all tiles with black pieces in the board the MoveList object was created for.
+* @ param wKing - contains the information of the tile holding the white king piece
+* @ param
+* @ author Eduardo Acevedo Candelaria
+*/
+
 public class MoveList {
 
 	Tile[] board = new Tile [64];
@@ -19,10 +33,6 @@ public class MoveList {
 	List<ShortMove> blackMoves = new ArrayList<ShortMove>();
 	List<ShortMove> wKingMoves = new ArrayList<ShortMove>();
 	List<ShortMove> bKingMoves = new ArrayList<ShortMove>();
-	List<ShortMove> hWhiteMoves = new ArrayList<ShortMove>();
-	List<ShortMove> hBlackMoves = new ArrayList<ShortMove>();
-	List<ShortMove> hwKingMoves = new ArrayList<ShortMove>();
-	List<ShortMove> hbKingMoves = new ArrayList<ShortMove>();
 	int doublePawnMove;
 	boolean wkm;
 	boolean bkm;

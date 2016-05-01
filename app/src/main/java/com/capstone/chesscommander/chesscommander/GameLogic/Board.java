@@ -821,7 +821,7 @@ public class Board {
 			isCheck = hList.checkIfCheck(c);
 			tiles[ss].setPiece(tiles[es].getPiece());
 			tiles[es].removePiece();
-			tiles[es].setPiece(temp);
+			tiles[es].setPiece(new Piece(temp));
 			return isCheck;
 		}
 		else{
