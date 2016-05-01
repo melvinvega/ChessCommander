@@ -766,7 +766,7 @@ public class Board {
 	}
 
 	public boolean checkIfDraw(char c){
-		if(checkIfFiftyMoveRule() && checkIfStaleMate(c) && checkThreefoldRepetition()){
+		if(checkIfFiftyMoveRule() || checkIfStaleMate(c) || checkThreefoldRepetition()){
 			return true;
 		}
 		else{
