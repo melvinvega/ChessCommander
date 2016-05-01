@@ -46,7 +46,7 @@ public class fp_boardSetup extends Activity {
         Bundle extras = getIntent().getExtras();
         gameType = extras.getString("GameType");
         opponentType = extras.getString("OpponentType");
-        if(opponentType.equals("Computer")){
+        if(opponentType.equals("computer")){
             currentMove = extras.getString("CurrentMove");
             playAs = extras.getString("PlayAs");
             difficulty = extras.getString("Difficulty");
@@ -709,7 +709,7 @@ public class fp_boardSetup extends Activity {
             Intent startGameIntent = new Intent(this,game_screen.class);
             startGameIntent.putExtra("GameType",gameType);
             startGameIntent.putExtra("OpponentType",opponentType);
-            if(opponentType.equals("Computer")){
+            if(opponentType.equals("computer")){
                 startGameIntent.putExtra("CurrentMove",currentMove);
                 startGameIntent.putExtra("PlayAs",playAs);
                 startGameIntent.putExtra("Difficulty",difficulty);

@@ -98,6 +98,7 @@ public class Board {
 			}
 		}
 		getMoveList('W',false);
+		returnFEN();
 		return tiles;
 	}
 
@@ -230,6 +231,9 @@ public class Board {
 		moves.clear();
 		halfmove = 0;
 		moveNum = 1;
+		fullmove=1;
+		ply=1;
+		playerMove=0;
 		getMoveList('W', false);
 		returnFEN();
 		return tiles;
@@ -715,7 +719,7 @@ public class Board {
 		
 		fen = fen + " ";
 		
-		if(doubleMoveTile == -1){
+		if(doubleMoveTile == -100){
 			fen = fen + "-";
 		}
 		else{

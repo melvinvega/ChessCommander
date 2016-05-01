@@ -29,10 +29,10 @@ public class fp_options extends Activity {
            additional options.Since the options in this screen are basically irrelevant for the user.
            Else show the computer options.
          */
-        if(extras.getString("OpponentType").equals("Player")){
+        if(extras.getString("OpponentType").equals("player")){
             Intent boardScreenIntent = new Intent(this,fp_boardSetup.class);
             boardScreenIntent.putExtra("GameType", "fp");
-            boardScreenIntent.putExtra("OpponentType", "Player");
+            boardScreenIntent.putExtra("OpponentType", "player");
             startActivity(boardScreenIntent);
             /*
             * This finish is here so that when the user presses back on the device it shows the home

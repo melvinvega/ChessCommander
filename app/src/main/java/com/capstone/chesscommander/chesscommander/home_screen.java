@@ -56,10 +56,10 @@ public class home_screen extends AppCompatActivity {
                 fpScreenIntent.putExtra("GameType","fp");
                 switch (which) {
                     case 0:
-                        fpScreenIntent.putExtra("OpponentType", "Computer");
+                        fpScreenIntent.putExtra("OpponentType", "computer");
                         break;
                     case 1:
-                        fpScreenIntent.putExtra("OpponentType", "Player");
+                        fpScreenIntent.putExtra("OpponentType", "player");
                         break;
                 }
                 startActivity(fpScreenIntent);

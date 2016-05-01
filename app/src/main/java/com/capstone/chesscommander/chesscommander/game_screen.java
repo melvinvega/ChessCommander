@@ -142,7 +142,10 @@ public class game_screen extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        createFilething();
+        File file = new File("/data/user/0/com.capstone.chesscommander.chesscommander/files/stockfishandroid");
+        if(!file.exists()){
+            createFilething();
+        }
         engine.startEngine();
         engine.sendCommand("uci");
 
@@ -183,12 +186,13 @@ public class game_screen extends Activity {
                     currentBoard.move(SSQ, ESQ, color, true);
                     refreshBoard();
                     changeAllowedColor();
-                    Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
+
                     switch(opponentType){
                         case "player":
                             changePlayerColor();
                             break;
                         case "computer":
+                            Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
                             engine.sendCommand("position fen "+currentBoard.returnFEN());
                             engineMove();
                             refreshBoard();
@@ -253,17 +257,10 @@ public class game_screen extends Activity {
                     case 2://New Game
                         board = initialBoard.clone();
                         boardSetup(gameType);
-                        if(gameType.equals("fp")){
-                            currentBoard.setCustomBoard(tempBoard);
-                            refreshBoard();
-                        }
-                        else{
-                            currentBoard.setInitialPosition();
-                            refreshBoard();
-                        }
                         prevId = -1;
                         break;
                     case 3://Home Screen
+                        engine.stopEngine();
                         startActivity(homeScreenIntent);
                         finish();
                         break;
@@ -334,7 +331,7 @@ public class game_screen extends Activity {
         setupBoardPosTags();
 
         setupBoardNotationArray();
-
+        //############# Board Resets ######################
         if(gameType.equals("pve") || gameType.equals("pvp")) {
             currentBoard.setInitialPosition();
             past.setInitialPosition();
@@ -347,19 +344,22 @@ public class game_screen extends Activity {
             holder.setCustomBoard(tempBoard);
             verifyBoard.setCustomBoard(tempBoard);
             }
+
+        //############# Get Extras ######################
         if(gameType.equals("fp")){
             currentMove = extras.getString("CurrentMove");
             playerColor = extras.getString("PlayAs");
             opponentType = extras.getString("OpponentType");
             if(opponentType.equals("computer")){
-               currentAllowedColor =currentMove;
+               currentAllowedColor = currentMove;
+                playerColor = extras.getString("PlayAs");
             }
             else{
                 currentAllowedColor = "white";
+                playerColor = "white";
             }
         }
         if(gameType.equals("pvp") | gameType.equals("pve") ){
-            //playerColor = extras.getString("playerColor");
             currentAllowedColor = "white";
             if(gameType.equals("pve")){
                 opponentType = "computer";
@@ -1680,7 +1680,7 @@ public class game_screen extends Activity {
                 break;
         }
         int[] results = engineOutputToMove();
-        currentBoard.move(results[0],results[1],currentAllowedColor.toUpperCase().charAt(0),true);
+        currentBoard.move(results[0],results[1],currentAllowedColor.toUpperCase().charAt(0),false);
     }
 
     private int[] engineOutputToMove(){
