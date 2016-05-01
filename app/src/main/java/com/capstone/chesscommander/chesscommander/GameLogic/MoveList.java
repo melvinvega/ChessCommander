@@ -3,6 +3,34 @@ package com.capstone.chesscommander.chesscommander.GameLogic;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+* The MoveList class is used to generate all available moves to the pieces, accounting captures, and obstructions. It does NOT
+* account for moves that woud bring you into check.
+* @ param board - Contains the tile array produced in the class Board. This contains all the information on piece position.
+* @ param helpBoard - obsolete, kept to avoid interfering the code at the moment. To be eliminated
+* @ param color - contains the character which contains the color of the player the list was made for: 'W' for white, 'B' for black.
+* @ param pieces - contains the list of all tiles with pieces in the board the MoveList object was created for.
+* @ param whites - contains the list of all tiles with white pieces in the board the MoveList object was created for.
+* @ param blacks - contains the list of all tiles with black pieces in the board the MoveList object was created for.
+* @ param wKing - contains the information of the tile holding the white king piece
+* @ param bKing - contains the information of the tile holding the black king piece
+* @ param whiteMoves - contains the list of moves available to white, including moves that'd send them into check
+* @ param blackMoves - contains the list of moves available to black, including moves that'd send them into check
+* @ param wKingMoves - contains the list of moves available to the white king
+* @ param bKingMoves - contains the list of moves available to the black king
+* @ param doublePawnMove - contains the tile id for the skipped tile after a double pawn move, if it
+* 					was the last move. Otherwise contains the integer -100
+* @ param wkm - boolean value containing if the white king has moved
+* @ param bkm - boolean value containing if the black king has moved
+* @ param wkrm - boolean value containing if the white kingside rook has moved
+* @ param wqrm - boolean value containing if the white queenside rook has moved
+* @ param bkrm - boolean value containing if the black kingside rook has moved
+* @ param bqrm - boolean value containing if the black queenside rook has moved
+* @ param help - not used actively. To be removed
+* @ param moves - contains a list of the moves done in the game overall
+* @ author Eduardo Acevedo Candelaria
+*/
+
 public class MoveList {
 
 	Tile[] board = new Tile [64];
@@ -19,10 +47,6 @@ public class MoveList {
 	List<ShortMove> blackMoves = new ArrayList<ShortMove>();
 	List<ShortMove> wKingMoves = new ArrayList<ShortMove>();
 	List<ShortMove> bKingMoves = new ArrayList<ShortMove>();
-	List<ShortMove> hWhiteMoves = new ArrayList<ShortMove>();
-	List<ShortMove> hBlackMoves = new ArrayList<ShortMove>();
-	List<ShortMove> hwKingMoves = new ArrayList<ShortMove>();
-	List<ShortMove> hbKingMoves = new ArrayList<ShortMove>();
 	int doublePawnMove;
 	boolean wkm;
 	boolean bkm;
@@ -33,6 +57,10 @@ public class MoveList {
 	boolean help;
 	ArrayList<Moves> moves = new ArrayList<Moves>();
 
+	/*
+	* Default constructor for the MoveList class. Receives all the boolean parameters for the object, as well as the list of moves,
+	* tiles in the board and character representing player color.
+	*/
 	public MoveList(Tile[] t, ArrayList<Moves> m, char c, int dpm, boolean wk, boolean bk, boolean wkr, boolean wqr, boolean bkr, boolean bqr, boolean helper){
 		board = t;
 		moves = m;
@@ -55,6 +83,9 @@ public class MoveList {
 
 	}
 
+	/*
+	 * Fills all the lists with their appropiate information on moves available
+	 */
 	public void setList(){
 		//genHelpBoard();
 		findOccupiedTiles();
@@ -91,6 +122,10 @@ public class MoveList {
 		}
 	}
 */
+
+	/*
+	 * invokes the methods used to search available king moves for both players
+	 */
 	private void findKingMoves(){
 		findWhiteKingMoves();
 		findBlackKingMoves();
@@ -100,7 +135,7 @@ public class MoveList {
 		helpWhiteKingMoves();
 		helpBlackKingMoves();
 	}
-	*/
+
 	private void genHelpBoard(){
 		int curr = -1;
 		String  c;
@@ -187,7 +222,8 @@ public class MoveList {
 		}
 
 	}
-
+ */
+	// verifies all tiles of the board that are occupied by a piece, and places them in their appropiate list
 	private void findOccupiedTiles(){
 		int n = 0;
 		for(int i = 0; i < 64; i++){
@@ -205,6 +241,7 @@ public class MoveList {
 
 	}
 
+	// extracts the white tiles that are occupied from the list containing the whole
 	private void findWhiteTiles(){
 		int n = 0;
 		for(int i = 0; i <pieces.size(); i++){
@@ -215,6 +252,7 @@ public class MoveList {
 		}
 	}
 
+	// extracts the black tiles that are occupied from the list containng the whole
 	private void findBlackTiles(){
 		int n = 0;
 		for(int i = 0; i <pieces.size(); i++){
@@ -225,6 +263,12 @@ public class MoveList {
 		}
 	}
 
+	/*
+	* Verifies if the tile with specified ID is occupied by a piece
+	* @ param id - id of the tile in the board
+	* @ return true - if tile is occupied
+	* 		   false - if tile is unoccupied
+	*/
 	private boolean checkForPiece(int id){
 		return board[id].getIfOccupied();
 	}
@@ -1721,6 +1765,866 @@ public class MoveList {
 		}
 	}
 */
+
+/*
+	private void findWhiteKingMoves(){
+
+		// king not at column a
+
+		helper.setAsHelper(true);
+
+		if(wKing.getID() % 8 != 0){
+			if(!checkForWhitePiece(wKing.getID() - 1)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(wKing.getID(), wKing.getID() - 1, 'W', true);
+				hBlackMoves = helper.getMoveList('W',true).blackMoves;
+				if(((wKing.getID() - 1) % 8 != 0) && (wKing.getID() - 2 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID() - 1) % 8 != 0) && ((wKing.getID() - 1) - 8 >= 0) && (wKing.getID() - 10 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID() - 1) % 8 != 0) && ((wKing.getID() - 1) + 8 <= 63) && (wKing.getID() + 6 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == wKing.getID() - 1){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 1));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 1));
+				}
+			}
+
+		}
+
+		// king not at column h
+
+		if(wKing.getID() % 8 != 7){
+			if(!checkForWhitePiece(wKing.getID() + 1)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(wKing.getID(), wKing.getID() + 1, 'W', true);
+				hBlackMoves = helper.getMoveList('W', true).blackMoves;
+				if(((wKing.getID() + 1) % 8 != 7) && (wKing.getID() + 2 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID() + 1) % 8 != 7) && ((wKing.getID() + 1) - 8 >= 0) && (wKing.getID() -6 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID() + 1) % 8 != 7) && ((wKing.getID() + 1) + 8 <= 63) && (wKing.getID() + 10 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == wKing.getID() + 1){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 1));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 1));
+				}
+			}
+
+		}
+
+		// king not at rank 8
+
+		if(wKing.getID() - 8 >= 0){
+			if(!checkForWhitePiece(wKing.getID() - 8)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(wKing.getID(), wKing.getID() - 8, 'W', true);
+				hBlackMoves = helper.getMoveList('W', true).blackMoves;
+				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() - 16 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() % 8 != 0) && (wKing.getID() - 17 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() % 8 != 7) && (wKing.getID() - 15 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == wKing.getID() - 8){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 8));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 8));
+				}
+			}
+
+		}
+
+		// king not at rank 1
+
+		if(wKing.getID() + 8 <= 63){
+			if(!checkForWhitePiece(wKing.getID() + 8)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(wKing.getID(), wKing.getID() + 8, 'W', true);
+				hBlackMoves = helper.getMoveList('W', true).blackMoves;
+				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() + 16 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() % 8 != 0 ) && (wKing.getID() + 15 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() % 8 != 7) && (wKing.getID() + 17 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == wKing.getID() + 8){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 8));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 8));
+				}
+			}
+
+		}
+
+		// king not at a1 corner
+
+		if(wKing.getID() - 8 >= 0 && wKing.getID() % 8 != 0){
+			if(!checkForWhitePiece(wKing.getID() - 9)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(wKing.getID(), wKing.getID() - 9, 'W', true);
+				hBlackMoves = helper.getMoveList('W', true).blackMoves;
+				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() - 16 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() - 17 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() % 8 != 1) && (wKing.getID() - 18 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((wKing.getID() % 8 != 1) && (wKing.getID() - 10 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((wKing.getID() % 8 != 1) && (wKing.getID() - 2 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == wKing.getID() - 9){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 9));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 9));
+				}
+			}
+
+		}
+
+		// king not at a8 corner
+
+		if(wKing.getID() - 8 >= 0 && wKing.getID() % 8 != 7){
+			if(!checkForWhitePiece(wKing.getID() - 7)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(wKing.getID(), wKing.getID() - 7, 'W', true);
+				hBlackMoves = helper.getMoveList('W', true).blackMoves;
+				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() - 16 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() - 15 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() % 8 != 6) && (wKing.getID() - 14 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((wKing.getID() % 8 != 6) && (wKing.getID() - 6 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((wKing.getID() % 8 != 6) && (wKing.getID() + 2 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == wKing.getID() - 7){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 7));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 7));
+				}
+			}
+
+		}
+
+		// king not at h8 corner
+
+		if(wKing.getID() + 8 <= 63 && wKing.getID() % 8 != 7){
+			if(!checkForWhitePiece(wKing.getID() + 9)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(wKing.getID(), wKing.getID() + 9, 'W', true);
+				hBlackMoves = helper.getMoveList('W', true).blackMoves;
+				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() + 16 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() + 17 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() % 8 != 6) && (wKing.getID() + 18 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((wKing.getID() % 8 != 6) && (wKing.getID() + 10 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((wKing.getID() % 8 != 6) && (wKing.getID() + 2 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == wKing.getID() + 9){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 9));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 9));
+				}
+			}
+
+		}
+
+		// king not at h1 corner
+
+		if(wKing.getID() + 8 <= 63 && wKing.getID() % 8 != 0){
+			if(!checkForWhitePiece(wKing.getID() + 7)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(wKing.getID(), wKing.getID() + 7, 'W', true);
+				hBlackMoves = helper.getMoveList('W', true).blackMoves;
+				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() + 16 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() + 15 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() % 8 != 1) && (wKing.getID() + 14 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((wKing.getID() % 8 != 1) && (wKing.getID() + 6 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((wKing.getID() % 8 != 1) && (wKing.getID() - 2 == bKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == wKing.getID() + 7){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 7));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 7));
+				}
+			}
+
+		}
+
+		if(!wkm && !wkrm && !checkIfCheck('W') && !board[61].getIfOccupied() && !board[62].getIfOccupied() && !isAttacked(61, 'W') && !isAttacked(62, 'W')){
+			bKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 2));
+			whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 2));
+		}
+
+		if(!wkm && !wqrm && !checkIfCheck('W') && !board[59].getIfOccupied() && !board[58].getIfOccupied() && !board[57].getIfOccupied() && !isAttacked(59, 'W') && !isAttacked(58, 'W')){
+			wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 2));
+			whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 2));
+		}
+
+
+	}
+
+	private void findBlackKingMoves(){
+
+		helper.setAsHelper(true);
+		// king not at column a
+
+		if(bKing.getID() % 8 != 0){
+			if(!checkForBlackPiece(bKing.getID() - 1)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(bKing.getID(), bKing.getID() - 1, 'B', true);
+				hBlackMoves = helper.getMoveList('B', true).blackMoves;
+				if(((bKing.getID() - 1) % 8 != 0) && (bKing.getID() - 2 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID() - 1) % 8 != 0) && ((bKing.getID() - 1) - 8 >= 0) && (bKing.getID() - 10 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID() - 1) % 8 != 0) && ((bKing.getID() - 1) + 8 <= 63) && (bKing.getID() + 6 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == bKing.getID() - 1){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 1));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 1));
+				}
+			}
+
+		}
+
+		// king not at column h
+
+		if(bKing.getID() % 8 != 7){
+			if(!checkForBlackPiece(bKing.getID() + 1)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(bKing.getID(), bKing.getID() + 1, 'B', true);
+				hBlackMoves = helper.getMoveList('B', true).blackMoves;
+				if(((bKing.getID() + 1) % 8 != 7) && (bKing.getID() + 2 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID() + 1) % 8 != 7) && ((bKing.getID() + 1) - 8 >= 0) && (bKing.getID() -6 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID() + 1) % 8 != 7) && ((bKing.getID() + 1) + 8 <= 63) && (bKing.getID() + 10 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == bKing.getID() + 1){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 1));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 1));
+				}
+			}
+
+		}
+
+		// king not at rank 8
+
+		if(bKing.getID() - 8 >= 0){
+			if(!checkForBlackPiece(bKing.getID() - 8)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(bKing.getID(), bKing.getID() - 8, 'B', true);
+				hBlackMoves = helper.getMoveList('B', true).blackMoves;
+				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() - 16 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() % 8 != 0) && (bKing.getID() - 17 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() % 8 != 7) && (bKing.getID() - 15 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == bKing.getID() - 8){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 8));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 8));
+				}
+			}
+
+		}
+
+		// king not at rank 1
+
+		if(bKing.getID() + 8 <= 63){
+			if(!checkForBlackPiece(bKing.getID() + 8)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(bKing.getID(), bKing.getID() + 8, 'B', true);
+				hBlackMoves = helper.getMoveList('B', true).blackMoves;
+				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() + 16 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() % 8 != 0 ) && (bKing.getID() + 15 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() % 8 != 7) && (bKing.getID() + 17 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == bKing.getID() + 8){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 8));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 8));
+				}
+			}
+
+		}
+
+		// king not at a1 corner
+
+		if(bKing.getID() - 8 >= 0 && bKing.getID() % 8 != 0){
+			if(!checkForBlackPiece(bKing.getID() - 9)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(bKing.getID(), bKing.getID() - 9, 'B', true);
+				hBlackMoves = helper.getMoveList('B', true).blackMoves;
+				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() - 16 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() - 17 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() % 8 != 1) && (bKing.getID() - 18 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((bKing.getID() % 8 != 1) && (bKing.getID() - 10 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((bKing.getID() % 8 != 1) && (bKing.getID() - 2 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == bKing.getID() - 9){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 9));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 9));
+				}
+			}
+
+		}
+
+		// king not at a8 corner
+
+		if(bKing.getID() - 8 >= 0 && bKing.getID() % 8 != 7){
+			if(!checkForBlackPiece(bKing.getID() - 7)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(bKing.getID(), bKing.getID() - 7, 'B', true);
+				hBlackMoves = helper.getMoveList('B', true).blackMoves;
+				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() - 16 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() - 15 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() % 8 != 6) && (bKing.getID() - 14 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((bKing.getID() % 8 != 6) && (bKing.getID() - 6 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((bKing.getID() % 8 != 6) && (bKing.getID() + 2 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == bKing.getID() - 7){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 7));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 7));
+				}
+			}
+
+		}
+
+		// king not at h8 corner
+
+		if(bKing.getID() + 8 <= 63 && bKing.getID() % 8 != 7){
+			if(!checkForBlackPiece(bKing.getID() + 9)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(bKing.getID(), bKing.getID() + 9, 'B', true);
+				hBlackMoves = helper.getMoveList('B', true).blackMoves;
+				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() + 16 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() + 17 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() % 8 != 6) && (bKing.getID() + 18 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((bKing.getID() % 8 != 6) && (bKing.getID() + 10 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((bKing.getID() % 8 != 6) && (bKing.getID() + 2 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == bKing.getID() + 9){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 9));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 9));
+				}
+			}
+
+		}
+
+		// king not at h1 corner
+
+		if(bKing.getID() + 8 <= 63 && bKing.getID() % 8 != 0){
+			if(!checkForBlackPiece(bKing.getID() + 7)){
+				boolean wouldBeCheck = false;
+				helper.setCustomBoard(helpBoard);
+				helper.testMove(bKing.getID(), bKing.getID() + 7, 'B', true);
+				hBlackMoves = helper.getMoveList('B', true).blackMoves;
+				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() + 16 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() + 15 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() % 8 != 1) && (bKing.getID() + 14 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((bKing.getID() % 8 != 1) && (bKing.getID() + 6 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				if((bKing.getID() % 8 != 1) && (bKing.getID() - 2 == wKing.getID())){
+					wouldBeCheck = true;
+				}
+				for(ShortMove s : hBlackMoves){
+					if(s.getEndSquare() == bKing.getID() + 7){
+						wouldBeCheck = true;
+						break;
+					}
+				}
+				if(!wouldBeCheck){
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 7));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 7));
+				}
+			}
+
+		}
+
+		if(!bkm && !bkrm && !checkIfCheck('B') && !board[5].getIfOccupied() && !board[6].getIfOccupied() && !isAttacked(5, 'B') && !isAttacked(6, 'B')){
+			bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 2));
+			blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 2));
+		}
+
+		if(!bkm && !bqrm && !checkIfCheck('B') && !board[3].getIfOccupied() && !board[2].getIfOccupied() && !board[1].getIfOccupied() && !isAttacked(3, 'B') && !isAttacked(2, 'B')){
+			bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 2));
+			blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 2));
+		}
+
+	}
+*/
+	private void findWhiteKingMoves(){
+
+		// king not at column a
+
+		//helper.setAsHelper(true);
+
+		if(wKing.getID() % 8 != 0){
+			if(!checkForWhitePiece(wKing.getID() - 1)){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 1));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 1));
+			}
+
+		}
+
+		// king not at column h
+
+		if(wKing.getID() % 8 != 7){
+			if(!checkForWhitePiece(wKing.getID() + 1)){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 1));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 1));
+			}
+
+		}
+
+		// king not at rank 8
+
+		if(wKing.getID() - 8 >= 0){
+			if(!checkForWhitePiece(wKing.getID() - 8)){
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 8));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 8));
+			}
+
+		}
+
+		// king not at rank 1
+
+		if(wKing.getID() + 8 <= 63){
+			if(!checkForWhitePiece(wKing.getID() + 8)){
+
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 8));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 8));
+
+			}
+
+		}
+
+		// king not at a1 corner
+
+		if(wKing.getID() - 8 >= 0 && wKing.getID() % 8 != 0){
+			if(!checkForWhitePiece(wKing.getID() - 9)){
+
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 9));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 9));
+
+			}
+
+		}
+
+		// king not at a8 corner
+
+		if(wKing.getID() - 8 >= 0 && wKing.getID() % 8 != 7){
+			if(!checkForWhitePiece(wKing.getID() - 7)){
+
+
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 7));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 7));
+
+			}
+
+		}
+
+		// king not at h8 corner
+
+		if(wKing.getID() + 8 <= 63 && wKing.getID() % 8 != 7){
+			if(!checkForWhitePiece(wKing.getID() + 9)){
+
+
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 9));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 9));
+
+			}
+
+		}
+
+		// king not at h1 corner
+
+		if(wKing.getID() + 8 <= 63 && wKing.getID() % 8 != 0){
+			if(!checkForWhitePiece(wKing.getID() + 7)){
+
+					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 7));
+					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 7));
+
+			}
+
+		}
+
+		if(!wkm && !wkrm && !checkIfCheck('W') && !board[61].getIfOccupied() && !board[62].getIfOccupied() && !isAttacked(61, 'W') && !isAttacked(62, 'W')){
+			bKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 2));
+			whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 2));
+		}
+
+		if(!wkm && !wqrm && !checkIfCheck('W') && !board[59].getIfOccupied() && !board[58].getIfOccupied() && !board[57].getIfOccupied() && !isAttacked(59, 'W') && !isAttacked(58, 'W')){
+			wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 2));
+			whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 2));
+		}
+
+
+	}
+
+	private void findBlackKingMoves(){
+
+		//helper.setAsHelper(true);
+		// king not at column a
+
+		if(bKing.getID() % 8 != 0){
+			if(!checkForBlackPiece(bKing.getID() - 1)){
+
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 1));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 1));
+
+			}
+
+		}
+
+		// king not at column h
+
+		if(bKing.getID() % 8 != 7){
+			if(!checkForBlackPiece(bKing.getID() + 1)){
+
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 1));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 1));
+
+			}
+
+		}
+
+		// king not at rank 8
+
+		if(bKing.getID() - 8 >= 0){
+			if(!checkForBlackPiece(bKing.getID() - 8)){
+
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 8));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 8));
+
+			}
+
+		}
+
+		// king not at rank 1
+
+		if(bKing.getID() + 8 <= 63){
+			if(!checkForBlackPiece(bKing.getID() + 8)){
+
+
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 8));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 8));
+
+			}
+
+		}
+
+		// king not at a1 corner
+
+		if(bKing.getID() - 8 >= 0 && bKing.getID() % 8 != 0){
+			if(!checkForBlackPiece(bKing.getID() - 9)){
+
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 9));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 9));
+
+			}
+
+		}
+
+		// king not at a8 corner
+
+		if(bKing.getID() - 8 >= 0 && bKing.getID() % 8 != 7){
+			if(!checkForBlackPiece(bKing.getID() - 7)){
+
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 7));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 7));
+
+			}
+
+		}
+
+		// king not at h8 corner
+
+		if(bKing.getID() + 8 <= 63 && bKing.getID() % 8 != 7){
+			if(!checkForBlackPiece(bKing.getID() + 9)){
+
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 9));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 9));
+
+			}
+
+		}
+
+		// king not at h1 corner
+
+		if(bKing.getID() + 8 <= 63 && bKing.getID() % 8 != 0){
+			if(!checkForBlackPiece(bKing.getID() + 7)){
+
+					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 7));
+					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 7));
+
+			}
+
+		}
+
+		if(!bkm && !bkrm && !checkIfCheck('B') && !board[5].getIfOccupied() && !board[6].getIfOccupied() && !isAttacked(5, 'B') && !isAttacked(6, 'B')){
+			bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 2));
+			blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 2));
+		}
+
+		if(!bkm && !bqrm && !checkIfCheck('B') && !board[3].getIfOccupied() && !board[2].getIfOccupied() && !board[1].getIfOccupied() && !isAttacked(3, 'B') && !isAttacked(2, 'B')){
+			bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 2));
+			blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 2));
+		}
+
+	}
+
+
+	public boolean checkStalemate(char c){
+		if(c == 'W'){
+			return (whiteMoves.isEmpty() && wKingMoves.isEmpty());
+		}
+		else if(c == 'B'){
+			return (blackMoves.isEmpty() && bKingMoves.isEmpty());
+		}
+		else
+			return false;
+	}
+
+	public boolean checkIfCheck(char c){
+		if(c == 'W'){
+			int king = wKing.getID();
+			for(ShortMove s : blackMoves){
+				if(s.getType() != 'p' && s.getEndSquare() == king){
+					return true;
+				}
+				else if (king % 8 != 0 && s.getType() == 'p' && s.getStartSquare() == (king - 9)){
+					return true;
+				}
+				else if (king % 8 != 7 && s.getType() == 'p' && s.getStartSquare() == (king - 7)){
+					return true;
+				}
+			}
+			return false;
+		}
+		else if(c == 'B'){
+			int king = bKing.getID();
+			for(ShortMove s : whiteMoves){
+				if(s.getType() != 'p' && s.getEndSquare() == king){
+					return true;
+				}
+				else if (king % 8 != 0 && s.getType() == 'p' && s.getStartSquare() == (king + 7)){
+					return true;
+				}
+				else if (king % 8 != 7 && s.getType() == 'p' && s.getStartSquare() == (king + 9)){
+					return true;
+				}
+			}
+			return false;
+		}
+		else{
+			return false;
+		}
+	}
+/*
+	public boolean wouldBeCheck(int ss, int es, char c){
+		temp.testMove(ss, es, c, true);
+		if(temp.getMoveList(c, true).checkIfCheck(c)){
+			temp.testMove(es, ss, c, true);
+			return true;
+		}
+		else {
+			temp.testMove(es, ss, c, true);
+			return false;
+		}
+	}
+*/
+
 	private void findWhiteMoves(){
 
 		for (Tile tile : whites){
@@ -3190,864 +4094,7 @@ public class MoveList {
 
 		}
 	}
-/*
-	private void findWhiteKingMoves(){
 
-		// king not at column a
-
-		helper.setAsHelper(true);
-
-		if(wKing.getID() % 8 != 0){
-			if(!checkForWhitePiece(wKing.getID() - 1)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(wKing.getID(), wKing.getID() - 1, 'W', true);
-				hBlackMoves = helper.getMoveList('W',true).blackMoves;
-				if(((wKing.getID() - 1) % 8 != 0) && (wKing.getID() - 2 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID() - 1) % 8 != 0) && ((wKing.getID() - 1) - 8 >= 0) && (wKing.getID() - 10 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID() - 1) % 8 != 0) && ((wKing.getID() - 1) + 8 <= 63) && (wKing.getID() + 6 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == wKing.getID() - 1){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 1));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 1));
-				}
-			}
-
-		}
-
-		// king not at column h
-
-		if(wKing.getID() % 8 != 7){
-			if(!checkForWhitePiece(wKing.getID() + 1)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(wKing.getID(), wKing.getID() + 1, 'W', true);
-				hBlackMoves = helper.getMoveList('W', true).blackMoves;
-				if(((wKing.getID() + 1) % 8 != 7) && (wKing.getID() + 2 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID() + 1) % 8 != 7) && ((wKing.getID() + 1) - 8 >= 0) && (wKing.getID() -6 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID() + 1) % 8 != 7) && ((wKing.getID() + 1) + 8 <= 63) && (wKing.getID() + 10 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == wKing.getID() + 1){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 1));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 1));
-				}
-			}
-
-		}
-
-		// king not at rank 8
-
-		if(wKing.getID() - 8 >= 0){
-			if(!checkForWhitePiece(wKing.getID() - 8)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(wKing.getID(), wKing.getID() - 8, 'W', true);
-				hBlackMoves = helper.getMoveList('W', true).blackMoves;
-				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() - 16 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() % 8 != 0) && (wKing.getID() - 17 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() % 8 != 7) && (wKing.getID() - 15 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == wKing.getID() - 8){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 8));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 8));
-				}
-			}
-
-		}
-
-		// king not at rank 1
-
-		if(wKing.getID() + 8 <= 63){
-			if(!checkForWhitePiece(wKing.getID() + 8)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(wKing.getID(), wKing.getID() + 8, 'W', true);
-				hBlackMoves = helper.getMoveList('W', true).blackMoves;
-				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() + 16 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() % 8 != 0 ) && (wKing.getID() + 15 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() % 8 != 7) && (wKing.getID() + 17 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == wKing.getID() + 8){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 8));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 8));
-				}
-			}
-
-		}
-
-		// king not at a1 corner
-
-		if(wKing.getID() - 8 >= 0 && wKing.getID() % 8 != 0){
-			if(!checkForWhitePiece(wKing.getID() - 9)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(wKing.getID(), wKing.getID() - 9, 'W', true);
-				hBlackMoves = helper.getMoveList('W', true).blackMoves;
-				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() - 16 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() - 17 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() % 8 != 1) && (wKing.getID() - 18 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((wKing.getID() % 8 != 1) && (wKing.getID() - 10 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((wKing.getID() % 8 != 1) && (wKing.getID() - 2 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == wKing.getID() - 9){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 9));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 9));
-				}
-			}
-
-		}
-
-		// king not at a8 corner
-
-		if(wKing.getID() - 8 >= 0 && wKing.getID() % 8 != 7){
-			if(!checkForWhitePiece(wKing.getID() - 7)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(wKing.getID(), wKing.getID() - 7, 'W', true);
-				hBlackMoves = helper.getMoveList('W', true).blackMoves;
-				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() - 16 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() - 15 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) - 16 >= 0) && (wKing.getID() % 8 != 6) && (wKing.getID() - 14 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((wKing.getID() % 8 != 6) && (wKing.getID() - 6 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((wKing.getID() % 8 != 6) && (wKing.getID() + 2 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == wKing.getID() - 7){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 7));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 7));
-				}
-			}
-
-		}
-
-		// king not at h8 corner
-
-		if(wKing.getID() + 8 <= 63 && wKing.getID() % 8 != 7){
-			if(!checkForWhitePiece(wKing.getID() + 9)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(wKing.getID(), wKing.getID() + 9, 'W', true);
-				hBlackMoves = helper.getMoveList('W', true).blackMoves;
-				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() + 16 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() + 17 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() % 8 != 6) && (wKing.getID() + 18 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((wKing.getID() % 8 != 6) && (wKing.getID() + 10 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((wKing.getID() % 8 != 6) && (wKing.getID() + 2 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == wKing.getID() + 9){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 9));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 9));
-				}
-			}
-
-		}
-
-		// king not at h1 corner
-
-		if(wKing.getID() + 8 <= 63 && wKing.getID() % 8 != 0){
-			if(!checkForWhitePiece(wKing.getID() + 7)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(wKing.getID(), wKing.getID() + 7, 'W', true);
-				hBlackMoves = helper.getMoveList('W', true).blackMoves;
-				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() + 16 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() + 15 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((wKing.getID()) + 16 <= 63) && (wKing.getID() % 8 != 1) && (wKing.getID() + 14 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((wKing.getID() % 8 != 1) && (wKing.getID() + 6 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((wKing.getID() % 8 != 1) && (wKing.getID() - 2 == bKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == wKing.getID() + 7){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 7));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 7));
-				}
-			}
-
-		}
-
-		if(!wkm && !wkrm && !checkIfCheck('W') && !board[61].getIfOccupied() && !board[62].getIfOccupied() && !isAttacked(61, 'W') && !isAttacked(62, 'W')){
-			bKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 2));
-			whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 2));
-		}
-
-		if(!wkm && !wqrm && !checkIfCheck('W') && !board[59].getIfOccupied() && !board[58].getIfOccupied() && !board[57].getIfOccupied() && !isAttacked(59, 'W') && !isAttacked(58, 'W')){
-			wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 2));
-			whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 2));
-		}
-
-
-	}
-
-	private void findBlackKingMoves(){
-
-		helper.setAsHelper(true);
-		// king not at column a
-
-		if(bKing.getID() % 8 != 0){
-			if(!checkForBlackPiece(bKing.getID() - 1)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(bKing.getID(), bKing.getID() - 1, 'B', true);
-				hBlackMoves = helper.getMoveList('B', true).blackMoves;
-				if(((bKing.getID() - 1) % 8 != 0) && (bKing.getID() - 2 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID() - 1) % 8 != 0) && ((bKing.getID() - 1) - 8 >= 0) && (bKing.getID() - 10 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID() - 1) % 8 != 0) && ((bKing.getID() - 1) + 8 <= 63) && (bKing.getID() + 6 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == bKing.getID() - 1){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 1));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 1));
-				}
-			}
-
-		}
-
-		// king not at column h
-
-		if(bKing.getID() % 8 != 7){
-			if(!checkForBlackPiece(bKing.getID() + 1)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(bKing.getID(), bKing.getID() + 1, 'B', true);
-				hBlackMoves = helper.getMoveList('B', true).blackMoves;
-				if(((bKing.getID() + 1) % 8 != 7) && (bKing.getID() + 2 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID() + 1) % 8 != 7) && ((bKing.getID() + 1) - 8 >= 0) && (bKing.getID() -6 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID() + 1) % 8 != 7) && ((bKing.getID() + 1) + 8 <= 63) && (bKing.getID() + 10 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == bKing.getID() + 1){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 1));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 1));
-				}
-			}
-
-		}
-
-		// king not at rank 8
-
-		if(bKing.getID() - 8 >= 0){
-			if(!checkForBlackPiece(bKing.getID() - 8)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(bKing.getID(), bKing.getID() - 8, 'B', true);
-				hBlackMoves = helper.getMoveList('B', true).blackMoves;
-				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() - 16 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() % 8 != 0) && (bKing.getID() - 17 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() % 8 != 7) && (bKing.getID() - 15 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == bKing.getID() - 8){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 8));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 8));
-				}
-			}
-
-		}
-
-		// king not at rank 1
-
-		if(bKing.getID() + 8 <= 63){
-			if(!checkForBlackPiece(bKing.getID() + 8)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(bKing.getID(), bKing.getID() + 8, 'B', true);
-				hBlackMoves = helper.getMoveList('B', true).blackMoves;
-				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() + 16 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() % 8 != 0 ) && (bKing.getID() + 15 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() % 8 != 7) && (bKing.getID() + 17 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == bKing.getID() + 8){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 8));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 8));
-				}
-			}
-
-		}
-
-		// king not at a1 corner
-
-		if(bKing.getID() - 8 >= 0 && bKing.getID() % 8 != 0){
-			if(!checkForBlackPiece(bKing.getID() - 9)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(bKing.getID(), bKing.getID() - 9, 'B', true);
-				hBlackMoves = helper.getMoveList('B', true).blackMoves;
-				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() - 16 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() - 17 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() % 8 != 1) && (bKing.getID() - 18 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((bKing.getID() % 8 != 1) && (bKing.getID() - 10 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((bKing.getID() % 8 != 1) && (bKing.getID() - 2 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == bKing.getID() - 9){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 9));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 9));
-				}
-			}
-
-		}
-
-		// king not at a8 corner
-
-		if(bKing.getID() - 8 >= 0 && bKing.getID() % 8 != 7){
-			if(!checkForBlackPiece(bKing.getID() - 7)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(bKing.getID(), bKing.getID() - 7, 'B', true);
-				hBlackMoves = helper.getMoveList('B', true).blackMoves;
-				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() - 16 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() - 15 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) - 16 >= 0) && (bKing.getID() % 8 != 6) && (bKing.getID() - 14 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((bKing.getID() % 8 != 6) && (bKing.getID() - 6 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((bKing.getID() % 8 != 6) && (bKing.getID() + 2 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == bKing.getID() - 7){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 7));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 7));
-				}
-			}
-
-		}
-
-		// king not at h8 corner
-
-		if(bKing.getID() + 8 <= 63 && bKing.getID() % 8 != 7){
-			if(!checkForBlackPiece(bKing.getID() + 9)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(bKing.getID(), bKing.getID() + 9, 'B', true);
-				hBlackMoves = helper.getMoveList('B', true).blackMoves;
-				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() + 16 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() + 17 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() % 8 != 6) && (bKing.getID() + 18 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((bKing.getID() % 8 != 6) && (bKing.getID() + 10 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((bKing.getID() % 8 != 6) && (bKing.getID() + 2 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == bKing.getID() + 9){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 9));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 9));
-				}
-			}
-
-		}
-
-		// king not at h1 corner
-
-		if(bKing.getID() + 8 <= 63 && bKing.getID() % 8 != 0){
-			if(!checkForBlackPiece(bKing.getID() + 7)){
-				boolean wouldBeCheck = false;
-				helper.setCustomBoard(helpBoard);
-				helper.testMove(bKing.getID(), bKing.getID() + 7, 'B', true);
-				hBlackMoves = helper.getMoveList('B', true).blackMoves;
-				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() + 16 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() + 15 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if(((bKing.getID()) + 16 <= 63) && (bKing.getID() % 8 != 1) && (bKing.getID() + 14 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((bKing.getID() % 8 != 1) && (bKing.getID() + 6 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				if((bKing.getID() % 8 != 1) && (bKing.getID() - 2 == wKing.getID())){
-					wouldBeCheck = true;
-				}
-				for(ShortMove s : hBlackMoves){
-					if(s.getEndSquare() == bKing.getID() + 7){
-						wouldBeCheck = true;
-						break;
-					}
-				}
-				if(!wouldBeCheck){
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 7));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 7));
-				}
-			}
-
-		}
-
-		if(!bkm && !bkrm && !checkIfCheck('B') && !board[5].getIfOccupied() && !board[6].getIfOccupied() && !isAttacked(5, 'B') && !isAttacked(6, 'B')){
-			bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 2));
-			blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 2));
-		}
-
-		if(!bkm && !bqrm && !checkIfCheck('B') && !board[3].getIfOccupied() && !board[2].getIfOccupied() && !board[1].getIfOccupied() && !isAttacked(3, 'B') && !isAttacked(2, 'B')){
-			bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 2));
-			blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 2));
-		}
-
-	}
-*/
-	private void findWhiteKingMoves(){
-
-		// king not at column a
-
-		//helper.setAsHelper(true);
-
-		if(wKing.getID() % 8 != 0){
-			if(!checkForWhitePiece(wKing.getID() - 1)){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 1));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 1));
-			}
-
-		}
-
-		// king not at column h
-
-		if(wKing.getID() % 8 != 7){
-			if(!checkForWhitePiece(wKing.getID() + 1)){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 1));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 1));
-			}
-
-		}
-
-		// king not at rank 8
-
-		if(wKing.getID() - 8 >= 0){
-			if(!checkForWhitePiece(wKing.getID() - 8)){
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 8));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 8));
-			}
-
-		}
-
-		// king not at rank 1
-
-		if(wKing.getID() + 8 <= 63){
-			if(!checkForWhitePiece(wKing.getID() + 8)){
-
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 8));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 8));
-
-			}
-
-		}
-
-		// king not at a1 corner
-
-		if(wKing.getID() - 8 >= 0 && wKing.getID() % 8 != 0){
-			if(!checkForWhitePiece(wKing.getID() - 9)){
-
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 9));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 9));
-
-			}
-
-		}
-
-		// king not at a8 corner
-
-		if(wKing.getID() - 8 >= 0 && wKing.getID() % 8 != 7){
-			if(!checkForWhitePiece(wKing.getID() - 7)){
-
-
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 7));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 7));
-
-			}
-
-		}
-
-		// king not at h8 corner
-
-		if(wKing.getID() + 8 <= 63 && wKing.getID() % 8 != 7){
-			if(!checkForWhitePiece(wKing.getID() + 9)){
-
-
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 9));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 9));
-
-			}
-
-		}
-
-		// king not at h1 corner
-
-		if(wKing.getID() + 8 <= 63 && wKing.getID() % 8 != 0){
-			if(!checkForWhitePiece(wKing.getID() + 7)){
-
-					wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 7));
-					whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 7));
-
-			}
-
-		}
-
-		if(!wkm && !wkrm && !checkIfCheck('W') && !board[61].getIfOccupied() && !board[62].getIfOccupied() && !isAttacked(61, 'W') && !isAttacked(62, 'W')){
-			bKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 2));
-			whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() + 2));
-		}
-
-		if(!wkm && !wqrm && !checkIfCheck('W') && !board[59].getIfOccupied() && !board[58].getIfOccupied() && !board[57].getIfOccupied() && !isAttacked(59, 'W') && !isAttacked(58, 'W')){
-			wKingMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 2));
-			whiteMoves.add(new ShortMove('W', 'K', wKing.getID(), wKing.getID() - 2));
-		}
-
-
-	}
-
-	private void findBlackKingMoves(){
-
-		//helper.setAsHelper(true);
-		// king not at column a
-
-		if(bKing.getID() % 8 != 0){
-			if(!checkForBlackPiece(bKing.getID() - 1)){
-
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 1));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 1));
-
-			}
-
-		}
-
-		// king not at column h
-
-		if(bKing.getID() % 8 != 7){
-			if(!checkForBlackPiece(bKing.getID() + 1)){
-
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 1));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 1));
-
-			}
-
-		}
-
-		// king not at rank 8
-
-		if(bKing.getID() - 8 >= 0){
-			if(!checkForBlackPiece(bKing.getID() - 8)){
-
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 8));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 8));
-
-			}
-
-		}
-
-		// king not at rank 1
-
-		if(bKing.getID() + 8 <= 63){
-			if(!checkForBlackPiece(bKing.getID() + 8)){
-
-
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 8));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 8));
-
-			}
-
-		}
-
-		// king not at a1 corner
-
-		if(bKing.getID() - 8 >= 0 && bKing.getID() % 8 != 0){
-			if(!checkForBlackPiece(bKing.getID() - 9)){
-
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 9));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 9));
-
-			}
-
-		}
-
-		// king not at a8 corner
-
-		if(bKing.getID() - 8 >= 0 && bKing.getID() % 8 != 7){
-			if(!checkForBlackPiece(bKing.getID() - 7)){
-
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 7));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 7));
-
-			}
-
-		}
-
-		// king not at h8 corner
-
-		if(bKing.getID() + 8 <= 63 && bKing.getID() % 8 != 7){
-			if(!checkForBlackPiece(bKing.getID() + 9)){
-
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 9));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 9));
-
-			}
-
-		}
-
-		// king not at h1 corner
-
-		if(bKing.getID() + 8 <= 63 && bKing.getID() % 8 != 0){
-			if(!checkForBlackPiece(bKing.getID() + 7)){
-
-					bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 7));
-					blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 7));
-
-			}
-
-		}
-
-		if(!bkm && !bkrm && !checkIfCheck('B') && !board[5].getIfOccupied() && !board[6].getIfOccupied() && !isAttacked(5, 'B') && !isAttacked(6, 'B')){
-			bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 2));
-			blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() + 2));
-		}
-
-		if(!bkm && !bqrm && !checkIfCheck('B') && !board[3].getIfOccupied() && !board[2].getIfOccupied() && !board[1].getIfOccupied() && !isAttacked(3, 'B') && !isAttacked(2, 'B')){
-			bKingMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 2));
-			blackMoves.add(new ShortMove('B', 'K', bKing.getID(), bKing.getID() - 2));
-		}
-
-	}
-
-
-	public boolean checkStalemate(char c){
-		if(c == 'W'){
-			return (whiteMoves.isEmpty() && wKingMoves.isEmpty());
-		}
-		else if(c == 'B'){
-			return (blackMoves.isEmpty() && bKingMoves.isEmpty());
-		}
-		else
-			return false;
-	}
-
-	public boolean checkIfCheck(char c){
-		if(c == 'W'){
-			int king = wKing.getID();
-			for(ShortMove s : blackMoves){
-				if(s.getType() != 'p' && s.getEndSquare() == king){
-					return true;
-				}
-				else if (king % 8 != 0 && s.getType() == 'p' && s.getStartSquare() == (king - 9)){
-					return true;
-				}
-				else if (king % 8 != 7 && s.getType() == 'p' && s.getStartSquare() == (king - 7)){
-					return true;
-				}
-			}
-			return false;
-		}
-		else if(c == 'B'){
-			int king = bKing.getID();
-			for(ShortMove s : whiteMoves){
-				if(s.getType() != 'p' && s.getEndSquare() == king){
-					return true;
-				}
-				else if (king % 8 != 0 && s.getType() == 'p' && s.getStartSquare() == (king + 7)){
-					return true;
-				}
-				else if (king % 8 != 7 && s.getType() == 'p' && s.getStartSquare() == (king + 9)){
-					return true;
-				}
-			}
-			return false;
-		}
-		else{
-			return false;
-		}
-	}
-/*
-	public boolean wouldBeCheck(int ss, int es, char c){
-		temp.testMove(ss, es, c, true);
-		if(temp.getMoveList(c, true).checkIfCheck(c)){
-			temp.testMove(es, ss, c, true);
-			return true;
-		}
-		else {
-			temp.testMove(es, ss, c, true);
-			return false;
-		}
-	}
-*/
 	public boolean verifyCheckmate(char c){
 		return checkStalemate(c) && checkIfCheck(c);
 	}

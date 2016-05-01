@@ -118,7 +118,13 @@ public class Piece {
 		type = 'x';
 		color = 'x';
 	}
-	
+
+	public Piece(Piece copy){
+		this.type = copy.type;
+		this.color = copy.color;
+		this.id = copy.id;
+	}
+
 	public Piece(char t, char c){
 		if(t == 'P' || t == 'K' || t == 'Q' || t == 'B' || t == 'N' || t == 'R'){
 			if(c == 'W'){
