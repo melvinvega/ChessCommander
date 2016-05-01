@@ -97,6 +97,23 @@ public class Board {
 				}
 			}
 		}
+		moves.clear();
+		halfmove = 0;
+		moveNum = 1;
+		fullmove=1;
+		ply=1;
+		playerMove=0;
+		doubleMoveTile = -100;
+		whiteKingCastle = false;
+		blackKingCastle = false;
+		whiteQueenCastle = false;
+		blackQueenCastle = false;
+		whiteKingMoved = true;
+		whiteKingRookMoved = true;
+		whiteQueenRookMoved = true;
+		blackKingMoved = true;
+		blackKingRookMoved = true;
+		blackQueenRookMoved = true;
 		getMoveList('W',false);
 		returnFEN();
 		return tiles;
