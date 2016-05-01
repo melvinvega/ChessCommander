@@ -2,7 +2,7 @@ package com.capstone.chesscommander.chesscommander.GameLogic;
 
 import java.util.ArrayList;
 
-import chesspresso.position.Position;
+
 
 /**
  * Board abstraction class. Contains the 64 tiles in the board, as well as its contents.
@@ -43,7 +43,7 @@ public class Board {
 	int moveNum = 1;
 	int ply = 1;
 //#############Melvin##############
-	private Position position;
+
 
 
 	
@@ -230,13 +230,13 @@ public class Board {
 		boolean castleKing = false;
 		boolean castleQueen = false;
 		boolean enPassant = false;
-		/*
+
 		if(!list.checkIfLegal(start, end, c)){
 			System.out.println("Illegal Move!");
 			System.out.println();
 			return false;
 		}
-		*/
+
 		if(tiles[start].getPieceChar() == 'P' && end == doubleMoveTile){
 		enPassant = true;
 		}
@@ -262,6 +262,7 @@ public class Board {
 							capture = true;
 							halfmove = 0;
 							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+							addShortFEN();
 							moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
@@ -314,6 +315,7 @@ public class Board {
 						castleQueen = true;
 					}
 					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+					addShortFEN();
 					moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
@@ -380,6 +382,7 @@ public class Board {
 							capture = true;
 							halfmove = 0;
 							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+							addShortFEN();
 							moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
@@ -434,6 +437,7 @@ public class Board {
 						castleQueen = true;
 					}
 					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+					addShortFEN();
 					moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
@@ -723,6 +727,129 @@ public class Board {
 	public ArrayList<String> addShortFEN(){
 		shortFenList.add(getShortFEN());
 		return shortFenList;
+	}
+
+	public boolean checkIfDraw(char c){
+		if(checkIfFiftyMoveRule() && checkIfStaleMate(c) && checkThreefoldRepetition()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean checkIfFiftyMoveRule(){
+		if(halfmove >= 50){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean checkForCheckmate(char c){
+		if(!verifyIfCheck(c)){
+			return false;
+		}
+		if(c == 'W') {
+			for (ShortMove sm : list.whiteMoves){
+				if(!quickMove(sm.getStartSquare(),sm.getEndSquare(),sm.getColor())){
+					return false;
+				}
+			}
+		}
+		else{
+			for(ShortMove sm: list.blackMoves){
+				if(!quickMove(sm.getStartSquare(),sm.getEndSquare(),sm.getColor())){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public boolean checkIfStaleMate(char c){
+
+		if(verifyIfCheck(c)){
+			return false;
+		}
+		if(c == 'W') {
+			for (ShortMove sm : list.whiteMoves){
+				if(sm.getType() == 'P' || sm.getType() == 'Q' || sm.getType() == 'N' || sm.getType() == 'B' || sm.getType() == 'R'){
+					return false;
+				}
+				if(sm.getType() == 'K'){
+					if(!quickMove(sm.getStartSquare(),sm.getEndSquare(),'W')){
+						return false;
+					}
+				}
+			}
+		}
+		else{
+			for(ShortMove sm: list.blackMoves){
+				if(sm.getType() == 'p' || sm.getType() == 'q' || sm.getType() == 'n' || sm.getType() == 'b' || sm.getType() == 'r'){
+					return false;
+				}
+				if(sm.getType() == 'K'){
+					if(!quickMove(sm.getStartSquare(),sm.getEndSquare(),'B')){
+						return false;
+					}
+				}
+			}
+		}
+		// more code goes here
+
+		return false;
+	}
+
+	/*
+	Does a temporary move. Returns true if the temporary move would be legal. False if otherwise
+	 */
+	public boolean quickMove(int ss, int es, char c){
+		MoveList hList = new MoveList(tiles, moves , c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
+				whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);;
+		if(tiles[es].containsPiece) {
+			if(tiles[es].getPiece().getColor() == c){
+				return true;
+			}
+			Piece temp = new Piece(tiles[es].getPiece());
+			boolean isCheck;
+			tiles[es].removePiece();
+			tiles[es].setPiece(tiles[ss].getPiece());
+			tiles[ss].removePiece();
+			hList.setList();
+			isCheck = hList.checkIfCheck(c);
+			tiles[ss].setPiece(tiles[es].getPiece());
+			tiles[es].removePiece();
+			tiles[es].setPiece(temp);
+			return isCheck;
+		}
+		else{
+			boolean isCheck;
+			tiles[es].setPiece(tiles[ss].getPiece());
+			tiles[ss].removePiece();
+			hList.setList();
+			isCheck = hList.checkIfCheck(c);
+			tiles[ss].setPiece(tiles[es].getPiece());
+			tiles[es].removePiece();
+			return isCheck;
+		}
+	}
+
+	public boolean checkThreefoldRepetition(){
+		for(int i = 0; i < shortFenList.size() - 1; i++){
+			int rep = 0;
+			for(String s : shortFenList){
+				if(shortFenList.get(i).equals(s)){
+					rep++;
+				}
+			}
+			if(rep == 3){
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private String tileToNotation(int t) {
