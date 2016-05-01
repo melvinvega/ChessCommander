@@ -835,9 +835,9 @@ public class Board {
 				}
 			}
 		}
-		// more code goes here
 
-		return false;
+
+		return true;
 	}
 
 	/*
