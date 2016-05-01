@@ -34,7 +34,8 @@ public class Board {
 	ArrayList<String> shortFenList = new ArrayList<String>();
 	boolean isTurnPlayer;
 	Moves lastPlayerMove;
-	
+	char setPromotionTo = 'Q';
+
 	Tile[] tiles = new Tile [64];
 	Tile[] helpTiles = new Tile[64];
 	
@@ -268,6 +269,7 @@ public class Board {
 		boolean castleQueen = false;
 		boolean enPassant = false;
 
+
 		if(!list.checkIfLegal(start, end, c)){
 			System.out.println("Illegal Move! ");
 			System.out.println();
@@ -298,7 +300,7 @@ public class Board {
 						if(tiles[end].getPiece().getColor() == 'B'){
 							capture = true;
 							halfmove = 0;
-							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+							promotion = checkIfPromotion(start, end);
 							addShortFEN();
 							moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
@@ -352,7 +354,7 @@ public class Board {
 					if(tiles[start].getPieceChar() == 'K' && start == 60 && end == 58){
 						castleQueen = true;
 					}
-					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+					promotion = checkIfPromotion(start, end);
 					moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
@@ -419,7 +421,7 @@ public class Board {
 						if(tiles[end].getPiece().getColor() == 'W'){
 							capture = true;
 							halfmove = 0;
-							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+							promotion = checkIfPromotion(start, end);
 							moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 									tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
@@ -474,7 +476,7 @@ public class Board {
 					if(tiles[start].getPieceChar() == 'k' && start == 4 && end == 2){
 						castleQueen = true;
 					}
-					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+					promotion = checkIfPromotion(start, end);
 					moves.add(new Moves(tiles[start].getPiece(), start, end, capture, 
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 60,
 							tiles[start].getPiece().getType() == 'K' && tiles[start].getID() == 4,
@@ -546,7 +548,7 @@ public class Board {
 						if(tiles[end].getPiece().getColor() == 'B'){
 							capture = true;
 							
-							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+							promotion = checkIfPromotion(start, end);
 							tiles[end].removePiece();
 							tiles[end].setPiece(tiles[start].getPiece());
 							if(promotion){
@@ -562,7 +564,7 @@ public class Board {
 							return false;
 						}
 					}
-					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+					promotion = checkIfPromotion(start, end);
 					tiles[end].setPiece(tiles[start].getPiece());
 					if(promotion){
 						char n = askForPromotion();
@@ -588,7 +590,7 @@ public class Board {
 					if(tiles[end].getIfOccupied()){
 						if(tiles[end].getPiece().getColor() == 'W'){
 							capture = true;
-							promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+							promotion = checkIfPromotion(start, end);
 							tiles[end].removePiece();
 							tiles[end].setPiece(tiles[start].getPiece());
 							if(promotion){
@@ -604,7 +606,7 @@ public class Board {
 							return false;
 						}
 					}
-					promotion = checkIfPromotion(tiles[start].getPiece(), tiles[end].getID());
+					promotion = checkIfPromotion(start, end);
 
 					tiles[end].setPiece(tiles[start].getPiece());
 					if(promotion){
@@ -672,20 +674,21 @@ public class Board {
 		return ml;
 	}
 	
-	private boolean checkIfPromotion(Piece p, int t){
-		if(!helpBoard) {
-			if (p.getType() == 'P' && (t >= 0 && t <= 7)) {
+	private boolean checkIfPromotion(int ss, int es){
+			if(!tiles[ss].getIfOccupied()){
+				return false;
+			}
+			if (tiles[ss].getPieceChar() == 'P' && (es >= 0 && es <= 7)) {
 				return true;
 			}
-			else if (p.getType() == 'p' && (t >= 56 && t <= 63)) {
+			else if (tiles[ss].getPieceChar() == 'p' && (es >= 56 && es <= 63)) {
 				return true;
 			}
 			else {
 				return false;
 			}
 		}
-		return false;
-	}
+
 	
 	public String returnFEN(){
 		String fen = "";
@@ -902,6 +905,21 @@ public class Board {
 		return false;
 	}
 
+	public char setPromotionPiece(char p){
+		switch(p){
+			case 'Q': setPromotionTo = 'Q';
+				break;
+			case 'B': setPromotionTo = 'B';
+				break;
+			case 'N': setPromotionTo = 'N';
+				break;
+			case 'R': setPromotionTo = 'R';
+				break;
+			default: setPromotionTo = 'Q';
+		}
+		return setPromotionTo;
+	}
+
 	private String tileToNotation(int t) {
 		String tileNotation = "";
 		int column = t % 8;
@@ -1043,5 +1061,6 @@ public class Board {
 		getMoveList('W', false);
 		return tiles;
 	}
+
 
 }
