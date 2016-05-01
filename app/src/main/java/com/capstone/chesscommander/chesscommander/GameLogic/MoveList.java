@@ -4047,22 +4047,22 @@ public class MoveList {
 					}
 				}
 				if(tile.getID() % 8 == 0){
-					if(checkForBlackPiece(tile.getID() + 9)){
+					if(checkForWhitePiece(tile.getID() + 9)){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
 					}
 				}
 
 				if(tile.getID() % 8 == 7){
-					if(checkForBlackPiece(tile.getID() + 7)){
+					if(checkForWhitePiece(tile.getID() + 7)){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
 					}
 				}
 
 				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
-					if(!checkForPiece(tile.getID() + 16)){
-						blackMoves.add(new ShortMove('B','p',tile.getID(),tile.getID() + 16));
+					if(checkForWhitePiece(tile.getID() + 7)){
+						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
 					}
-					if(checkForBlackPiece(tile.getID() + 9)){
+					if(checkForWhitePiece(tile.getID() + 9)){
 						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
 					}
 				}
