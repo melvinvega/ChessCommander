@@ -13,7 +13,21 @@ import java.util.List;
 * @ param whites - contains the list of all tiles with white pieces in the board the MoveList object was created for.
 * @ param blacks - contains the list of all tiles with black pieces in the board the MoveList object was created for.
 * @ param wKing - contains the information of the tile holding the white king piece
-* @ param
+* @ param bKing - contains the information of the tile holding the black king piece
+* @ param whiteMoves - contains the list of moves available to white, including moves that'd send them into check
+* @ param blackMoves - contains the list of moves available to black, including moves that'd send them into check
+* @ param wKingMoves - contains the list of moves available to the white king
+* @ param bKingMoves - contains the list of moves available to the black king
+* @ param doublePawnMove - contains the tile id for the skipped tile after a double pawn move, if it
+* 					was the last move. Otherwise contains the integer -100
+* @ param wkm - boolean value containing if the white king has moved
+* @ param bkm - boolean value containing if the black king has moved
+* @ param wkrm - boolean value containing if the white kingside rook has moved
+* @ param wqrm - boolean value containing if the white queenside rook has moved
+* @ param bkrm - boolean value containing if the black kingside rook has moved
+* @ param bqrm - boolean value containing if the black queenside rook has moved
+* @ param help - not used actively. To be removed
+* @ param moves - contains a list of the moves done in the game overall
 * @ author Eduardo Acevedo Candelaria
 */
 
@@ -43,6 +57,10 @@ public class MoveList {
 	boolean help;
 	ArrayList<Moves> moves = new ArrayList<Moves>();
 
+	/*
+	* Default constructor for the MoveList class. Receives all the boolean parameters for the object, as well as the list of moves,
+	* tiles in the board and character representing player color.
+	*/
 	public MoveList(Tile[] t, ArrayList<Moves> m, char c, int dpm, boolean wk, boolean bk, boolean wkr, boolean wqr, boolean bkr, boolean bqr, boolean helper){
 		board = t;
 		moves = m;
@@ -65,6 +83,9 @@ public class MoveList {
 
 	}
 
+	/*
+	 * Fills all the lists with their appropiate information on moves available
+	 */
 	public void setList(){
 		//genHelpBoard();
 		findOccupiedTiles();
@@ -101,6 +122,10 @@ public class MoveList {
 		}
 	}
 */
+
+	/*
+	 * invokes the methods used to search available king moves for both players
+	 */
 	private void findKingMoves(){
 		findWhiteKingMoves();
 		findBlackKingMoves();
@@ -110,7 +135,7 @@ public class MoveList {
 		helpWhiteKingMoves();
 		helpBlackKingMoves();
 	}
-	*/
+
 	private void genHelpBoard(){
 		int curr = -1;
 		String  c;
@@ -197,7 +222,8 @@ public class MoveList {
 		}
 
 	}
-
+ */
+	// verifies all tiles of the board that are occupied by a piece, and places them in their appropiate list
 	private void findOccupiedTiles(){
 		int n = 0;
 		for(int i = 0; i < 64; i++){
@@ -215,6 +241,7 @@ public class MoveList {
 
 	}
 
+	// extracts the white tiles that are occupied from the list containing the whole
 	private void findWhiteTiles(){
 		int n = 0;
 		for(int i = 0; i <pieces.size(); i++){
@@ -225,6 +252,7 @@ public class MoveList {
 		}
 	}
 
+	// extracts the black tiles that are occupied from the list containng the whole
 	private void findBlackTiles(){
 		int n = 0;
 		for(int i = 0; i <pieces.size(); i++){
@@ -235,6 +263,12 @@ public class MoveList {
 		}
 	}
 
+	/*
+	* Verifies if the tile with specified ID is occupied by a piece
+	* @ param id - id of the tile in the board
+	* @ return true - if tile is occupied
+	* 		   false - if tile is unoccupied
+	*/
 	private boolean checkForPiece(int id){
 		return board[id].getIfOccupied();
 	}

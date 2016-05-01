@@ -178,6 +178,17 @@ public class Board {
 	 */
 	
 	public Tile[] setInitialPosition(){
+		doubleMoveTile = -100;
+		whiteKingCastle = true;
+		blackKingCastle = true;
+		whiteQueenCastle = true;
+		blackQueenCastle = true;
+		whiteKingMoved = false;
+		whiteKingRookMoved = false;
+		whiteQueenRookMoved = false;
+		blackKingMoved = false;
+		blackKingRookMoved = false;
+		blackQueenRookMoved = false;
 		Piece[] pieces = new Piece [32];
 		pieces[0] = new Piece('R','B');
 		pieces[1] = new Piece('N','B');
@@ -217,6 +228,8 @@ public class Board {
 			j++;
 		}
 		moves.clear();
+		halfmove = 0;
+		moveNum = 1;
 		getMoveList('W', false);
 		returnFEN();
 		return tiles;
