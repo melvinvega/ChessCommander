@@ -3311,30 +3311,40 @@ public class MoveList {
 			}
 
 			else if(tile.getPieceChar() == 'P'){
-				if(!checkForPiece(tile.getID() - 8) && tile.getID() - 8 >= 0 ){
-					whiteMoves.add(new ShortMove('W','P',tile.getID(),tile.getID() - 8));
+				if( tile.getID() - 8 >= 0 ) {
+					if (!checkForPiece(tile.getID() - 8) && tile.getID() - 8 >= 0) {
+						whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 8));
+					}
 				}
 				if(tile.getID() >= 48 && tile.getID() <= 55){
 					if(!checkForPiece(tile.getID() - 16)){
 						whiteMoves.add(new ShortMove('W','P',tile.getID(),tile.getID() - 16));
 					}
 				}
-				if(tile.getID() % 8 == 0){
-					if(checkForBlackPiece(tile.getID() - 7) && tile.getID() - 7 >= 0 ){
-						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 7));
+				if( tile.getID() - 7 >= 0 ) {
+					if (tile.getID() % 8 == 0) {
+						if (checkForBlackPiece(tile.getID() - 7) && tile.getID() - 7 >= 0) {
+							whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 7));
+						}
 					}
 				}
-				if(tile.getID() % 8 == 7){
-					if(checkForBlackPiece(tile.getID() - 9) && tile.getID() - 9 >= 0 ){
-						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 9));
+				if( tile.getID() - 9 >= 0 ) {
+					if (tile.getID() % 8 == 7) {
+						if (checkForBlackPiece(tile.getID() - 9) && tile.getID() - 9 >= 0) {
+							whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 9));
+						}
 					}
 				}
 				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
-					if(checkForBlackPiece(tile.getID() - 7) && tile.getID() - 7 >= 0 ){
-						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 7));
+					if( tile.getID() - 7 >= 0 ) {
+						if (checkForBlackPiece(tile.getID() - 7) && tile.getID() - 7 >= 0) {
+							whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 7));
+						}
 					}
-					if(checkForBlackPiece(tile.getID() - 9)&& tile.getID() - 9 >= 0 ){
-						whiteMoves.add(new ShortMove('W','P',tile.getID(), tile.getID() - 9));
+					if( tile.getID() - 9 >= 0 ) {
+						if (checkForBlackPiece(tile.getID() - 9) && tile.getID() - 9 >= 0) {
+							whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 9));
+						}
 					}
 				}
 
@@ -4044,33 +4054,41 @@ public class MoveList {
 				}
 				continue;
 			}
-			else if(tile.getPieceChar() == 'p'){
-				if(!checkForPiece(tile.getID() + 8)&& tile.getID() + 8 <= 63 ){
-					blackMoves.add(new ShortMove('B','p',tile.getID(),tile.getID() + 8));
+			else if(tile.getPieceChar() == 'p') {
+				if (!(tile.getID() + 8 <= 63)){
+					if (!checkForPiece(tile.getID() + 8)) {
+						blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 8));
+					}
 				}
 				if(tile.getID() >= 8 && tile.getID() <= 15){
 					if(!checkForPiece(tile.getID() + 16)){
 						blackMoves.add(new ShortMove('B','p',tile.getID(),tile.getID() + 16));
 					}
 				}
-				if(tile.getID() % 8 == 0){
-					if(checkForWhitePiece(tile.getID() + 9)&& tile.getID() + 9 <= 63 ){
-						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
+				if (!(tile.getID() + 9 <= 63)) {
+					if (tile.getID() % 8 == 0) {
+						if (checkForWhitePiece(tile.getID() + 9) && tile.getID() + 9 <= 63) {
+							blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 9));
+						}
 					}
 				}
-
-				if(tile.getID() % 8 == 7){
-					if(checkForWhitePiece(tile.getID() + 7) && tile.getID() + 7 <= 63 ){
-						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
+				if (!(tile.getID() + 7 <= 63)) {
+					if (tile.getID() % 8 == 7) {
+						if (checkForWhitePiece(tile.getID() + 7) && tile.getID() + 7 <= 63) {
+							blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 7));
+						}
 					}
 				}
-
 				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
-					if(checkForWhitePiece(tile.getID() + 7) && tile.getID() + 7 <= 63 ){
-						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 7));
+					if (!(tile.getID() + 7 <= 63)) {
+						if (checkForWhitePiece(tile.getID() + 7) && tile.getID() + 7 <= 63) {
+							blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 7));
+						}
 					}
-					if(checkForWhitePiece(tile.getID() + 9) && tile.getID() + 9 <= 63 ){
-						blackMoves.add(new ShortMove('B','p',tile.getID(), tile.getID() + 9));
+					if (!(tile.getID() + 9 <= 63)) {
+						if (checkForWhitePiece(tile.getID() + 9) && tile.getID() + 9 <= 63) {
+							blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 9));
+						}
 					}
 				}
 
