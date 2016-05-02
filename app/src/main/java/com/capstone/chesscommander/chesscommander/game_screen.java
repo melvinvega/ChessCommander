@@ -162,6 +162,9 @@ public class game_screen extends Activity {
         setupLists();
         am = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         isAccessibilityEnabled = am.isEnabled();
+        if(gameType.equals("pvp")){
+            opponentType = "player";
+        }
        if(gameType.equals("pve")|opponentType.equals("computer")) {
            engine.startEngine();
            engine.sendCommand("uci");
