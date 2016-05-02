@@ -1811,9 +1811,9 @@ public class game_screen extends Activity {
 
     public char onPromotionPopUp(){
         final char[] piece = new char[1];
-        CharSequence startNew[] = new CharSequence[] {"Start New Game","Home Screen"};
+        CharSequence startNew[] = new CharSequence[] {"Queen","Bishop","Rook","Knight"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Draw");
+        builder.setTitle("Which piece to promote?");
         builder.setItems(startNew, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1822,13 +1822,13 @@ public class game_screen extends Activity {
                         piece[0] =  'Q';
                         break;
                     case 1://Home Screen
-                        piece[0] = 'R';
+                        piece[0] = 'B';
                         break;
                     case 2://Start New Gmae
-                        piece[0] =  'N';
+                        piece[0] =  'R';
                         break;
                     case 3://Home Screen
-                        piece[0] =  'B';
+                        piece[0] =  'N';
                         break;
                 }
             }
