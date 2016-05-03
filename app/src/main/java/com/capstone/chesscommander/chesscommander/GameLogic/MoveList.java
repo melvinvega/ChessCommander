@@ -3339,7 +3339,7 @@ public class MoveList {
 						}
 					}
 				}
-				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
+				if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
 					if( tile.getID() - 7 >= 0 ) {
 						if (checkForBlackPiece(tile.getID() - 7)) {
 							whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 7));
@@ -4059,6 +4059,7 @@ public class MoveList {
 				continue;
 			}
 			else if(tile.getPieceChar() == 'p') {
+
 				if ((tile.getID() + 8 <= 63)){
 					if (!checkForPiece(tile.getID() + 8)) {
 						blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 8));
@@ -4083,7 +4084,7 @@ public class MoveList {
 						}
 					}
 				}
-				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
+				if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
 					if ((tile.getID() + 7 <= 63)) {
 						if (checkForWhitePiece(tile.getID() + 7)) {
 							blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 7));
