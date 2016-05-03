@@ -208,11 +208,18 @@ public class game_screen extends Activity {
                         verifyBoard.setInitialPosition();
                     }
                     System.out.println("After verify reset");
+                    // puse esta variable booleana para detectar si o no es promocion
+                    boolean promo = false;
                     if(currentBoard.checkIfPromotion(SSQ,ESQ)){
                         currentBoard.setPromotionPiece(onPromotionPopUp());
+                        promo = true;
                     }
                     System.out.println("After checkIfPromotion/Before move");
                     currentBoard.move(SSQ, ESQ, color, true);
+                    // si es promocion, hace el cambio manualmente desde aqui despues del move
+                    if(promo){
+                        currentBoard.setPromotionPieceInTile(ESQ);
+                    }
                     System.out.println("After move");
                     refreshBoard();
                     System.out.println("After refreshBoard");

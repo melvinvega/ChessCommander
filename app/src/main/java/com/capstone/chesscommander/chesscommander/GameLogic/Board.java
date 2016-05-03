@@ -920,6 +920,19 @@ public class Board {
 		return setPromotionTo;
 	}
 
+	public Tile setPromotionPieceInTile(int id){
+		tiles[id].removePiece();
+		if(playerMove == 0) {
+			tiles[id].setPiece(new Piece('W', setPromotionTo));
+			getMoveList('B', false);
+		}
+		else{
+			tiles[id].setPiece(new Piece('B', setPromotionTo));
+			getMoveList('W', false);
+		}
+		return tiles[id];
+	}
+
 	private String tileToNotation(int t) {
 		String tileNotation = "";
 		int column = t % 8;
