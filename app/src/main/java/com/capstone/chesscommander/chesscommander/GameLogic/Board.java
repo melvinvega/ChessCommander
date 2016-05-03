@@ -869,14 +869,7 @@ public class Board {
 		}
 		else{
 			boolean isCheck;
-			if(tiles[es].getPiece().getColor() == 'W'){
-				co = 'W';
-				t = Character.toUpperCase(tiles[es].getPieceChar());
-			}
-			else{
-				co = 'B';
-				t = Character.toLowerCase(tiles[es].getPieceChar());
-			}
+
 			tiles[es].setPiece(tiles[ss].getPiece());
 
 			tiles[ss].removePiece();
