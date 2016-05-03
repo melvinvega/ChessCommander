@@ -334,8 +334,8 @@ public class game_screen extends Activity {
             }
 
             copyCurrentToVerify();
-            currentBoard.printVisualBoard();
-            verifyBoard.printVisualBoard();
+            //currentBoard.printVisualBoard();
+            //verifyBoard.printVisualBoard();
 
         }
     }
@@ -500,46 +500,43 @@ public class game_screen extends Activity {
             int[] resultNum = currentBoard.list.getMoveVoice(finalCommand[0],notationToInt(finalCommand[1]),playerColor.toUpperCase().charAt(0));
             int SSQ = resultNum[0];
             int ESQ = resultNum[1];
-            System.out.println("SSQ = "+ SSQ);
-            System.out.println("ESQ = "+ ESQ);
+            //System.out.println("SSQ = "+ SSQ);
+            //System.out.println("ESQ = "+ ESQ);
             if(playerColor.equals(currentAllowedColor)){
                 char c = playerColor.toUpperCase().charAt(0);
                 copyCurrentToVerify();
                 if(verifyBoard.move(SSQ,ESQ,c,true)&&!verifyBoard.verifyIfCheck(c)){
-                    if(gameType.equals("fp")){
-                        verifyBoard.setCustomBoard(tempBoard);
-                    }
-                    else{
-                        verifyBoard.setInitialPosition();
-                    }
+                    // puse esta variable booleana para detectar si o no es promocion
                     if(currentBoard.checkIfPromotion(SSQ,ESQ)){
-                        currentBoard.setPromotionPiece(onPromotionPopUp());
+                        endSquare = ESQ;
+                        promo=true;
+                        char promoPiece = onPromotionPopUp();
                     }
-                    currentBoard.move(SSQ,ESQ,c,true);
-                    refreshBoard();
-                    String spokenText = finalCommand[0] + " " + finalCommand[1];
-                    Toast.makeText(this, spokenText, Toast.LENGTH_SHORT).show();
-                    changeAllowedColor();
-                    switch(opponentType){
-                        case "player":
-                            changePlayerColor();
-                            break;
-                        case "computer":
-                            Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
-                            engine.sendCommand("position fen "+currentBoard.returnFEN());
-                            engineMove();
-                            break;
-                    }
-                    if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
-                        onCheckMatePopUp();
-                    }
-                    if(currentBoard.checkIfDraw(currentAllowedColor.toUpperCase().charAt(0))){
-                        onDrawPopUp();
+                    currentBoard.move(SSQ, ESQ, c, true);
+                    if(!promo){
+                        refreshBoard();
+                        changeAllowedColor();
+                        switch(opponentType){
+                            case "player":
+                                changePlayerColor();
+                                break;
+                            case "computer":
+                                Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
+                                engine.sendCommand("position fen "+currentBoard.returnFEN());
+                                engineMove();
+                                break;
+                        }
+                        prevId = -1;
+                        promo=false;
+                        if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
+                            onCheckMatePopUp();
+                        }
+                        if(currentBoard.checkIfDraw(currentAllowedColor.toUpperCase().charAt(0))){
+                            onDrawPopUp();
+                        }
                     }
                 }
-                if(verifyBoard.verifyIfCheck(c)){
-                    if(gameType.equals("fp")) {verifyBoard.setCustomBoard(tempBoard);}
-                    else {verifyBoard.setInitialPosition();}
+                else if(verifyBoard.verifyIfCheck(c)){
                     Toast.makeText(this, "This move would cause a check", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -1957,7 +1954,7 @@ public class game_screen extends Activity {
             }
         });
         builder.show();
-        System.out.println("PromoPiecePopup return: "+piece[0]);
+        //System.out.println("PromoPiecePopup return: "+piece[0]);
         return piece[0];
     }
 
