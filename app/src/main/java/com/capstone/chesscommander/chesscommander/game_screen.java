@@ -50,9 +50,9 @@ public class game_screen extends Activity {
     *             col[0-7] = A-H
     * */
 
-    private int prevId,currentTurn;
+    private int prevId,currentTurn,endSquare;
     private Drawable bgdraw;
-    private boolean empty;
+    private boolean promo;
 
     private String gameType,difficulty,playerColor;
     private String currentMove,playAs,opponentType;
@@ -197,58 +197,46 @@ public class game_screen extends Activity {
                 char color = currentBoard.getTile(tileNumber).getPiece().getColor();
                 verifyForCheckSetup();
                 if(verifyBoard.move(SSQ, ESQ, color, true) && !verifyBoard.verifyIfCheck(color)){
-
-                    if(gameType.equals("fp")){
-                        verifyBoard.setCustomBoard(tempBoard);
-                    }
-                    else{
-                        verifyBoard.setInitialPosition();
-                    }
-
                     // puse esta variable booleana para detectar si o no es promocion
-                    boolean promo = false;
-                    System.out.println("Before promotion");
+                    
+
                     if(currentBoard.checkIfPromotion(SSQ,ESQ)){
-                        char promoPiece = 'Q';
-                                //onPromotionPopUp();
-                        currentBoard.setPromotionPieceInTile(ESQ,promoPiece);
-                        promo = true;
-                        System.out.println("PromoPiece = "+promoPiece);
-                        System.out.println("promo value = " +promo);
+                        endSquare = ESQ;
+                        promo=true;
+                        char promoPiece = onPromotionPopUp();
                     }
-                   currentBoard.printVisualBoard();
+
                     currentBoard.move(SSQ, ESQ, color, true);
-                    // si es promocion, hace el cambio manualmente desde aqui despues del move
-                    if(promo){
-                        currentBoard.setPromotionPieceInTile(ESQ);
-                    }
-                    System.out.println("After promotion");
-                    currentBoard.printVisualBoard();
-                    refreshBoard();
-                    changeAllowedColor();
-                    switch(opponentType){
-                        case "player":
-                            changePlayerColor();
-                            break;
-                        case "computer":
-                            Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
-                            engine.sendCommand("position fen "+currentBoard.returnFEN());
-                            engineMove();
-                            break;
+                    if(!promo){
+                        refreshBoard();
+                        changeAllowedColor();
+                        switch(opponentType){
+                            case "player":
+                                changePlayerColor();
+                                break;
+                            case "computer":
+                                Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
+                                engine.sendCommand("position fen "+currentBoard.returnFEN());
+                                engineMove();
+                                break;
+                            }
+                            prevId = -1;
+                            promo=false;
+                        if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
+                            onCheckMatePopUp();
                         }
-                        prevId = -1;
-                    if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
-                        onCheckMatePopUp();
-                    }
-                    if(currentBoard.checkIfDraw(currentAllowedColor.toUpperCase().charAt(0))){
-                        onDrawPopUp();
+                        if(currentBoard.checkIfDraw(currentAllowedColor.toUpperCase().charAt(0))){
+                            onDrawPopUp();
+                        }
                     }
                 }
-                else{
+                if(verifyBoard.verifyIfCheck(color)){
                     if(gameType.equals("fp")) {verifyBoard.setCustomBoard(tempBoard);}
                     else {verifyBoard.setInitialPosition();}
                     Toast.makeText(this, "This move would cause a check", Toast.LENGTH_SHORT).show();
-                    prevId = -1;
+                }
+                else{
+                    Toast.makeText(this, "Illegal Move", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -302,7 +290,9 @@ public class game_screen extends Activity {
                         prevId = -1;
                         break;
                     case 3://Home Screen
-                        engine.stopEngine();
+                        if(opponentType.equals("computer")){
+                            engine.stopEngine();
+                        }
                         startActivity(homeScreenIntent);
                         finish();
                         break;
@@ -1822,6 +1812,9 @@ public class game_screen extends Activity {
         builder.show();
     }
 
+    public void setPromoValue(boolean value){
+        promo = value;
+    }
     public char onPromotionPopUp(){
         final char[] piece = new char[1];
         CharSequence startNew[] = new CharSequence[] {"Queen","Bishop","Rook","Knight"};
@@ -1833,15 +1826,111 @@ public class game_screen extends Activity {
                 switch (which) {
                     case 0://Queen
                         piece[0] =  'Q';
+                        promo = true;
+                        currentBoard.setPromotionPiece('Q');
+                        currentBoard.setPromotionPieceInTile(endSquare,currentAllowedColor.toUpperCase().charAt(0));
+                        verifyBoard.setPromotionPieceInTile(endSquare,currentAllowedColor.toUpperCase().charAt(0));
+                        refreshBoard();
+                        changeAllowedColor();
+                        switch(opponentType){
+                            case "player":
+                                changePlayerColor();
+                                break;
+                            case "computer":
+                                Toast.makeText(getBaseContext(), "Engine is thinking", Toast.LENGTH_SHORT).show();
+                                engine.sendCommand("position fen "+currentBoard.returnFEN());
+                                engineMove();
+                                break;
+                        }
+                        prevId = -1;
+                        promo=false;
+                        if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
+                            onCheckMatePopUp();
+                        }
+                        if(currentBoard.checkIfDraw(currentAllowedColor.toUpperCase().charAt(0))){
+                            onDrawPopUp();
+                        }
                         break;
                     case 1://Bishop
                         piece[0] = 'B';
+                        promo = true;
+                        currentBoard.setPromotionPiece('B');
+                        currentBoard.setPromotionPieceInTile(endSquare,currentAllowedColor.toUpperCase().charAt(0));
+                        verifyBoard.setPromotionPieceInTile(endSquare,currentAllowedColor.toUpperCase().charAt(0));
+                        refreshBoard();
+                        changeAllowedColor();
+                        switch(opponentType){
+                            case "player":
+                                changePlayerColor();
+                                break;
+                            case "computer":
+                                Toast.makeText(getBaseContext(), "Engine is thinking", Toast.LENGTH_SHORT).show();
+                                engine.sendCommand("position fen "+currentBoard.returnFEN());
+                                engineMove();
+                                break;
+                        }
+                        prevId = -1;
+                        promo=false;
+                        if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
+                            onCheckMatePopUp();
+                        }
+                        if(currentBoard.checkIfDraw(currentAllowedColor.toUpperCase().charAt(0))){
+                            onDrawPopUp();
+                        }
                         break;
                     case 2://Rook
                         piece[0] =  'R';
+                        promo = true;
+                        currentBoard.setPromotionPiece('R');
+                        currentBoard.setPromotionPieceInTile(endSquare,currentAllowedColor.toUpperCase().charAt(0));
+                        verifyBoard.setPromotionPieceInTile(endSquare,currentAllowedColor.toUpperCase().charAt(0));
+                        refreshBoard();
+                       changeAllowedColor();
+                        switch(opponentType){
+                            case "player":
+                                changePlayerColor();
+                                break;
+                            case "computer":
+                                Toast.makeText(getBaseContext(), "Engine is thinking", Toast.LENGTH_SHORT).show();
+                                engine.sendCommand("position fen "+currentBoard.returnFEN());
+                                engineMove();
+                                break;
+                        }
+                        prevId = -1;
+                        promo=false;
+                        if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
+                            onCheckMatePopUp();
+                        }
+                        if(currentBoard.checkIfDraw(currentAllowedColor.toUpperCase().charAt(0))){
+                            onDrawPopUp();
+                        }
                         break;
                     case 3://Knight
                         piece[0] =  'N';
+                        promo = true;
+                        currentBoard.setPromotionPiece('N');
+                        currentBoard.setPromotionPieceInTile(endSquare,currentAllowedColor.toUpperCase().charAt(0));
+                        verifyBoard.setPromotionPieceInTile(endSquare,currentAllowedColor.toUpperCase().charAt(0));
+                        refreshBoard();
+                        changeAllowedColor();
+                        switch(opponentType){
+                            case "player":
+                                changePlayerColor();
+                                break;
+                            case "computer":
+                                Toast.makeText(getBaseContext(), "Engine is thinking", Toast.LENGTH_SHORT).show();
+                                engine.sendCommand("position fen "+currentBoard.returnFEN());
+                                engineMove();
+                                break;
+                        }
+                        prevId = -1;
+                        promo=false;
+                        if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
+                            onCheckMatePopUp();
+                        }
+                        if(currentBoard.checkIfDraw(currentAllowedColor.toUpperCase().charAt(0))){
+                            onDrawPopUp();
+                        }
                         break;
                 }
             }
