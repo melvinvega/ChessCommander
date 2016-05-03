@@ -790,10 +790,13 @@ public class Board {
 		}
 		if(c == 'W') {
 			for (ShortMove sm : list.whiteMoves){
-				if(sm.getType() == 'P' || sm.getType() == 'Q' || sm.getType() == 'N' || sm.getType() == 'B' || sm.getType() == 'R'){
+				if(Character.toUpperCase(sm.getType()) == 'P' || Character.toUpperCase(sm.getType()) == 'Q' ||
+						Character.toUpperCase(sm.getType()) == 'N' ||
+						Character.toUpperCase(sm.getType()) == 'B' ||
+						Character.toUpperCase(sm.getType()) == 'R'){
 					return false;
 				}
-				if(sm.getType() == 'K'){
+				if(Character.toUpperCase(sm.getType()) == 'K'){
 					if(!quickMove(sm.getStartSquare(),sm.getEndSquare(),'W')){
 						return false;
 					}
@@ -802,10 +805,12 @@ public class Board {
 		}
 		else{
 			for(ShortMove sm: list.blackMoves){
-				if(sm.getType() == 'p' || sm.getType() == 'q' || sm.getType() == 'n' || sm.getType() == 'b' || sm.getType() == 'r'){
+				if(Character.toLowerCase(sm.getType()) == 'p' || Character.toLowerCase(sm.getType()) == 'q' ||
+						Character.toLowerCase(sm.getType()) == 'n' || Character.toLowerCase(sm.getType()) == 'b' ||
+						Character.toLowerCase(sm.getType()) == 'r'){
 					return false;
 				}
-				if(sm.getType() == 'k'){
+				if(Character.toLowerCase(sm.getType()) == 'k'){
 					if(!quickMove(sm.getStartSquare(),sm.getEndSquare(),'B')){
 						return false;
 					}
@@ -1018,77 +1023,7 @@ public class Board {
 		System.out.println();
 	}
 	
-	public Tile[] setKnightTestBoard(){
-		tiles[0].setPiece(new Piece('N','W'));
-		tiles[63].setPiece(new Piece('N','W'));
-		tiles[7].setPiece(new Piece('N','B'));
-		tiles[56].setPiece(new Piece('N','B'));
-		getMoveList('W', false);
-		return tiles;
-	}
-	
-	public Tile[] setBishopTestBoard(){
-		tiles[0].setPiece(new Piece('B','W'));
-		tiles[1].setPiece(new Piece('B','W'));
-		tiles[2].setPiece(new Piece('B','B'));
-		tiles[3].setPiece(new Piece('B','B'));
-		tiles[30].setPiece(new Piece('P','B'));
-		tiles[38].setPiece(new Piece('P','W'));
-		tiles[54].setPiece(new Piece('P','W'));
-		tiles[46].setPiece(new Piece('P','B'));
-		getMoveList('W', false);
-		return tiles;
-	}
-	
-	public Tile[] setRookTestBoard(){
-	
-		tiles[35].setPiece(new Piece('R','W'));
-		tiles[36].setPiece(new Piece('R','B'));
-		tiles[19].setPiece(new Piece('P','W'));
-		tiles[20].setPiece(new Piece('P','B'));
-		tiles[51].setPiece(new Piece('P','B'));
-		tiles[52].setPiece(new Piece('P','W'));
-		getMoveList('W', false);
-		return tiles;
-	}
-	
-	public Tile[] setQueenTestBoard(){
-		tiles[35].setPiece(new Piece('Q','W'));
-		tiles[36].setPiece(new Piece('Q','B'));
-		tiles[19].setPiece(new Piece('P','W'));
-		tiles[20].setPiece(new Piece('P','B'));
-		tiles[51].setPiece(new Piece('P','B'));
-		tiles[52].setPiece(new Piece('P','W'));
-		tiles[33].setPiece(new Piece('P','W'));
-		tiles[38].setPiece(new Piece('P','B'));
-		getMoveList('W', false);
-		return tiles;
-	}
-	
-	public Tile[] setCastlingTestBoard(){
-		tiles[60].setPiece(new Piece('K','W'));
-		tiles[63].setPiece(new Piece('R','W'));
-		tiles[4].setPiece(new Piece('K','B'));
-		tiles[0].setPiece(new Piece('R', 'B'));
-		getMoveList('W', false);
-		return tiles;
-	}
-	
-	public Tile[] setKingTestBoard(){
-		tiles[35].setPiece(new Piece('K','W'));
-		tiles[37].setPiece(new Piece('K','B'));
-		tiles[4].setPiece(new Piece('K','B'));
-		getMoveList('W', false);
-		return tiles;
-	}
-	
-	public Tile[] setPawnTestBoard(){
-		tiles[52].setPiece(new Piece('P','W'));
-		tiles[8].setPiece(new Piece('P','W'));
-		tiles[29].setPiece(new Piece('P','B'));
-		getMoveList('W', false);
-		return tiles;
-	}
+
 
 
 }
