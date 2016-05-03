@@ -835,12 +835,22 @@ public class Board {
 	Does a temporary move. Returns true if the temporary move would be legal. False if otherwise
 	 */
 	public boolean quickMove(int ss, int es, char c){
-
+		char t;
+		char co;
 		if(tiles[es].containsPiece) {
 			if(tiles[es].getPiece().getColor() == c){
 				return true;
 			}
-			Piece temp = new Piece(tiles[es].getPiece());
+			if(tiles[es].getPiece().getColor() == 'W'){
+				co = 'W';
+				t = Character.toUpperCase(tiles[es].getPieceChar());
+			}
+			else{
+				co = 'B';
+				t = Character.toLowerCase(tiles[es].getPieceChar());
+			}
+
+			Piece temp = new Piece(t ,co);
 
 			boolean isCheck;
 
@@ -854,7 +864,7 @@ public class Board {
 			isCheck = hList.checkIfCheck(c);
 
 			tiles[es].removePiece();
-			tiles[es].setPiece(new Piece(temp));
+			tiles[es].setPiece(new Piece(t ,co));
 			return isCheck;
 		}
 		else{
