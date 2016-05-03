@@ -233,7 +233,6 @@ public class MoveList {
 	// verifies all tiles of the board that are occupied by a piece, and places them in their appropiate list
 	private void findOccupiedTiles(){
 		int n = 0;
-		pieces.clear();
 		for(int i = 0; i < 64; i++){
 			if(board[i].getIfOccupied()){
 				if(board[i].getPieceChar() == 'K'){
@@ -242,7 +241,7 @@ public class MoveList {
 				if(board[i].getPieceChar() == 'k'){
 					bKing = board[i];
 				}
-				pieces.add(new Tile(board[i]));
+				pieces.add(board[i]);
 				n++;
 			}
 		}
