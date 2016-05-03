@@ -862,14 +862,21 @@ public class Board {
 					whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);
 			hList.setList();
 			isCheck = hList.checkIfCheck(c);
-
+			tiles[ss].setPiece(tiles[es].getPiece());
 			tiles[es].removePiece();
 			tiles[es].setPiece(new Piece(t ,co));
 			return isCheck;
 		}
 		else{
 			boolean isCheck;
-
+			if(tiles[es].getPiece().getColor() == 'W'){
+				co = 'W';
+				t = Character.toUpperCase(tiles[es].getPieceChar());
+			}
+			else{
+				co = 'B';
+				t = Character.toLowerCase(tiles[es].getPieceChar());
+			}
 			tiles[es].setPiece(tiles[ss].getPiece());
 
 			tiles[ss].removePiece();
@@ -877,8 +884,9 @@ public class Board {
 					whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);
 			hList.setList();
 			isCheck = hList.checkIfCheck(c);
-
+		tiles[ss].setPiece(tiles[es].getPiece());
 			tiles[es].removePiece();
+
 			return isCheck;
 		}
 	}

@@ -176,14 +176,6 @@ public class game_screen extends Activity {
     }
 
     public void onButtonClick(View view){
-        /*System.out.println("PrevId = "+prevId);
-        if(prevId==-1){
-            System.out.println("PrevId = "+prevId);
-            System.out.println("Start View = "+view.getTag(R.id.tagboardpos));
-        }
-        else{
-            System.out.println("Destination View = "+view.getTag(R.id.tagboardpos));
-        }*/
         if(prevId==-1){
            if(currentAllowedColor.equals(view.getTag(R.id.tagcolor)) && currentAllowedColor.equals(playerColor)){
                prevId = view.getId();
@@ -191,22 +183,24 @@ public class game_screen extends Activity {
         }
         else if(prevId>0) {
             if (!findViewById(prevId).equals(view)) {
+                copyCurrentToVerify();
                 int SSQ = (Integer) findViewById(prevId).getTag(R.id.tagboardpos);
                 int ESQ = (Integer) view.getTag(R.id.tagboardpos);
                 int tileNumber = (int) findViewById(prevId).getTag(R.id.tagboardpos);
-                char color = currentBoard.getTile(tileNumber).getPiece().getColor();
-                verifyForCheckSetup();
+                char color = verifyBoard.getTile(tileNumber).getPiece().getColor();
+                copyCurrentToVerify();
+                //verifyBoard.printVisualBoard();
+                //currentBoard.printVisualBoard();
                 if(verifyBoard.move(SSQ, ESQ, color, true) && !verifyBoard.verifyIfCheck(color)){
                     // puse esta variable booleana para detectar si o no es promocion
-                    
-
                     if(currentBoard.checkIfPromotion(SSQ,ESQ)){
                         endSquare = ESQ;
                         promo=true;
                         char promoPiece = onPromotionPopUp();
                     }
-
                     currentBoard.move(SSQ, ESQ, color, true);
+                   // verifyBoard.printVisualBoard();
+                   // currentBoard.printVisualBoard();
                     if(!promo){
                         refreshBoard();
                         changeAllowedColor();
@@ -233,9 +227,6 @@ public class game_screen extends Activity {
                 if(verifyBoard.verifyIfCheck(color)){
                     if(gameType.equals("fp")) {verifyBoard.setCustomBoard(tempBoard);}
                     else {verifyBoard.setInitialPosition();}
-                    Toast.makeText(this, "This move would cause a check", Toast.LENGTH_SHORT).show();
-                }
-                else{
                     Toast.makeText(this, "Illegal Move", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -327,6 +318,21 @@ public class game_screen extends Activity {
             }
             refreshBoard();
             past.setInitialPosition();
+            if(currentBoard.getGameMoveList().size()==0){
+                if(gameType.equals("fp")){
+                    verifyBoard.setCustomBoard(tempBoard);
+                    currentBoard.setCustomBoard(tempBoard);
+                }
+                else{
+                    verifyBoard.setInitialPosition();
+                    currentBoard.setInitialPosition();
+                }
+            }
+
+            copyCurrentToVerify();
+            currentBoard.printVisualBoard();
+            verifyBoard.printVisualBoard();
+
         }
     }
 
@@ -489,7 +495,7 @@ public class game_screen extends Activity {
             System.out.println("ESQ = "+ ESQ);
             if(playerColor.equals(currentAllowedColor)){
                 char c = playerColor.toUpperCase().charAt(0);
-                verifyForCheckSetup();
+                copyCurrentToVerify();
                 if(verifyBoard.move(SSQ,ESQ,c,true)&&!verifyBoard.verifyIfCheck(c)){
                     if(gameType.equals("fp")){
                         verifyBoard.setCustomBoard(tempBoard);
@@ -1624,9 +1630,9 @@ public class game_screen extends Activity {
     }
 
     private void simulateMoves(){
-        past.setInitialPosition();
         if(gameType.equals("fp")) {past.setCustomBoard(tempBoard);}
         else {past.setInitialPosition();}
+
         switch (opponentType){
             case "player":
                 for(int i =0;i<currentBoard.getGameMoveList().size()-1;i++){
@@ -1656,6 +1662,9 @@ public class game_screen extends Activity {
             char color = past.getGameMoveList().get(i).getMovedPiece().getColor();
             currentBoard.move(SSQ,ESQ,color,true);
         }
+        //copyCurrentToVerify();
+        //currentBoard.printVisualBoard();
+        //verifyBoard.printVisualBoard();
     }
 
     private void copyCurrentToHolder(){
@@ -1667,6 +1676,7 @@ public class game_screen extends Activity {
             char color = currentBoard.getGameMoveList().get(i).getMovedPiece().getColor();
             holder.move(SSQ,ESQ,color,true);
         }
+        //copyCurrentToVerify();
     }
 
     private void copyHolderToCurrent(){
@@ -1678,6 +1688,7 @@ public class game_screen extends Activity {
             char color = holder.getGameMoveList().get(i).getMovedPiece().getColor();
             currentBoard.move(SSQ,ESQ,color,true);
         }
+        //copyCurrentToVerify();
         if(gameType.equals("fp")) {holder.setCustomBoard(tempBoard);}
         else {holder.setInitialPosition();}
     }
@@ -1815,6 +1826,7 @@ public class game_screen extends Activity {
     public void setPromoValue(boolean value){
         promo = value;
     }
+
     public char onPromotionPopUp(){
         final char[] piece = new char[1];
         CharSequence startNew[] = new CharSequence[] {"Queen","Bishop","Rook","Knight"};
@@ -1940,7 +1952,55 @@ public class game_screen extends Activity {
         return piece[0];
     }
 
-
+    private void copyCurrentToVerify(){
+        int[] verifyArray = new int[64];
+        for(int i=0;i<64;i++){
+            if(!currentBoard.getTile(i).getIfOccupied()){
+                verifyArray[i]=-1;
+            }
+            else{
+                switch (currentBoard.getTile(i).getPiece().getType()){
+                    case 'P':
+                        verifyArray[i] = 0;
+                        break;
+                    case 'K':
+                        verifyArray[i] = 1;
+                        break;
+                    case 'Q':
+                        verifyArray[i] = 2;
+                        break;
+                    case 'B':
+                        verifyArray[i] = 3;
+                        break;
+                    case 'N':
+                        verifyArray[i] = 4;
+                        break;
+                    case 'R':
+                        verifyArray[i] = 5;
+                        break;
+                    case 'p':
+                        verifyArray[i] = 6;
+                        break;
+                    case 'k':
+                        verifyArray[i] = 7;
+                        break;
+                    case 'q':
+                        verifyArray[i] = 8;
+                        break;
+                    case 'b':
+                        verifyArray[i] = 9;
+                        break;
+                    case 'n':
+                        verifyArray[i] =10;
+                        break;
+                    case 'r':
+                        verifyArray[i] = 11;
+                        break;
+                }
+            }
+        }
+        verifyBoard.setCustomBoard(verifyArray);
+    }
 
     private class AsyncTaskRunner extends AsyncTask<Void, Void, String> {
 
