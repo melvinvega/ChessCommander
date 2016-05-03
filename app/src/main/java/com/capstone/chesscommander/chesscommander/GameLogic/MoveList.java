@@ -252,7 +252,7 @@ public class MoveList {
 	private void findWhiteTiles(){
 		int n = 0;
 		for(int i = 0; i <pieces.size(); i++){
-			if(pieces.get(i) != null && pieces.get(i).getIfOccupied()) {
+			if( true){//pieces.get(i) != null && pieces.get(i).getIfOccupied()) {
 				if (pieces.get(i).getPiece().getColor() == 'W') {
 					whites.add(pieces.get(i));
 					n++;
@@ -265,7 +265,7 @@ public class MoveList {
 	private void findBlackTiles(){
 		int n = 0;
 		for(int i = 0; i <pieces.size(); i++){
-			if(pieces.get(i) != null && pieces.get(i).getIfOccupied()) {
+			if(true){//pieces.get(i) != null && pieces.get(i).getIfOccupied()) {
 				if (pieces.get(i).getPiece().getColor() == 'B') {
 					blacks.add(pieces.get(i));
 					n++;
