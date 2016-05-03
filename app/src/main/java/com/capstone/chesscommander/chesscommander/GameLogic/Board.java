@@ -846,22 +846,13 @@ public class Board {
 			boolean promo = false;
 			tiles[es].removePiece();
 			tiles[es].setPiece(tiles[ss].getPiece());
-			if(checkIfPromotion(ss, es)){
-				promo = true;
-				tiles[es].removePiece();
-				tiles[es].setPiece(new Piece(c, setPromotionTo));
-			}
+
 			tiles[ss].removePiece();
 			MoveList hList = new MoveList(tiles, moves , c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
 					whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);
 			hList.setList();
 			isCheck = hList.checkIfCheck(c);
-			if(promo){
-				tiles[ss].setPiece(new Piece(temp2));
-			}
-			else {
-				tiles[ss].setPiece(tiles[es].getPiece());
-			}
+
 			tiles[es].removePiece();
 			tiles[es].setPiece(new Piece(temp));
 			return isCheck;
@@ -871,22 +862,13 @@ public class Board {
 			Piece temp2 = new Piece(tiles[ss].getPiece());
 			boolean promo = false;
 			tiles[es].setPiece(tiles[ss].getPiece());
-			if(checkIfPromotion(ss, es)){
-				promo = true;
-				tiles[es].removePiece();
-				tiles[es].setPiece(new Piece(c, setPromotionTo));
-			}
+
 			tiles[ss].removePiece();
 			MoveList hList = new MoveList(tiles, moves , c, doubleMoveTile, whiteKingMoved, blackKingMoved, whiteKingRookMoved,
 					whiteQueenRookMoved, blackKingRookMoved, blackQueenRookMoved, false);
 			hList.setList();
 			isCheck = hList.checkIfCheck(c);
-			if(promo){
-				tiles[ss].setPiece(new Piece(temp2));
-			}
-			else {
-				tiles[ss].setPiece(tiles[es].getPiece());
-			}
+
 			tiles[es].removePiece();
 			return isCheck;
 		}
