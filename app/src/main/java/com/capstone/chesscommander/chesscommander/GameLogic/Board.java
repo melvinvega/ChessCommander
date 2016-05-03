@@ -922,14 +922,29 @@ public class Board {
 
 	public Tile setPromotionPieceInTile(int id){
 		tiles[id].removePiece();
-		if(playerMove == 0) {
-			tiles[id].setPiece(new Piece('W', setPromotionTo));
+		if(playerMove == 1) {
 			getMoveList('B', false);
+			tiles[id].setPiece(new Piece('W', setPromotionTo));
 		}
 		else{
-			tiles[id].setPiece(new Piece('B', setPromotionTo));
 			getMoveList('W', false);
+			tiles[id].setPiece(new Piece('B', setPromotionTo));
 		}
+		return tiles[id];
+	}
+	public Tile setPromotionPieceInTile(int id, char c){
+		tiles[id].removePiece();
+		char opp;
+		if(c == 'W'){
+			opp = 'B';
+		}
+		else{
+			opp = 'W';
+		}
+
+		tiles[id].setPiece(new Piece(setPromotionTo, c));
+		getMoveList(opp, false);
+
 		return tiles[id];
 	}
 

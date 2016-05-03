@@ -194,37 +194,38 @@ public class game_screen extends Activity {
                 int SSQ = (Integer) findViewById(prevId).getTag(R.id.tagboardpos);
                 int ESQ = (Integer) view.getTag(R.id.tagboardpos);
                 int tileNumber = (int) findViewById(prevId).getTag(R.id.tagboardpos);
-                System.out.println("Before Color");
                 char color = currentBoard.getTile(tileNumber).getPiece().getColor();
-                System.out.println("Before verifyForCheckSetup");
                 verifyForCheckSetup();
-                System.out.println("After verifyForCheckSetup");
                 if(verifyBoard.move(SSQ, ESQ, color, true) && !verifyBoard.verifyIfCheck(color)){
-                    System.out.println("After verify.move");
+
                     if(gameType.equals("fp")){
                         verifyBoard.setCustomBoard(tempBoard);
                     }
                     else{
                         verifyBoard.setInitialPosition();
                     }
-                    System.out.println("After verify reset");
+
                     // puse esta variable booleana para detectar si o no es promocion
                     boolean promo = false;
+                    System.out.println("Before promotion");
                     if(currentBoard.checkIfPromotion(SSQ,ESQ)){
-                        currentBoard.setPromotionPiece(onPromotionPopUp());
+                        char promoPiece = 'Q';
+                                //onPromotionPopUp();
+                        currentBoard.setPromotionPieceInTile(ESQ,promoPiece);
                         promo = true;
+                        System.out.println("PromoPiece = "+promoPiece);
+                        System.out.println("promo value = " +promo);
                     }
-                    System.out.println("After checkIfPromotion/Before move");
+                   currentBoard.printVisualBoard();
                     currentBoard.move(SSQ, ESQ, color, true);
                     // si es promocion, hace el cambio manualmente desde aqui despues del move
                     if(promo){
                         currentBoard.setPromotionPieceInTile(ESQ);
                     }
-                    System.out.println("After move");
+                    System.out.println("After promotion");
+                    currentBoard.printVisualBoard();
                     refreshBoard();
-                    System.out.println("After refreshBoard");
                     changeAllowedColor();
-                    System.out.println("After changeAllowedColor");
                     switch(opponentType){
                         case "player":
                             changePlayerColor();
@@ -1830,22 +1831,23 @@ public class game_screen extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
-                    case 0://Start New Gmae
+                    case 0://Queen
                         piece[0] =  'Q';
                         break;
-                    case 1://Home Screen
+                    case 1://Bishop
                         piece[0] = 'B';
                         break;
-                    case 2://Start New Gmae
+                    case 2://Rook
                         piece[0] =  'R';
                         break;
-                    case 3://Home Screen
+                    case 3://Knight
                         piece[0] =  'N';
                         break;
                 }
             }
         });
         builder.show();
+        System.out.println("PromoPiecePopup return: "+piece[0]);
         return piece[0];
     }
 
