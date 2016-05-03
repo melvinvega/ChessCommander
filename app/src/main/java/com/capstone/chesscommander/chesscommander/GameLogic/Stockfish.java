@@ -11,8 +11,8 @@ import java.io.OutputStreamWriter;
  * @author Rahul A R
  * 
  */
-public class Stockfish {
-
+public class Stockfish  {
+	private String difficulty;
 	private Process engineProcess;
 	private BufferedReader processReader;
 	private OutputStreamWriter processWriter;
@@ -148,29 +148,9 @@ public class Stockfish {
 		}
 	}
 
-	/**
-	 * Get the evaluation score of a given board position
-	 * @param fen Position string
-	 * @param waitTime in milliseconds
-	 * @return evalScore
-	 */
-	public float getEvalScore(String fen, int waitTime) {
-		sendCommand("position fen " + fen);
-		sendCommand("go movetime " + waitTime);
-
-		float evalScore = 0.0f;
-		String[] dump = getOutput(waitTime + 20).split("\n");
-		for (int i = dump.length - 1; i >= 0; i--) {
-			if (dump[i].startsWith("info depth ")) {
-				try {
-				evalScore = Float.parseFloat(dump[i].split("score cp ")[1]
-						.split(" nodes")[0]);
-				} catch(Exception e) {
-					evalScore = Float.parseFloat(dump[i].split("score cp ")[1]
-							.split(" upperbound nodes")[0]);
-				}
-			}
-		}
-		return evalScore/100;
+	public void setDifficulty(String difficulty){
+		this.difficulty = difficulty;
 	}
+
+
 }

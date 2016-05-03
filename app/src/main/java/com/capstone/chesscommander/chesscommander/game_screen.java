@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
@@ -132,7 +133,7 @@ public class game_screen extends Activity {
 
     private Board[] pastArray = new Board[2];
 
-    private String currentAllowedColor;
+    private String currentAllowedColor,outputResults;
     final Context context = this;
 
     private AccessibilityManager am;
@@ -168,6 +169,7 @@ public class game_screen extends Activity {
        if(gameType.equals("pve")|opponentType.equals("computer")) {
            engine.startEngine();
            engine.sendCommand("uci");
+           engine.setDifficulty(difficulty);
        }
         boardSetup(gameType);
         refreshBoard();
@@ -192,23 +194,30 @@ public class game_screen extends Activity {
                 int SSQ = (Integer) findViewById(prevId).getTag(R.id.tagboardpos);
                 int ESQ = (Integer) view.getTag(R.id.tagboardpos);
                 int tileNumber = (int) findViewById(prevId).getTag(R.id.tagboardpos);
-                currentBoard.printVisualBoard();
+                System.out.println("Before Color");
                 char color = currentBoard.getTile(tileNumber).getPiece().getColor();
+                System.out.println("Before verifyForCheckSetup");
                 verifyForCheckSetup();
+                System.out.println("After verifyForCheckSetup");
                 if(verifyBoard.move(SSQ, ESQ, color, true) && !verifyBoard.verifyIfCheck(color)){
+                    System.out.println("After verify.move");
                     if(gameType.equals("fp")){
                         verifyBoard.setCustomBoard(tempBoard);
                     }
                     else{
                         verifyBoard.setInitialPosition();
                     }
+                    System.out.println("After verify reset");
                     if(currentBoard.checkIfPromotion(SSQ,ESQ)){
                         currentBoard.setPromotionPiece(onPromotionPopUp());
                     }
+                    System.out.println("After checkIfPromotion/Before move");
                     currentBoard.move(SSQ, ESQ, color, true);
+                    System.out.println("After move");
                     refreshBoard();
+                    System.out.println("After refreshBoard");
                     changeAllowedColor();
-
+                    System.out.println("After changeAllowedColor");
                     switch(opponentType){
                         case "player":
                             changePlayerColor();
@@ -217,11 +226,6 @@ public class game_screen extends Activity {
                             Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
                             engine.sendCommand("position fen "+currentBoard.returnFEN());
                             engineMove();
-                            refreshBoard();
-                            changeAllowedColor();
-                            String pieceMoved = charToStringPiece(currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).getMovedPiece().getType());
-                            String endSquare = intToNotation(currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).getEndSquareID());
-                            Toast.makeText(this,pieceMoved + " " + endSquare , Toast.LENGTH_SHORT).show();
                             break;
                         }
                         prevId = -1;
@@ -438,6 +442,12 @@ public class game_screen extends Activity {
         String positionResult;
         ArrayList<String> pieceResultsList;
         ArrayList<String> positionResultsList;
+        /*if(requestCode != RESULT_OK && requestCode == SPEECH_REQUEST_CODE_PIECE){
+            displaySpeechRecognizer(SPEECH_REQUEST_CODE_PIECE);
+        }
+        if(requestCode != RESULT_OK && requestCode == SPEECH_REQUEST_CODE_POSITION){
+            displaySpeechRecognizer(SPEECH_REQUEST_CODE_POSITION);
+        }*/
         if (requestCode == SPEECH_REQUEST_CODE_PIECE && resultCode == RESULT_OK) {
             pieceResultsList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             System.out.println("InputPiece: " + pieceResultsList);
@@ -505,10 +515,6 @@ public class game_screen extends Activity {
                             Toast.makeText(this, "Engine is thinking", Toast.LENGTH_SHORT).show();
                             engine.sendCommand("position fen "+currentBoard.returnFEN());
                             engineMove();
-                            changeAllowedColor();
-                            refreshBoard();
-                            String lastMove = currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).toString();
-                            Toast.makeText(this,lastMove , Toast.LENGTH_SHORT).show();
                             break;
                     }
                     if(currentBoard.checkForCheckmate(currentAllowedColor.toUpperCase().charAt(0))){
@@ -1716,7 +1722,7 @@ public class game_screen extends Activity {
         }
         File file = getFileStreamPath ("stockfishandroid");
         file.setExecutable(true);
-        System.out.println(file);
+        //System.out.println(file);
     }
 
     private void engineMove(){
@@ -1731,9 +1737,8 @@ public class game_screen extends Activity {
                 engine.sendCommand("go depth 10");
                 break;
         }
-        int[] results = engineOutputToMove();
-        currentBoard.move(results[0],results[1],currentAllowedColor.toUpperCase().charAt(0),false);
-    }
+        new AsyncTaskRunner().execute();
+       }
 
     private int[] engineOutputToMove(){
         int results[] = new int[2];
@@ -1835,5 +1840,50 @@ public class game_screen extends Activity {
         });
         builder.show();
         return piece[0];
+    }
+
+
+
+    private class AsyncTaskRunner extends AsyncTask<Void, Void, String> {
+
+        private String resp;
+
+        @Override
+        protected String doInBackground(Void... params) {
+            switch (difficulty){
+                case "easy":
+                    outputResults = engine.getOutput(1000).split("bestmove")[1];
+                    break;
+                case "medium":
+                    outputResults = engine.getOutput(3000).split("bestmove")[1];
+                    break;
+                case "hard":
+                    outputResults = engine.getOutput(5000).split("bestmove")[1];
+                    break;
+            }
+            return outputResults;
+        }
+
+        /*
+         * (non-Javadoc)
+         *
+         * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            int[] results = new int[2];
+            String start = outputResults.substring(1,3);
+            String end = outputResults.substring(3,5);
+            results[0] = notationToInt(start);
+            results[1] = notationToInt(end);
+            currentBoard.move(results[0],results[1],currentAllowedColor.toUpperCase().charAt(0),false);
+            refreshBoard();
+            String pieceMoved = charToStringPiece(currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).getMovedPiece().getType());
+            String endSquare = intToNotation(currentBoard.getGameMoveList().get(currentBoard.getGameMoveList().size()-1).getEndSquareID());
+            Toast.makeText(getBaseContext(),pieceMoved + " " + endSquare , Toast.LENGTH_SHORT).show();
+            changeAllowedColor();
+
+        }
+
     }
 }
