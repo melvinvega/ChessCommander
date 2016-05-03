@@ -233,6 +233,7 @@ public class MoveList {
 	// verifies all tiles of the board that are occupied by a piece, and places them in their appropiate list
 	private void findOccupiedTiles(){
 		int n = 0;
+		pieces.clear();
 		for(int i = 0; i < 64; i++){
 			if(board[i].getIfOccupied()){
 				if(board[i].getPieceChar() == 'K'){
@@ -252,7 +253,7 @@ public class MoveList {
 	private void findWhiteTiles(){
 		int n = 0;
 		for(int i = 0; i <pieces.size(); i++){
-			if( true){//pieces.get(i) != null && pieces.get(i).getIfOccupied()) {
+			if(pieces.get(i) != null && pieces.get(i).getIfOccupied()) {
 				if (pieces.get(i).getPiece().getColor() == 'W') {
 					whites.add(pieces.get(i));
 					n++;
@@ -265,7 +266,7 @@ public class MoveList {
 	private void findBlackTiles(){
 		int n = 0;
 		for(int i = 0; i <pieces.size(); i++){
-			if(true){//pieces.get(i) != null && pieces.get(i).getIfOccupied()) {
+			if(pieces.get(i) != null && pieces.get(i).getIfOccupied()) {
 				if (pieces.get(i).getPiece().getColor() == 'B') {
 					blacks.add(pieces.get(i));
 					n++;
