@@ -841,9 +841,9 @@ public class Board {
 				return true;
 			}
 			Piece temp = new Piece(tiles[es].getPiece());
-			Piece temp2 = new Piece(tiles[ss].getPiece());
+
 			boolean isCheck;
-			boolean promo = false;
+
 			tiles[es].removePiece();
 			tiles[es].setPiece(tiles[ss].getPiece());
 
@@ -859,8 +859,7 @@ public class Board {
 		}
 		else{
 			boolean isCheck;
-			Piece temp2 = new Piece(tiles[ss].getPiece());
-			boolean promo = false;
+
 			tiles[es].setPiece(tiles[ss].getPiece());
 
 			tiles[ss].removePiece();
