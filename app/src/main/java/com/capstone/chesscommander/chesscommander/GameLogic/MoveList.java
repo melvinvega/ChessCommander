@@ -252,9 +252,11 @@ public class MoveList {
 	private void findWhiteTiles(){
 		int n = 0;
 		for(int i = 0; i <pieces.size(); i++){
-			if(pieces.get(i).getPiece().getColor() == 'W'){
-				whites.add(pieces.get(i));
-				n++;
+			if(pieces.get(i) != null && pieces.get(i).getIfOccupied()) {
+				if (pieces.get(i).getPiece().getColor() == 'W') {
+					whites.add(pieces.get(i));
+					n++;
+				}
 			}
 		}
 	}
@@ -263,9 +265,11 @@ public class MoveList {
 	private void findBlackTiles(){
 		int n = 0;
 		for(int i = 0; i <pieces.size(); i++){
-			if(pieces.get(i).getPiece().getColor() == 'B'){
-				blacks.add(pieces.get(i));
-				n++;
+			if(pieces.get(i) != null && pieces.get(i).getIfOccupied()) {
+				if (pieces.get(i).getPiece().getColor() == 'B') {
+					blacks.add(pieces.get(i));
+					n++;
+				}
 			}
 		}
 	}
@@ -3312,7 +3316,7 @@ public class MoveList {
 
 			else if(tile.getPieceChar() == 'P'){
 				if( tile.getID() - 8 >= 0 ) {
-					if (!checkForPiece(tile.getID() - 8) && tile.getID() - 8 >= 0) {
+					if (!checkForPiece(tile.getID() - 8)) {
 						whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 8));
 					}
 				}
@@ -3323,26 +3327,26 @@ public class MoveList {
 				}
 				if( tile.getID() - 7 >= 0 ) {
 					if (tile.getID() % 8 == 0) {
-						if (checkForBlackPiece(tile.getID() - 7) && tile.getID() - 7 >= 0) {
+						if (checkForBlackPiece(tile.getID() - 7)) {
 							whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 7));
 						}
 					}
 				}
 				if( tile.getID() - 9 >= 0 ) {
 					if (tile.getID() % 8 == 7) {
-						if (checkForBlackPiece(tile.getID() - 9) && tile.getID() - 9 >= 0) {
+						if (checkForBlackPiece(tile.getID() - 9)) {
 							whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 9));
 						}
 					}
 				}
 				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
 					if( tile.getID() - 7 >= 0 ) {
-						if (checkForBlackPiece(tile.getID() - 7) && tile.getID() - 7 >= 0) {
+						if (checkForBlackPiece(tile.getID() - 7)) {
 							whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 7));
 						}
 					}
 					if( tile.getID() - 9 >= 0 ) {
-						if (checkForBlackPiece(tile.getID() - 9) && tile.getID() - 9 >= 0) {
+						if (checkForBlackPiece(tile.getID() - 9)) {
 							whiteMoves.add(new ShortMove('W', 'P', tile.getID(), tile.getID() - 9));
 						}
 					}
@@ -4067,26 +4071,26 @@ public class MoveList {
 				}
 				if ((tile.getID() + 9 <= 63)) {
 					if (tile.getID() % 8 == 0) {
-						if (checkForWhitePiece(tile.getID() + 9) && tile.getID() + 9 <= 63) {
+						if (checkForWhitePiece(tile.getID() + 9)) {
 							blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 9));
 						}
 					}
 				}
 				if ((tile.getID() + 7 <= 63)) {
 					if (tile.getID() % 8 == 7) {
-						if (checkForWhitePiece(tile.getID() + 7) && tile.getID() + 7 <= 63) {
+						if (checkForWhitePiece(tile.getID() + 7)) {
 							blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 7));
 						}
 					}
 				}
 				else if(tile.getID() % 8 != 0 && tile.getID() % 8 != 7){
 					if ((tile.getID() + 7 <= 63)) {
-						if (checkForWhitePiece(tile.getID() + 7) && tile.getID() + 7 <= 63) {
+						if (checkForWhitePiece(tile.getID() + 7)) {
 							blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 7));
 						}
 					}
 					if ((tile.getID() + 9 <= 63)) {
-						if (checkForWhitePiece(tile.getID() + 9) && tile.getID() + 9 <= 63) {
+						if (checkForWhitePiece(tile.getID() + 9)) {
 							blackMoves.add(new ShortMove('B', 'p', tile.getID(), tile.getID() + 9));
 						}
 					}
