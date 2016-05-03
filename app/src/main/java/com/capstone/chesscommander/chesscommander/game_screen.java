@@ -179,18 +179,22 @@ public class game_screen extends Activity {
         if(prevId==-1){
            if(currentAllowedColor.equals(view.getTag(R.id.tagcolor)) && currentAllowedColor.equals(playerColor)){
                prevId = view.getId();
+               Toast.makeText(this, intToNotation((int)view.getTag(R.id.tagboardpos)), Toast.LENGTH_SHORT).show();
+
            }
         }
         else if(prevId>0) {
+            /*if(view.getTag(R.id.tagcolor).equals("white")) {
+                prevId = view.getId();
+            }
+            else */
             if (!findViewById(prevId).equals(view)) {
                 copyCurrentToVerify();
                 int SSQ = (Integer) findViewById(prevId).getTag(R.id.tagboardpos);
                 int ESQ = (Integer) view.getTag(R.id.tagboardpos);
                 int tileNumber = (int) findViewById(prevId).getTag(R.id.tagboardpos);
-                char color = verifyBoard.getTile(tileNumber).getPiece().getColor();
+                char color = currentBoard.getTile(tileNumber).getPiece().getColor();
                 copyCurrentToVerify();
-                //verifyBoard.printVisualBoard();
-                //currentBoard.printVisualBoard();
                 if(verifyBoard.move(SSQ, ESQ, color, true) && !verifyBoard.verifyIfCheck(color)){
                     // puse esta variable booleana para detectar si o no es promocion
                     if(currentBoard.checkIfPromotion(SSQ,ESQ)){
@@ -199,8 +203,6 @@ public class game_screen extends Activity {
                         char promoPiece = onPromotionPopUp();
                     }
                     currentBoard.move(SSQ, ESQ, color, true);
-                   // verifyBoard.printVisualBoard();
-                   // currentBoard.printVisualBoard();
                     if(!promo){
                         refreshBoard();
                         changeAllowedColor();
@@ -230,8 +232,10 @@ public class game_screen extends Activity {
                     Toast.makeText(this, "Illegal Move", Toast.LENGTH_SHORT).show();
                 }
             }
-
-        }
+            else{
+                prevId=-1;
+            }
+            }
     }
 
     public void onOptionsButtonClick(View view){
@@ -433,7 +437,12 @@ public class game_screen extends Activity {
     private void displaySpeechRecognizer(int request_code) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Hello say movement");
+        if(request_code==SPEECH_REQUEST_CODE_PIECE){
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Which piece do you want to move?");
+        }
+        else{
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Where do you want to move?");
+        }
         // Start the activity, the intent will be populated with the speech text
         startActivityForResult(intent, request_code);
     }

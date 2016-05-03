@@ -15,16 +15,19 @@ import java.util.ArrayList;
 public class Board {
 	public MoveList list;
 	GameHandler myGame;
-	boolean whiteKingCastle = true;
-	boolean blackKingCastle = true;
-	boolean whiteQueenCastle = true;
-	boolean blackQueenCastle = true;
-	boolean whiteKingMoved = false;
-	boolean whiteKingRookMoved = false;
-	boolean whiteQueenRookMoved = false;
-	boolean blackKingMoved = false;
-	boolean blackKingRookMoved = false;
-	boolean blackQueenRookMoved = false;
+	public boolean whiteKingCastle = true;
+	public boolean blackKingCastle = true;
+
+
+
+	public boolean whiteQueenCastle = true;
+	public boolean blackQueenCastle = true;
+	public boolean whiteKingMoved = false;
+	public boolean whiteKingRookMoved = false;
+	public boolean whiteQueenRookMoved = false;
+	public boolean blackKingMoved = false;
+	public boolean blackKingRookMoved = false;
+	public boolean blackQueenRookMoved = false;
 	boolean helpBoard = false;
 	int halfmove = 0;
 	int fullmove = 1;
@@ -106,16 +109,16 @@ public class Board {
 		ply=1;
 		playerMove=0;
 		doubleMoveTile = -100;
-		whiteKingCastle = false;
-		blackKingCastle = false;
-		whiteQueenCastle = false;
-		blackQueenCastle = false;
-		whiteKingMoved = true;
-		whiteKingRookMoved = true;
-		whiteQueenRookMoved = true;
-		blackKingMoved = true;
-		blackKingRookMoved = true;
-		blackQueenRookMoved = true;
+		whiteKingCastle = true;
+		blackKingCastle = true;
+		whiteQueenCastle = true;
+		blackQueenCastle = true;
+		whiteKingMoved = false;
+		whiteKingRookMoved = false;
+		whiteQueenRookMoved = false;
+		blackKingMoved = false;
+		blackKingRookMoved = false;
+		blackQueenRookMoved = false;
 		getMoveList('W',false);
 		returnFEN();
 		addShortFEN();
@@ -1014,8 +1017,86 @@ public class Board {
 		}
 		System.out.println();
 	}
-	
 
+	public boolean isWhiteKingCastle() {
+		return whiteKingCastle;
+	}
+
+	public void setWhiteKingCastle(boolean whiteKingCastle) {
+		this.whiteKingCastle = whiteKingCastle;
+	}
+
+	public boolean isBlackKingCastle() {
+		return blackKingCastle;
+	}
+
+	public void setBlackKingCastle(boolean blackKingCastle) {
+		this.blackKingCastle = blackKingCastle;
+	}
+
+	public boolean isWhiteQueenCastle() {
+		return whiteQueenCastle;
+	}
+
+	public void setWhiteQueenCastle(boolean whiteQueenCastle) {
+		this.whiteQueenCastle = whiteQueenCastle;
+	}
+
+	public boolean isBlackQueenCastle() {
+		return blackQueenCastle;
+	}
+
+	public void setBlackQueenCastle(boolean blackQueenCastle) {
+		this.blackQueenCastle = blackQueenCastle;
+	}
+
+	public boolean isWhiteKingMoved() {
+		return whiteKingMoved;
+	}
+
+	public void setWhiteKingMoved(boolean whiteKingMoved) {
+		this.whiteKingMoved = whiteKingMoved;
+	}
+
+	public boolean isWhiteKingRookMoved() {
+		return whiteKingRookMoved;
+	}
+
+	public void setWhiteKingRookMoved(boolean whiteKingRookMoved) {
+		this.whiteKingRookMoved = whiteKingRookMoved;
+	}
+
+	public boolean isWhiteQueenRookMoved() {
+		return whiteQueenRookMoved;
+	}
+
+	public void setWhiteQueenRookMoved(boolean whiteQueenRookMoved) {
+		this.whiteQueenRookMoved = whiteQueenRookMoved;
+	}
+
+	public boolean isBlackKingMoved() {
+		return blackKingMoved;
+	}
+
+	public void setBlackKingMoved(boolean blackKingMoved) {
+		this.blackKingMoved = blackKingMoved;
+	}
+
+	public boolean isBlackKingRookMoved() {
+		return blackKingRookMoved;
+	}
+
+	public void setBlackKingRookMoved(boolean blackKingRookMoved) {
+		this.blackKingRookMoved = blackKingRookMoved;
+	}
+
+	public boolean isBlackQueenRookMoved() {
+		return blackQueenRookMoved;
+	}
+
+	public void setBlackQueenRookMoved(boolean blackQueenRookMoved) {
+		this.blackQueenRookMoved = blackQueenRookMoved;
+	}
 
 
 }
